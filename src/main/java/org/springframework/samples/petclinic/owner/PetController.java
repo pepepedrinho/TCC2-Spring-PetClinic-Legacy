@@ -16,6 +16,8 @@
 package org.springframework.samples.petclinic.owner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.integration.OwnersPetsClient;
+import org.springframework.samples.petclinic.integration.PetRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -36,23 +38,27 @@ import java.util.Collection;
 class PetController {
 
     private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
-    private final PetRepository pets;
-    private final OwnerRepository owners;
+    private final OwnersPetsClient client;
+    private final RemoteOwnerAssembler remoteOwners;
+    private final PetTypeFormatter petTypeFormatter;
 
     @Autowired
-    public PetController(PetRepository pets, OwnerRepository owners) {
-        this.pets = pets;
-        this.owners = owners;
+    public PetController(OwnersPetsClient client,
+                         RemoteOwnerAssembler remoteOwners,
+                         PetTypeFormatter petTypeFormatter) {
+        this.client = client;
+        this.remoteOwners = remoteOwners;
+        this.petTypeFormatter = petTypeFormatter;
     }
 
     @ModelAttribute("types")
     public Collection<PetType> populatePetTypes() {
-        return this.pets.findPetTypes();
+        return this.petTypeFormatter.findPetTypes();
     }
 
     @ModelAttribute("owner")
     public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-        return this.owners.findById(ownerId);
+        return this.remoteOwners.findById(ownerId);
     }
 
     @InitBinder("owner")
@@ -83,27 +89,40 @@ class PetController {
             model.put("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
-            this.pets.save(pet);
+            this.client.createPet(owner.getId(), new PetRequest(pet));
             return "redirect:/owners/{ownerId}";
         }
     }
 
     @GetMapping("/pets/{petId}/edit")
-    public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
-        Pet pet = this.pets.findById(petId);
+    public String initUpdateForm(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId, ModelMap model) {
+        Owner owner = this.remoteOwners.findById(ownerId);
+        Pet pet = null;
+
+        for (Pet candidate : owner.getPets()) {
+            if (Integer.valueOf(petId).equals(candidate.getId())) {
+                pet = candidate;
+                break;
+            }
+        }
+
+        if (pet == null) {
+            throw new IllegalArgumentException("Pet not found: " + petId);
+        }
+
         model.put("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
     @PostMapping("/pets/{petId}/edit")
-    public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+    public String processUpdateForm(@PathVariable("petId") int petId, @Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
         if (result.hasErrors()) {
             pet.setOwner(owner);
             model.put("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
             owner.addPet(pet);
-            this.pets.save(pet);
+            this.client.updatePet(petId, new PetRequest(pet));
             return "redirect:/owners/{ownerId}";
         }
     }

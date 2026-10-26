@@ -17,6 +17,8 @@ package org.springframework.samples.petclinic.owner;
 
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import org.springframework.samples.petclinic.integration.OwnersPetsClient;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -38,12 +40,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class PetTypeFormatter implements Formatter<PetType> {
 
-    private final PetRepository pets;
-
+    private final OwnersPetsClient client;
 
     @Autowired
-    public PetTypeFormatter(PetRepository pets) {
-        this.pets = pets;
+    public PetTypeFormatter(OwnersPetsClient client) {
+        this.client = client;
+    }
+
+    public Collection<PetType> findPetTypes() {
+        Collection<PetType> types = new ArrayList<>();
+        OwnersPetsClient.PetTypeResponse[] responses = client.findPetTypes();
+
+        if (responses != null) {
+            for (OwnersPetsClient.PetTypeResponse response : responses) {
+                PetType type = new PetType();
+                type.setId(response.getId());
+                type.setName(response.getName());
+                types.add(type);
+            }
+        }
+
+        return types;
     }
 
     @Override
@@ -53,7 +70,7 @@ public class PetTypeFormatter implements Formatter<PetType> {
 
     @Override
     public PetType parse(String text, Locale locale) throws ParseException {
-        Collection<PetType> findPetTypes = this.pets.findPetTypes();
+        Collection<PetType> findPetTypes = this.findPetTypes();
         for (PetType type : findPetTypes) {
             if (type.getName().equals(text)) {
                 return type;

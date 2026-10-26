@@ -46,19 +46,34 @@ public class PetControllerTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private PetRepository pets;
+    private RemoteOwnerAssembler remoteOwners;
 
     @MockBean
-    private OwnerRepository owners;
+    private org.springframework.samples.petclinic.integration.OwnersPetsClient client;
 
     @Before
     public void setup() {
         PetType cat = new PetType();
         cat.setId(3);
         cat.setName("hamster");
-        given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(cat));
-        given(this.owners.findById(TEST_OWNER_ID)).willReturn(new Owner());
-        given(this.pets.findById(TEST_PET_ID)).willReturn(new Pet());
+        org.springframework.samples.petclinic.integration.OwnersPetsClient.PetTypeResponse type =
+                new org.springframework.samples.petclinic.integration.OwnersPetsClient.PetTypeResponse();
+        type.setId(3);
+        type.setName("hamster");
+        given(this.client.findPetTypes()).willReturn(
+                new org.springframework.samples.petclinic.integration.OwnersPetsClient.PetTypeResponse[] { type });
+        given(this.remoteOwners.findById(TEST_OWNER_ID)).willReturn(new Owner());
+        Pet existingPet = new Pet();
+        existingPet.setId(TEST_PET_ID);
+        existingPet.setName("Leo");
+
+        Owner existingOwner = new Owner();
+        existingOwner.setId(TEST_OWNER_ID);
+        java.util.Set<Pet> ownerPets = new java.util.HashSet<>();
+        ownerPets.add(existingPet);
+        existingOwner.setPetsInternal(ownerPets);
+
+        given(this.remoteOwners.findById(TEST_OWNER_ID)).willReturn(existingOwner);
 
     }
 
@@ -79,6 +94,7 @@ public class PetControllerTests {
         )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/owners/{ownerId}"));
+        org.mockito.Mockito.verify(this.client).createPet(org.mockito.Matchers.eq(TEST_OWNER_ID), org.mockito.Matchers.any(org.springframework.samples.petclinic.integration.PetRequest.class));
     }
 
     @Test
@@ -112,6 +128,7 @@ public class PetControllerTests {
         )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/owners/{ownerId}"));
+        org.mockito.Mockito.verify(this.client).updatePet(org.mockito.Matchers.eq(TEST_PET_ID), org.mockito.Matchers.any(org.springframework.samples.petclinic.integration.PetRequest.class));
     }
 
     @Test

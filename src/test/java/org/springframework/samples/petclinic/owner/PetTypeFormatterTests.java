@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.samples.petclinic.owner.PetRepository;
+import org.springframework.samples.petclinic.integration.OwnersPetsClient;
 import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.owner.PetTypeFormatter;
 
@@ -27,13 +27,13 @@ import org.springframework.samples.petclinic.owner.PetTypeFormatter;
 public class PetTypeFormatterTests {
 
     @Mock
-    private PetRepository pets;
+    private OwnersPetsClient client;
 
     private PetTypeFormatter petTypeFormatter;
 
     @Before
     public void setup() {
-        this.petTypeFormatter = new PetTypeFormatter(pets);
+        this.petTypeFormatter = new PetTypeFormatter(client);
     }
 
     @Test
@@ -46,14 +46,14 @@ public class PetTypeFormatterTests {
 
     @Test
     public void shouldParse() throws ParseException {
-        Mockito.when(this.pets.findPetTypes()).thenReturn(makePetTypes());
+        Mockito.when(this.client.findPetTypes()).thenReturn(makePetTypeResponses());
         PetType petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
         assertEquals("Bird", petType.getName());
     }
 
     @Test(expected = ParseException.class)
     public void shouldThrowParseException() throws ParseException {
-        Mockito.when(this.pets.findPetTypes()).thenReturn(makePetTypes());
+        Mockito.when(this.client.findPetTypes()).thenReturn(makePetTypeResponses());
         petTypeFormatter.parse("Fish", Locale.ENGLISH);
     }
 
@@ -62,19 +62,15 @@ public class PetTypeFormatterTests {
      *
      * @return {@link Collection} of {@link PetType}
      */
-    private List<PetType> makePetTypes() {
-        List<PetType> petTypes = new ArrayList<>();
-        petTypes.add(new PetType(){
-            {
-                setName("Dog");
-            }
-        });
-        petTypes.add(new PetType(){
-            {
-                setName("Bird");
-            }
-        });
-        return petTypes;
-    }
+    private OwnersPetsClient.PetTypeResponse[] makePetTypeResponses() {
+        OwnersPetsClient.PetTypeResponse dog = new OwnersPetsClient.PetTypeResponse();
+        dog.setId(1);
+        dog.setName("Dog");
 
+        OwnersPetsClient.PetTypeResponse bird = new OwnersPetsClient.PetTypeResponse();
+        bird.setId(2);
+        bird.setName("Bird");
+
+        return new OwnersPetsClient.PetTypeResponse[] { dog, bird };
+    }
 }

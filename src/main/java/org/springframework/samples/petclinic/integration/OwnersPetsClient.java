@@ -55,7 +55,54 @@ public class OwnersPetsClient {
                 baseUrl + "/api/owners/{id}",
                 request,
                 ownerId);
-    }    public static class OwnerResponse {
+    }    public PetTypeResponse[] findPetTypes() {
+        return restTemplate.getForObject(
+                baseUrl + "/api/pet-types",
+                PetTypeResponse[].class);
+    }
+
+    public static class PetTypeResponse {
+        private Integer id;
+        private String name;
+
+        public Integer getId() { return id; }
+        public void setId(Integer id) { this.id = id; }
+
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+    }
+    public PetResponse findPetById(int petId) {
+        return restTemplate.getForObject(
+                baseUrl + "/api/pets/{id}",
+                PetResponse.class,
+                petId);
+    }
+
+    public int createPet(int ownerId, PetRequest request) {
+        org.springframework.http.ResponseEntity<Void> response =
+                restTemplate.postForEntity(
+                        baseUrl + "/api/owners/{ownerId}/pets",
+                        request,
+                        Void.class,
+                        ownerId);
+
+        java.net.URI location = response.getHeaders().getLocation();
+
+        if (location == null) {
+            throw new IllegalStateException("API nao retornou Location");
+        }
+
+        String path = location.getPath();
+        return Integer.parseInt(path.substring(path.lastIndexOf('/') + 1));
+    }
+
+    public void updatePet(int petId, PetRequest request) {
+        restTemplate.put(
+                baseUrl + "/api/pets/{id}",
+                request,
+                petId);
+    }
+    public static class OwnerResponse {
         private Integer id;
         private String firstName;
         private String lastName;
