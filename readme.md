@@ -1,119 +1,231 @@
-# Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=master)](https://travis-ci.org/spring-projects/spring-petclinic/)
+# Spring PetClinic Legacy - Modernização com Strangler Fig
 
-## Understanding the Spring Petclinic application with a few diagrams
-<a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
+Projeto desenvolvido para o TCC II, com o objetivo de avaliar a modernização incremental de um sistema legado utilizando o padrão arquitetural Strangler Fig.
 
-## Running petclinic locally
+A aplicação utilizada como referência é o Spring PetClinic de 2017, originalmente desenvolvido com Java 8 e Spring Boot 1.5.4.RELEASE.
+
+A modernização preserva a interface Thymeleaf no monólito e transfere gradualmente as funcionalidades de proprietários (Owners) e animais (Pets) para um microsserviço Java 17.
+
+## 1. Arquitetura
+
+| Componente | Tecnologia | Porta | Responsabilidade |
+|---|---|---|---|
+| Monólito | Java 8 / Spring Boot 1.5.4 | 8080 | Interface Thymeleaf, visitas e veterinários |
+| Gateway | Java 17 / Spring Cloud Gateway | 8081 | Entrada única e roteamento |
+| Owners/Pets Service | Java 17 / Spring Boot 3.5.16 | 8082 | API e persistência de Owners, Pets e PetTypes |
+
+O Gateway encaminha as rotas `/api/owners`, `/api/owners/**`, `/api/pets/**` e `/api/pet-types` ao microsserviço.
+
+As demais requisições são encaminhadas ao monólito.
+
+O monólito também realiza chamadas HTTP ao microsserviço para obter dados necessários à composição das páginas e ao cadastro de visitas.
+
+### Responsabilidades
+
+**Microsserviço:**
+- Cadastro, consulta e atualização de proprietários.
+- Cadastro, consulta e atualização de animais.
+- Consulta de tipos de animais.
+- Persistência dos dados de Owners e Pets.
+
+**Monólito:**
+- Interface web Thymeleaf.
+- Cadastro e consulta de visitas.
+- Funcionalidades de veterinários.
+- Integração com o microsserviço.
+
+## 2. Requisitos
+
+- Git
+- JDK 8 para o monólito
+- JDK 17 para o Gateway e o microsserviço
+- Maven 3 para as aplicações Java 17
+- PowerShell para executar os exemplos abaixo
+
+O monólito utiliza o Maven Wrapper incluído no repositório.
+
+## 3. Clonar o repositório
+
+A implementação da modernização está na branch `tcc2-strangler-fig`.
+
+```powershell
+git clone -b tcc2-strangler-fig --single-branch https://github.com/pepepedrinho/TCC2-Spring-PetClinic-Legacy.git
+cd TCC2-Spring-PetClinic-Legacy
 ```
-	git clone https://github.com/spring-projects/spring-petclinic.git
-	cd spring-petclinic
-	./mvnw spring-boot:run
+
+## 4. Inicialização dos bancos
+
+Os bancos utilizam armazenamento em arquivo.
+
+A carga histórica deve ser executada somente na primeira inicialização de cada banco.
+
+**Atenção:** os perfis de inicialização não devem ser executados novamente sobre bancos já populados, pois os scripts históricos podem recriar tabelas e apagar dados.
+
+### 4.1. Microsserviço - primeira execução
+
+Abra um terminal com Java 17 e Maven configurados.
+
+Na raiz do repositório:
+
+```powershell
+cd owners-pets-service
+mvn spring-boot:run "-Dspring-boot.run.profiles=init"
 ```
 
-You can then access petclinic here: http://localhost:8080/
+A inicialização cria e popula o banco H2 persistente com os dados históricos.
 
-<img width="1042" alt="petclinic-screenshot" src="https://cloud.githubusercontent.com/assets/838318/19727082/2aee6d6c-9b8e-11e6-81fe-e889a5ddfded.png">
+Depois de confirmar que a aplicação iniciou corretamente, encerre com `Ctrl+C`.
 
-## In case you find a bug/suggested improvement for Spring Petclinic
-Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
+O perfil `init` não deve ser utilizado novamente sobre o mesmo banco.
 
+### 4.2. Monólito - primeira execução
 
-## Database configuration
+Abra outro terminal com Java 8 configurado.
 
-In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
-gets populated at startup with data. A similar setup is provided for MySql in case a persistent database configuration is needed.
-Note that whenever the database type is changed, the data-access.properties file needs to be updated and the mysql-connector-java artifact from the pom.xml needs to be uncommented.
+Na raiz do repositório:
 
-You could start a MySql database with docker:
-
-```
-docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
+```powershell
+$repo = (Get-Location).Path
+& "$env:JAVA_HOME\bin\java.exe" -classpath ".mvn\wrapper\maven-wrapper.jar" "-Dmaven.multiModuleProjectDirectory=$repo" org.apache.maven.wrapper.MavenWrapperMain spring-boot:run "-Drun.profiles=persistente,persistente-init"
 ```
 
-## Working with Petclinic in Eclipse/STS
+A inicialização cria e popula o banco HSQLDB persistente.
 
-### prerequisites
-The following items should be installed in your system:
-* Maven 3 (http://www.sonatype.com/books/mvnref-book/reference/installation.html)
-* git command line tool (https://help.github.com/articles/set-up-git)
-* Eclipse with the m2e plugin (m2e is installed by default when using the STS (http://www.springsource.org/sts) distribution of Eclipse)
+Depois de confirmar que a aplicação iniciou corretamente, encerre com `Ctrl+C`.
 
-Note: when m2e is available, there is an m2 icon in Help -> About dialog.
-If m2e is not there, just follow the install process here: http://eclipse.org/m2e/download/
+O perfil `persistente-init` não deve ser utilizado novamente sobre o mesmo banco.
 
+## 5. Execução normal
 
-### Steps:
+Após a carga inicial, execute as três aplicações em terminais separados.
 
-1) In the command line
-```
-git clone https://github.com/spring-projects/spring-petclinic.git
-```
-2) Inside Eclipse
-```
-File -> Import -> Maven -> Existing Maven project
+Todos os comandos devem partir da raiz do repositório, salvo indicação contrária.
+
+### Terminal 1 - Microsserviço (Java 17)
+
+```powershell
+cd owners-pets-service
+mvn spring-boot:run
 ```
 
+### Terminal 2 - Monólito (Java 8)
 
-## Looking for something in particular?
+```powershell
+$repo = (Get-Location).Path
+& "$env:JAVA_HOME\bin\java.exe" -classpath ".mvn\wrapper\maven-wrapper.jar" "-Dmaven.multiModuleProjectDirectory=$repo" org.apache.maven.wrapper.MavenWrapperMain spring-boot:run "-Drun.profiles=persistente"
+```
 
-|Spring Boot Configuration | Class or Java property files  |
-|--------------------------|---|
-|The Main Class | [PetClinicApplication](https://github.com/spring-projects/spring-petclinic/blob/master/src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java) |
-|Properties Files | [application.properties](https://github.com/spring-projects/spring-petclinic/blob/master/src/main/resources) |
-|Caching | [CacheConfig](https://github.com/spring-projects/spring-petclinic/blob/master/src/main/java/org/springframework/samples/petclinic/system/CacheConfig.java) |
+### Terminal 3 - Gateway (Java 17)
 
-## Interesting Spring Petclinic branches and forks
+```powershell
+cd gateway
+mvn spring-boot:run
+```
 
-The Spring Petclinic master branch in the main
-[spring-projects](https://github.com/spring-projects/spring-petclinic)
-GitHub org is the "canonical" implementation, currently based on
-Spring Boot and Thymeleaf. There are quite a few forks in a special
-GitHub org [spring-petclinic](https://github.com/spring-petclinic). If
-you have a special interest in a different technology stack that could
-be used to implement the Pet Clinic then please join the community
-there.
+Após iniciar as três aplicações, acesse:
 
-| Link                               | Main technologies |
-|------------------------------------|-------------------|
-| [spring-framework-petclinic][]     | Spring Framework XML configuration, JSP pages, 3 persistence layers: JDBC, JPA and Spring Data JPA |
-| [javaconfig branch][]              | Same frameworks as the [spring-framework-petclinic][] but with Java Configuration instead of XML |
-| [spring-petclinic-angularjs][]     | AngularJS 1.x, Spring Boot and Spring Data JPA |
-| [spring-petclinic-angular][]       | Angular 4 front-end of the Petclinic REST API [spring-petclinic-rest][] |
-| [spring-petclinic-microservices][] | Distributed version of Spring Petclinic built with Spring Cloud |
-| [spring-petclinic-reactjs][]       | ReactJS (with TypeScript) and Spring Boot |
-| [spring-petclinic-graphql][]       | GraphQL version based on React Appolo, TypeScript and GraphQL Spring boot starter |
-| [spring-petclinic-kotlin][]        | Kotlin version of [spring-petclinic][] |
-| [spring-petclinic-rest][]          | Backend REST API |
+http://localhost:8081
 
+A porta 8081 é o ponto de entrada principal da arquitetura.
 
-## Interaction with other open source projects
+## 6. Persistência
 
-One of the best parts about working on the Spring Petclinic application is that we have the opportunity to work in direct contact with many Open Source projects. We found some bugs/suggested improvements on various topics such as Spring, Spring Data, Bean Validation and even Eclipse! In many cases, they've been fixed/implemented in just a few days.
-Here is a list of them:
+O microsserviço utiliza H2 persistente:
 
-| Name | Issue |
-|------|-------|
-| Spring JDBC: simplify usage of NamedParameterJdbcTemplate | [SPR-10256](https://jira.springsource.org/browse/SPR-10256) and [SPR-10257](https://jira.springsource.org/browse/SPR-10257) |
-| Bean Validation / Hibernate Validator: simplify Maven dependencies and backward compatibility |[HV-790](https://hibernate.atlassian.net/browse/HV-790) and [HV-792](https://hibernate.atlassian.net/browse/HV-792) |
-| Spring Data: provide more flexibility when working with JPQL queries | [DATAJPA-292](https://jira.springsource.org/browse/DATAJPA-292) |
+`owners-pets-service/data/ownerspets`
 
+O monólito utiliza HSQLDB persistente:
 
-# Contributing
+`data/petclinic-legado`
 
-The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
+Esses diretórios são ignorados pelo Git.
 
-For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>. If you have not previously done so, please fill out and submit the https://cla.pivotal.io/sign/spring[Contributor License Agreement].
+O banco do microsserviço contém os dados de proprietários e animais.
 
-# License
+O monólito continua responsável pelos dados de visitas e veterinários.
 
-The Spring PetClinic sample application is released under version 2.0 of the [Apache License](http://www.apache.org/licenses/LICENSE-2.0).
+A referência de uma visita ao animal é realizada por identificador e validada pela integração entre as aplicações, sem chave estrangeira entre bancos separados.
 
-[spring-petclinic]: https://github.com/spring-projects/spring-petclinic
-[spring-framework-petclinic]: https://github.com/spring-petclinic/spring-framework-petclinic
-[spring-petclinic-angularjs]: https://github.com/spring-petclinic/spring-petclinic-angularjs 
-[javaconfig branch]: https://github.com/spring-petclinic/spring-framework-petclinic/tree/javaconfig
-[spring-petclinic-angular]: https://github.com/spring-petclinic/spring-petclinic-angular
-[spring-petclinic-microservices]: https://github.com/spring-petclinic/spring-petclinic-microservices
-[spring-petclinic-reactjs]: https://github.com/spring-petclinic/spring-petclinic-reactjs
-[spring-petclinic-graphql]: https://github.com/spring-petclinic/spring-petclinic-graphql
-[spring-petclinic-kotlin]: https://github.com/spring-petclinic/spring-petclinic-kotlin
+## 7. Testes automatizados
+
+### Monólito - Java 8
+
+Na raiz do repositório:
+
+```powershell
+$repo = (Get-Location).Path
+& "$env:JAVA_HOME\bin\java.exe" -classpath ".mvn\wrapper\maven-wrapper.jar" "-Dmaven.multiModuleProjectDirectory=$repo" org.apache.maven.wrapper.MavenWrapperMain test
+```
+
+Na última validação, foram executados 51 testes, com zero falhas, zero erros e um teste ignorado.
+
+### Microsserviço - Java 17
+
+```powershell
+cd owners-pets-service
+mvn test
+```
+
+### Gateway - Java 17
+
+```powershell
+cd gateway
+mvn test
+```
+
+A quantidade de 51 testes refere-se à suíte do monólito, e não à soma de todos os componentes.
+
+## 8. Comportamento diante de falhas
+
+A indisponibilidade do microsserviço Owners/Pets foi testada interrompendo sua execução.
+
+Durante a falha:
+- As páginas dependentes do microsserviço retornaram HTTP 503.
+- Uma mensagem amigável foi exibida.
+- As funcionalidades de veterinários permaneceram acessíveis pelo Gateway.
+
+O tratamento HTTP 503 também possui teste automatizado.
+
+## 9. Avaliação com métricas CK
+
+A ferramenta CK 0.7.1 foi utilizada para comparar o código original e a arquitetura refatorada.
+
+| Indicador | Baseline 2017 | Monólito refatorado | Microsserviço |
+|---|---:|---:|---:|
+| Classes | 24 | 32 | 16 |
+| CBO médio | 6,67 | 6,34 | 5,06 |
+| WMC médio | 4,92 | 5,88 | 3,69 |
+| RFC médio | 3,46 | 4,72 | 5,38 |
+| LCOM médio | 5,88 | 9,19 | 7,44 |
+| LCOM* médio | 0,26 | 0,32 | 0,26 |
+
+A comparação identificou resultados mistos.
+
+O principal resultado observado foi a viabilidade da modernização incremental, sem uma redução generalizada das métricas de qualidade interna.
+
+As limitações das métricas e a interpretação dos resultados estão detalhadas na documentação.
+
+## 10. Documentação
+
+- [Avaliação dos resultados](docs/avaliacao-resultados.md)
+- [Planejamento da extração](docs/arquitetura/planejamento-extracao.md)
+- [Etapa E1 - Gateway](docs/arquitetura/etapa-e1-gateway.md)
+- [Baseline histórica](docs/baseline/)
+- [Métricas da arquitetura refatorada](docs/metricas/)
+- [README original de 2017](docs/historico/README-original-2017.md)
+
+## 11. Origem e licença
+
+Este trabalho utiliza como base o projeto open source Spring PetClinic:
+
+https://github.com/spring-projects/spring-petclinic
+
+A versão histórica utilizada corresponde ao commit:
+
+`c36452a2c34443ae26b4ecbba4f149906af14717`
+
+Data: 03/11/2017.
+
+O projeto original é disponibilizado sob a licença Apache 2.0. Consulte o arquivo de licença presente no repositório.
+
+O README histórico foi preservado em `docs/historico/README-original-2017.md`.
