@@ -6,3 +6,11 @@ target/*
 *.iml
 /target
 _site/
+
+# Projetos Maven adicionados no TCC II
+/gateway/target/
+/owners-pets-service/target/
+
+# Logs locais de diagnostico
+erro.txt
+/owners-pets-service/erro.txt
