@@ -60,4 +60,130 @@ class OwnersPetsApiTest {
         mvc.perform(get("/api/pets/9999"))
             .andExpect(status().isNotFound());
     }
-}
+
+    @Test
+    void deveCadastrarProprietario() throws Exception {
+        String json = """
+            {"firstName":"Ana","lastName":"Silva",
+             "address":"Rua A","city":"Curitiba",
+             "telephone":"4199999999"}
+            """;
+
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .post("/api/owners")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", "/api/owners/11"));
+
+        mvc.perform(get("/api/owners/11"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.firstName").value("Ana"));
+    }
+
+    @Test
+    void deveAtualizarProprietario() throws Exception {
+        String json = """
+            {"firstName":"George","lastName":"Franklin",
+             "address":"Endereco atualizado","city":"Madison",
+             "telephone":"6085551023"}
+            """;
+
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .put("/api/owners/1")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isNoContent());
+
+        mvc.perform(get("/api/owners/1"))
+            .andExpect(jsonPath("$.address").value("Endereco atualizado"));
+    }
+
+    @Test
+    void deveRejeitarCadastroInvalido() throws Exception {
+        String json = """
+            {"firstName":"","lastName":"",
+             "address":"","city":"",
+             "telephone":"abc"}
+            """;
+
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .post("/api/owners")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isBadRequest());
+    }
+    @Test
+    void deveCadastrarAnimal() throws Exception {
+        String json = """
+            {"name":"Thor","birthDate":"2020-05-15","typeId":2}
+            """;
+
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .post("/api/owners/1/pets")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", "/api/pets/14"));
+
+        mvc.perform(get("/api/pets/14"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value("Thor"))
+            .andExpect(jsonPath("$.ownerId").value(1))
+            .andExpect(jsonPath("$.typeName").value("dog"));
+    }
+
+    @Test
+    void deveAtualizarAnimal() throws Exception {
+        String json = """
+            {"name":"Sly Atualizado","birthDate":"2012-06-08","typeId":2}
+            """;
+
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .put("/api/pets/13")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isNoContent());
+
+        mvc.perform(get("/api/pets/13"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value("Sly Atualizado"))
+            .andExpect(jsonPath("$.typeName").value("dog"))
+            .andExpect(jsonPath("$.ownerId").value(10));
+    }
+
+    @Test
+    void deveRejeitarNomeDuplicadoNoMesmoProprietario() throws Exception {
+        String json = """
+            {"name":"Leo","birthDate":"2020-05-15","typeId":1}
+            """;
+
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .post("/api/owners/1/pets")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isConflict());
+    }
+
+    @Test
+    void deveRejeitarReferenciasInvalidas() throws Exception {
+        String json = """
+            {"name":"Animal Teste","birthDate":"2020-05-15","typeId":1}
+            """;
+
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .post("/api/owners/9999/pets")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(json))
+            .andExpect(status().isNotFound());
+
+        String tipoInvalido = """
+            {"name":"Animal Teste","birthDate":"2020-05-15","typeId":9999}
+            """;
+
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .post("/api/owners/1/pets")
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
+                .content(tipoInvalido))
+            .andExpect(status().isBadRequest());
+    }}
