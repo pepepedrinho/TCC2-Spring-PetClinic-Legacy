@@ -32,6 +32,29 @@ public class OwnersPetsClient {
                 OwnerResponse[].class,
                 lastName
         );
+    }
+    public int createOwner(OwnerRequest request) {
+        org.springframework.http.ResponseEntity<Void> response =
+                restTemplate.postForEntity(
+                        baseUrl + "/api/owners",
+                        request,
+                        Void.class);
+
+        java.net.URI location = response.getHeaders().getLocation();
+
+        if (location == null) {
+            throw new IllegalStateException("API nao retornou Location");
+        }
+
+        String path = location.getPath();
+        return Integer.parseInt(path.substring(path.lastIndexOf('/') + 1));
+    }
+
+    public void updateOwner(int ownerId, OwnerRequest request) {
+        restTemplate.put(
+                baseUrl + "/api/owners/{id}",
+                request,
+                ownerId);
     }    public static class OwnerResponse {
         private Integer id;
         private String firstName;

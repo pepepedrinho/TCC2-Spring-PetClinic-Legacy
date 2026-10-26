@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.samples.petclinic.integration.OwnersPetsClient;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class OwnerControllerTests {
 
     @MockBean
     private RemoteOwnerAssembler remoteOwners;
+
+    @MockBean
+    private OwnersPetsClient client;
 
     private static final int TEST_OWNER_ID = 1;
 
@@ -67,6 +71,7 @@ public class OwnerControllerTests {
 
     @Test
     public void testProcessCreationFormSuccess() throws Exception {
+        given(this.client.createOwner(org.mockito.Matchers.any(org.springframework.samples.petclinic.integration.OwnerRequest.class))).willReturn(11);
         mockMvc.perform(post("/owners/new")
             .param("firstName", "Joe")
             .param("lastName", "Bloggs")
@@ -75,6 +80,8 @@ public class OwnerControllerTests {
             .param("telephone", "01316761638")
         )
             .andExpect(status().is3xxRedirection());
+        org.mockito.Mockito.verify(this.client).createOwner(org.mockito.Matchers.any(org.springframework.samples.petclinic.integration.OwnerRequest.class));
+        org.mockito.Mockito.verify(this.owners, org.mockito.Mockito.never()).save(org.mockito.Matchers.any(Owner.class));
     }
 
     @Test
@@ -130,6 +137,7 @@ public class OwnerControllerTests {
 
     @Test
     public void testInitUpdateOwnerForm() throws Exception {
+        given(this.remoteOwners.findById(TEST_OWNER_ID)).willReturn(george);
         mockMvc.perform(get("/owners/{ownerId}/edit", TEST_OWNER_ID))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("owner"))
@@ -152,6 +160,8 @@ public class OwnerControllerTests {
         )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/owners/{ownerId}"));
+        org.mockito.Mockito.verify(this.client).updateOwner(org.mockito.Matchers.eq(TEST_OWNER_ID), org.mockito.Matchers.any(org.springframework.samples.petclinic.integration.OwnerRequest.class));
+        org.mockito.Mockito.verify(this.owners, org.mockito.Mockito.never()).save(org.mockito.Matchers.any(Owner.class));
     }
 
     @Test

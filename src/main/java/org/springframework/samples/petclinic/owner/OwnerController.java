@@ -16,6 +16,8 @@
 package org.springframework.samples.petclinic.owner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.integration.OwnersPetsClient;
+import org.springframework.samples.petclinic.integration.OwnerRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,12 +44,14 @@ class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
     private final RemoteOwnerAssembler remoteOwners;
+    private final OwnersPetsClient client;
 
 
     @Autowired
-    public OwnerController(OwnerRepository clinicService, RemoteOwnerAssembler remoteOwners) {
+    public OwnerController(OwnerRepository clinicService, RemoteOwnerAssembler remoteOwners, OwnersPetsClient client) {
         this.owners = clinicService;
         this.remoteOwners = remoteOwners;
+        this.client = client;
     }
 
     @InitBinder
@@ -67,8 +71,8 @@ class OwnerController {
         if (result.hasErrors()) {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
-            this.owners.save(owner);
-            return "redirect:/owners/" + owner.getId();
+            int id = this.client.createOwner(new OwnerRequest(owner));
+            return "redirect:/owners/" + id;
         }
     }
 
@@ -105,7 +109,7 @@ class OwnerController {
 
     @GetMapping("/owners/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
-        Owner owner = this.owners.findById(ownerId);
+        Owner owner = this.remoteOwners.findById(ownerId);
         model.addAttribute(owner);
         return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
     }
@@ -115,8 +119,7 @@ class OwnerController {
         if (result.hasErrors()) {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
-            owner.setId(ownerId);
-            this.owners.save(owner);
+            this.client.updateOwner(ownerId, new OwnerRequest(owner));
             return "redirect:/owners/{ownerId}";
         }
     }

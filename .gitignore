@@ -14,3 +14,6 @@ _site/
 # Logs locais de diagnostico
 erro.txt
 /owners-pets-service/erro.txt
+
+# Banco H2 persistente do microsservico
+/owners-pets-service/data/
