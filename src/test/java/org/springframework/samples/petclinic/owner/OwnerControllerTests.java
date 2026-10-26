@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,6 +31,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @WebMvcTest(OwnerController.class)
 public class OwnerControllerTests {
+
+    @MockBean
+    private RemoteOwnerAssembler remoteOwners;
 
     private static final int TEST_OWNER_ID = 1;
 
@@ -166,6 +170,8 @@ public class OwnerControllerTests {
 
     @Test
     public void testShowOwner() throws Exception {
+        given(this.remoteOwners.findById(TEST_OWNER_ID))
+                .willReturn(george);
         mockMvc.perform(get("/owners/{ownerId}", TEST_OWNER_ID))
             .andExpect(status().isOk())
             .andExpect(model().attribute("owner", hasProperty("lastName", is("Franklin"))))

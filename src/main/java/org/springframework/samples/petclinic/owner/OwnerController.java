@@ -41,11 +41,13 @@ class OwnerController {
 
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
+    private final RemoteOwnerAssembler remoteOwners;
 
 
     @Autowired
-    public OwnerController(OwnerRepository clinicService) {
+    public OwnerController(OwnerRepository clinicService, RemoteOwnerAssembler remoteOwners) {
         this.owners = clinicService;
+        this.remoteOwners = remoteOwners;
     }
 
     @InitBinder
@@ -128,7 +130,7 @@ class OwnerController {
     @GetMapping("/owners/{ownerId}")
     public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
-        mav.addObject(this.owners.findById(ownerId));
+        mav.addObject(this.remoteOwners.findById(ownerId));
         return mav;
     }
 
