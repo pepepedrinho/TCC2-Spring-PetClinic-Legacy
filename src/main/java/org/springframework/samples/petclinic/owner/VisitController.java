@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.owner;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.integration.OwnersPetsClient;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -37,13 +38,13 @@ import java.util.Map;
 class VisitController {
 
     private final VisitRepository visits;
-    private final PetRepository pets;
+    private final OwnersPetsClient client;
 
 
     @Autowired
-    public VisitController(VisitRepository visits, PetRepository pets) {
+    public VisitController(VisitRepository visits, OwnersPetsClient client) {
         this.visits = visits;
-        this.pets = pets;
+        this.client = client;
     }
 
     @InitBinder
@@ -63,10 +64,20 @@ class VisitController {
      */
     @ModelAttribute("visit")
     public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
-        Pet pet = this.pets.findById(petId);
+        OwnersPetsClient.PetResponse response = this.client.findPetById(petId);
+
+        if (response == null) {
+            throw new IllegalArgumentException("Pet not found: " + petId);
+        }
+
+        Pet pet = new Pet();
+        pet.setId(response.getId());
+        pet.setName(response.getName());
+
         model.put("pet", pet);
+
         Visit visit = new Visit();
-        pet.addVisit(visit);
+        visit.setPetId(petId);
         return visit;
     }
 

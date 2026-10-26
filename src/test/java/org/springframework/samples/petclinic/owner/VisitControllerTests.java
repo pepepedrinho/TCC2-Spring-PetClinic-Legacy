@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.samples.petclinic.owner.PetRepository;
+import org.springframework.samples.petclinic.integration.OwnersPetsClient;
 import org.springframework.samples.petclinic.owner.VisitController;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -38,11 +38,16 @@ public class VisitControllerTests {
     private VisitRepository visits;
 
     @MockBean
-    private PetRepository pets;
+    private OwnersPetsClient client;
 
     @Before
     public void init() {
-        given(this.pets.findById(TEST_PET_ID)).willReturn(new Pet());
+        OwnersPetsClient.PetResponse pet = new OwnersPetsClient.PetResponse();
+        pet.setId(TEST_PET_ID);
+        pet.setName("Leo");
+        pet.setOwnerId(1);
+
+        given(this.client.findPetById(TEST_PET_ID)).willReturn(pet);
     }
 
     @Test
@@ -60,6 +65,11 @@ public class VisitControllerTests {
         )
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/owners/{ownerId}"));
+        org.mockito.ArgumentCaptor<org.springframework.samples.petclinic.visit.Visit> captor =
+                org.mockito.ArgumentCaptor.forClass(org.springframework.samples.petclinic.visit.Visit.class);
+        org.mockito.Mockito.verify(this.visits).save(captor.capture());
+        org.junit.Assert.assertEquals(
+                Integer.valueOf(TEST_PET_ID), captor.getValue().getPetId());
     }
 
     @Test
