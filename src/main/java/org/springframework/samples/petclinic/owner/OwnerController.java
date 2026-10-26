@@ -87,7 +87,7 @@ class OwnerController {
         }
 
         // find owners by last name
-        Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
+        Collection<Owner> results = this.remoteOwners.findByLastName(owner.getLastName());
         if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");

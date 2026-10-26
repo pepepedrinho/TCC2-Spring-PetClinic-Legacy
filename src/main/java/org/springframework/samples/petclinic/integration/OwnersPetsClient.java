@@ -25,7 +25,14 @@ public class OwnersPetsClient {
         );
     }
 
-    public static class OwnerResponse {
+
+    public OwnerResponse[] findOwnersByLastName(String lastName) {
+        return restTemplate.getForObject(
+                baseUrl + "/api/owners?lastName={lastName}",
+                OwnerResponse[].class,
+                lastName
+        );
+    }    public static class OwnerResponse {
         private Integer id;
         private String firstName;
         private String lastName;

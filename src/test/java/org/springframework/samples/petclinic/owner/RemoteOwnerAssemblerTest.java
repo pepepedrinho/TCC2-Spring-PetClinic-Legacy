@@ -71,4 +71,34 @@ public class RemoteOwnerAssemblerTest {
         verify(client).findOwnerById(1);
         verify(visits).findByPetId(1);
     }
-}
+
+    @Test
+    public void shouldFindOwnersByLastName() {
+        OwnersPetsClient client = mock(OwnersPetsClient.class);
+        VisitRepository visits = mock(VisitRepository.class);
+
+        OwnerResponse betty = new OwnerResponse();
+        betty.setId(2);
+        betty.setFirstName("Betty");
+        betty.setLastName("Davis");
+
+        OwnerResponse harold = new OwnerResponse();
+        harold.setId(3);
+        harold.setFirstName("Harold");
+        harold.setLastName("Davis");
+
+        when(client.findOwnersByLastName("Dav"))
+                .thenReturn(new OwnerResponse[] {betty, harold});
+
+        RemoteOwnerAssembler assembler =
+                new RemoteOwnerAssembler(client, visits);
+
+        java.util.List<Owner> results = assembler.findByLastName("Dav");
+
+        assertEquals(2, results.size());
+        assertEquals("Betty", results.get(0).getFirstName());
+        assertEquals("Harold", results.get(1).getFirstName());
+
+        verify(client).findOwnersByLastName("Dav");
+        verifyZeroInteractions(visits);
+    }}

@@ -71,4 +71,23 @@ public class RemoteOwnerAssembler {
         owner.setPetsInternal(ownerPets);
         return owner;
     }
-}
+
+    public java.util.List<Owner> findByLastName(String lastName) {
+        OwnerResponse[] responses = client.findOwnersByLastName(lastName);
+        java.util.List<Owner> results = new java.util.ArrayList<>();
+
+        if (responses != null) {
+            for (OwnerResponse response : responses) {
+                Owner owner = new Owner();
+                owner.setId(response.getId());
+                owner.setFirstName(response.getFirstName());
+                owner.setLastName(response.getLastName());
+                owner.setAddress(response.getAddress());
+                owner.setCity(response.getCity());
+                owner.setTelephone(response.getTelephone());
+                results.add(owner);
+            }
+        }
+
+        return results;
+    }}
