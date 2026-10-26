@@ -17,3 +17,6 @@ erro.txt
 
 # Banco H2 persistente do microsservico
 /owners-pets-service/data/
+
+# Banco HSQLDB persistente do monolito
+/data/
