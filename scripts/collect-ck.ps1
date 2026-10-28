@@ -24,7 +24,7 @@ $components = [ordered]@{
 foreach ($entry in $components.GetEnumerator()) {
     $dest = Join-Path $out $entry.Key
     New-Item -ItemType Directory -Force $dest | Out-Null
-    & "$Java17Home/bin/java.exe" -jar $CkJar $entry.Value false 0 false $dest 2>&1 | Tee-Object -FilePath "$dest/coleta.log"
+    & "$Java17Home/bin/java.exe" -jar $CkJar $entry.Value false 0 false $dest 2>&1 | Tee-Object -FilePath "$dest/coleta.txt"
     if ($LASTEXITCODE -ne 0) { throw "CK falhou: $($entry.Key)" }
 }
 @{

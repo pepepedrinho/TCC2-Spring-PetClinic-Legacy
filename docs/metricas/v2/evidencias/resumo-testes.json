@@ -1,0 +1,36 @@
+[
+  {
+    "componente": "monolito",
+    "tests": 47,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": 46
+  },
+  {
+    "componente": "owners",
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 6
+  },
+  {
+    "componente": "gateway",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 1
+  },
+  {
+    "componente": "HTTP integrado",
+    "result": "PASS",
+    "checks": 57,
+    "nota": "inclui prontidao; nao e contagem JUnit"
+  },
+  {
+    "componente": "migracao offline",
+    "result": "PASS"
+  }
+]

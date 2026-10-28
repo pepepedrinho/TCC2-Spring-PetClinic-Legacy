@@ -1,119 +1,55 @@
-# Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=master)](https://travis-ci.org/spring-projects/spring-petclinic/)
+# TCC II — Strangler Fig V2: Owners
 
-## Understanding the Spring Petclinic application with a few diagrams
-<a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
+Branch `tcc2-strangler-fig-v2`, derivada do monólito de 2017 (`c36452a2c34443ae26b4ecbba4f149906af14717`). Apenas o cadastro de proprietários foi extraído. Pets, PetTypes, Visits e Vets continuam no legado Java 8/Spring Boot 1.5.4.RELEASE com Thymeleaf e HSQLDB.
 
-## Running petclinic locally
-```
-	git clone https://github.com/spring-projects/spring-petclinic.git
-	cd spring-petclinic
-	./mvnw spring-boot:run
-```
+| Componente | Tecnologia | Porta | Dados |
+| --- | --- | --- | --- |
+| Legado | Java 8 / Boot 1.5.4 | 8080 | Pets, tipos, visitas, veterinários — HSQLDB |
+| Gateway reutilizado | Java 17 / Boot 3.5.16 / Cloud 2025.0.3 WebFlux | 8081 | sem banco |
+| Owners | Java 17 / Boot 3.5.16 | 8082 | somente proprietários — H2 |
 
-You can then access petclinic here: http://localhost:8080/
+O Gateway encaminha `/api/owners` e `/api/owners/**` ao Owners. O restante, inclusive as páginas `/owners/**`, vai ao legado. Acesse [PetClinic pelo Gateway](http://localhost:8081). Não há API Pets no microsserviço.
 
-<img width="1042" alt="petclinic-screenshot" src="https://cloud.githubusercontent.com/assets/838318/19727082/2aee6d6c-9b8e-11e6-81fe-e889a5ddfded.png">
+## Executar no PowerShell
 
-## In case you find a bug/suggested improvement for Spring Petclinic
-Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
+Na raiz do repositório, com JDK 8, JDK 17 e Maven 3.9.11 instalados:
 
-
-## Database configuration
-
-In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
-gets populated at startup with data. A similar setup is provided for MySql in case a persistent database configuration is needed.
-Note that whenever the database type is changed, the data-access.properties file needs to be updated and the mysql-connector-java artifact from the pom.xml needs to be uncommented.
-
-You could start a MySql database with docker:
-
-```
-docker run -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
+```powershell
+# Os parâmetros podem ser alterados para suas instalações.
+./scripts/build.ps1 -Offline
+# Remova -Offline se precisar baixar dependências.
 ```
 
-## Working with Petclinic in Eclipse/STS
+Inicie cada comando abaixo em um terminal separado, todos na raiz:
 
-### prerequisites
-The following items should be installed in your system:
-* Maven 3 (http://www.sonatype.com/books/mvnref-book/reference/installation.html)
-* git command line tool (https://help.github.com/articles/set-up-git)
-* Eclipse with the m2e plugin (m2e is installed by default when using the STS (http://www.springsource.org/sts) distribution of Eclipse)
-
-Note: when m2e is available, there is an m2 icon in Help -> About dialog.
-If m2e is not there, just follow the install process here: http://eclipse.org/m2e/download/
-
-
-### Steps:
-
-1) In the command line
-```
-git clone https://github.com/spring-projects/spring-petclinic.git
-```
-2) Inside Eclipse
-```
-File -> Import -> Maven -> Existing Maven project
+```powershell
+# Terminal 1 — Owners
+& 'C:\Program Files\Java\jdk-17\bin\java.exe' -jar owners-service/target/owners-service-1.0.0-SNAPSHOT.jar
+# Terminal 2 — legado
+& 'C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot\bin\java.exe' -jar target/spring-petclinic-1.5.1.jar
+# Terminal 3 — Gateway
+& 'C:\Program Files\Java\jdk-17\bin\java.exe' -jar gateway/target/petclinic-gateway-1.0.0-SNAPSHOT.jar
 ```
 
+A primeira inicialização cria bancos V2 separados em `data/v2/petclinic.*` e `data/owners-v2.mv.db`, mantendo IDs históricos. Reinícios não apagam nem recarregam registros existentes. Os bancos da implementação anterior não são usados. Encerre com Ctrl+C. Não use o perfil MySQL histórico nesta V2.
 
-## Looking for something in particular?
+## Validar e medir
 
-|Spring Boot Configuration | Class or Java property files  |
-|--------------------------|---|
-|The Main Class | [PetClinicApplication](https://github.com/spring-projects/spring-petclinic/blob/master/src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java) |
-|Properties Files | [application.properties](https://github.com/spring-projects/spring-petclinic/blob/master/src/main/resources) |
-|Caching | [CacheConfig](https://github.com/spring-projects/spring-petclinic/blob/master/src/main/java/org/springframework/samples/petclinic/system/CacheConfig.java) |
+Com as portas 8080–8082 livres (os testes iniciam e encerram suas próprias JVMs):
 
-## Interesting Spring Petclinic branches and forks
+```powershell
+python scripts/acceptance.py
+python scripts/test-migration.py
+./scripts/collect-ck.ps1 -CkJar 'C:\TCC2\ferramentas\ck\target\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar' -Java17Home 'C:\Program Files\Java\jdk-17'
+```
 
-The Spring Petclinic master branch in the main
-[spring-projects](https://github.com/spring-projects/spring-petclinic)
-GitHub org is the "canonical" implementation, currently based on
-Spring Boot and Thymeleaf. There are quite a few forks in a special
-GitHub org [spring-petclinic](https://github.com/spring-petclinic). If
-you have a special interest in a different technology stack that could
-be used to implement the Pet Clinic then please join the community
-there.
+Os testes HTTP usam bancos novos em `.work/`, verificam formulários, relacionamento Owner–Pet–Visit, persistência após reinício forçado, 503 e Vets independente. `test-migration.py` usa uma base original sintética e verifica os hashes da origem. Python 3 (biblioteca padrão) é suficiente. O Maven Wrapper histórico permanece em 3.3.3; para os módulos Boot 3 use Maven 3.9.11 via script.
 
-| Link                               | Main technologies |
-|------------------------------------|-------------------|
-| [spring-framework-petclinic][]     | Spring Framework XML configuration, JSP pages, 3 persistence layers: JDBC, JPA and Spring Data JPA |
-| [javaconfig branch][]              | Same frameworks as the [spring-framework-petclinic][] but with Java Configuration instead of XML |
-| [spring-petclinic-angularjs][]     | AngularJS 1.x, Spring Boot and Spring Data JPA |
-| [spring-petclinic-angular][]       | Angular 4 front-end of the Petclinic REST API [spring-petclinic-rest][] |
-| [spring-petclinic-microservices][] | Distributed version of Spring Petclinic built with Spring Cloud |
-| [spring-petclinic-reactjs][]       | ReactJS (with TypeScript) and Spring Boot |
-| [spring-petclinic-graphql][]       | GraphQL version based on React Appolo, TypeScript and GraphQL Spring boot starter |
-| [spring-petclinic-kotlin][]        | Kotlin version of [spring-petclinic][] |
-| [spring-petclinic-rest][]          | Backend REST API |
+## Evidências da entrega
 
+- Legado: **46 passaram, 0 falhas, 0 erros, 1 ignorado** (47 contabilizados pelo Surefire).
+- Owners: **6 passaram**; Gateway: **1 passou**. O ignorado é `CrashControllerTests`, já desabilitado na baseline.
+- Aceitação HTTP e migração offline: **PASS**, com evidências em `docs/metricas/v2/evidencias/`. Isso não representa cobertura percentual.
+- CK efetivamente executado: baseline **24 tipos**, legado **30**, Owners **4**, Gateway **1**; os valores completos e cinco tabelas estão no relatório abaixo.
 
-## Interaction with other open source projects
-
-One of the best parts about working on the Spring Petclinic application is that we have the opportunity to work in direct contact with many Open Source projects. We found some bugs/suggested improvements on various topics such as Spring, Spring Data, Bean Validation and even Eclipse! In many cases, they've been fixed/implemented in just a few days.
-Here is a list of them:
-
-| Name | Issue |
-|------|-------|
-| Spring JDBC: simplify usage of NamedParameterJdbcTemplate | [SPR-10256](https://jira.springsource.org/browse/SPR-10256) and [SPR-10257](https://jira.springsource.org/browse/SPR-10257) |
-| Bean Validation / Hibernate Validator: simplify Maven dependencies and backward compatibility |[HV-790](https://hibernate.atlassian.net/browse/HV-790) and [HV-792](https://hibernate.atlassian.net/browse/HV-792) |
-| Spring Data: provide more flexibility when working with JPQL queries | [DATAJPA-292](https://jira.springsource.org/browse/DATAJPA-292) |
-
-
-# Contributing
-
-The [issue tracker](https://github.com/spring-projects/spring-petclinic/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
-
-For pull requests, editor preferences are available in the [editor config](.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>. If you have not previously done so, please fill out and submit the https://cla.pivotal.io/sign/spring[Contributor License Agreement].
-
-# License
-
-The Spring PetClinic sample application is released under version 2.0 of the [Apache License](http://www.apache.org/licenses/LICENSE-2.0).
-
-[spring-petclinic]: https://github.com/spring-projects/spring-petclinic
-[spring-framework-petclinic]: https://github.com/spring-petclinic/spring-framework-petclinic
-[spring-petclinic-angularjs]: https://github.com/spring-petclinic/spring-petclinic-angularjs 
-[javaconfig branch]: https://github.com/spring-petclinic/spring-framework-petclinic/tree/javaconfig
-[spring-petclinic-angular]: https://github.com/spring-petclinic/spring-petclinic-angular
-[spring-petclinic-microservices]: https://github.com/spring-petclinic/spring-petclinic-microservices
-[spring-petclinic-reactjs]: https://github.com/spring-petclinic/spring-petclinic-reactjs
-[spring-petclinic-graphql]: https://github.com/spring-petclinic/spring-petclinic-graphql
-[spring-petclinic-kotlin]: https://github.com/spring-petclinic/spring-petclinic-kotlin
+Leia [a documentação V2](docs/v2/implementacao.md) para fronteiras, mapas de classes, integridade, migração e limitações; [o relatório CK](docs/metricas/v2/relatorio.md) para valores e interpretação. O [README original](docs/historico/README-original-2017.md) foi preservado. Nenhum push remoto faz parte desta entrega.

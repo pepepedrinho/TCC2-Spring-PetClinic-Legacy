@@ -1,0 +1,14 @@
+{
+  "ckVersion": "0.7.1-SNAPSHOT",
+  "ckSha256": "98893EFDFFD22FB2356560E9ED78B0528E01BBBAD032DCD63BE3863C73BFC517",
+  "collectedUtc": "2026-10-28T04:21:30.3760113Z",
+  "workingTree": "?? docs/metricas/\r\n",
+  "parameters": [
+    "false",
+    "0",
+    "false"
+  ],
+  "evaluatedHead": "5b6a3b173153d5be8f4625e96ab627aa5f3bd4e6",
+  "baseline": "c36452a2c34443ae26b4ecbba4f149906af14717",
+  "ckSourceCommit": "8a1ef916d597d33ad619d748b616bb7dbc3f0c36"
+}

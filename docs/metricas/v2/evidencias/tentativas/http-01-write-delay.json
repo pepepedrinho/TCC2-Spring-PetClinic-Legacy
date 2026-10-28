@@ -1,0 +1,277 @@
+{
+  "result": "FAIL",
+  "error": "AssertionError('Olinda')",
+  "checks": [
+    {
+      "path": "/api/owners/1",
+      "method": "GET",
+      "port": 8082,
+      "status": 200
+    },
+    {
+      "path": "/vets.html",
+      "method": "GET",
+      "port": 8080,
+      "status": 200
+    },
+    {
+      "path": "/",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/find",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/new",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/1",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/1/edit",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/1/pets/new",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/1/pets/1/edit",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/1/pets/1/visits/new",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/vets.html",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/vets.json",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/resources/css/petclinic.css",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/1",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/6",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners?lastName=Franklin",
+      "method": "GET",
+      "port": 8081,
+      "status": 302
+    },
+    {
+      "path": "/owners?lastName=Davis",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners?lastName=Missing",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/api/pets/1",
+      "method": "GET",
+      "port": 8081,
+      "status": 404
+    },
+    {
+      "path": "/api/pet-types",
+      "method": "GET",
+      "port": 8081,
+      "status": 404
+    },
+    {
+      "path": "/api/owners/1",
+      "method": "DELETE",
+      "port": 8081,
+      "status": 409
+    },
+    {
+      "path": "/api/owners/99999",
+      "method": "GET",
+      "port": 8081,
+      "status": 404
+    },
+    {
+      "path": "/owners/99999",
+      "method": "GET",
+      "port": 8081,
+      "status": 404
+    },
+    {
+      "path": "/api/owners",
+      "method": "POST",
+      "port": 8081,
+      "status": 400
+    },
+    {
+      "path": "/owners/new",
+      "method": "POST",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/new",
+      "method": "POST",
+      "port": 8081,
+      "status": 302
+    },
+    {
+      "path": "/owners/11/edit",
+      "method": "POST",
+      "port": 8081,
+      "status": 302
+    },
+    {
+      "path": "/api/owners/11",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/11/pets/new",
+      "method": "POST",
+      "port": 8081,
+      "status": 302
+    },
+    {
+      "path": "/owners/11",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/11/pets/14/edit",
+      "method": "POST",
+      "port": 8081,
+      "status": 302
+    },
+    {
+      "path": "/owners/1/pets/14/edit",
+      "method": "GET",
+      "port": 8081,
+      "status": 404
+    },
+    {
+      "path": "/owners/1/pets/14/edit",
+      "method": "POST",
+      "port": 8081,
+      "status": 404
+    },
+    {
+      "path": "/owners/1/pets/14/visits/new",
+      "method": "POST",
+      "port": 8081,
+      "status": 404
+    },
+    {
+      "path": "/owners/99999/pets/new",
+      "method": "POST",
+      "port": 8081,
+      "status": 404
+    },
+    {
+      "path": "/owners/11/pets/new",
+      "method": "POST",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/11/pets/14/visits/new",
+      "method": "POST",
+      "port": 8081,
+      "status": 302
+    },
+    {
+      "path": "/owners/11",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/1",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/owners/11/pets/14/visits/new",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    },
+    {
+      "path": "/api/owners/1",
+      "method": "GET",
+      "port": 8082,
+      "status": 200
+    },
+    {
+      "path": "/vets.html",
+      "method": "GET",
+      "port": 8080,
+      "status": 200
+    },
+    {
+      "path": "/owners/11",
+      "method": "GET",
+      "port": 8081,
+      "status": 200
+    }
+  ],
+  "logs": "C:\\Users\\Theki\\OneDrive\\\u00c1rea de Trabalho\\spring-petclinic-legado\\.work\\acceptance-20261028-011525"
+}

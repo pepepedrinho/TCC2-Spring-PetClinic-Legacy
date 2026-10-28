@@ -3,7 +3,9 @@ from pathlib import Path
 import csv, json, math, statistics, subprocess, hashlib
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'docs/metricas/v2';M=['cbo','wmc','rfc','lcom','lcom*']
 def read(p):
- with p.open(encoding='utf-8-sig',newline='') as f:return list(csv.DictReader(f))
+ try: text=p.read_text(encoding='utf-8-sig')
+ except UnicodeDecodeError: text=p.read_text(encoding='cp1252')
+ return list(csv.DictReader(text.splitlines()))
 def save(name,rows):
  with (OUT/name).open('w',encoding='utf-8',newline='') as f:
   w=csv.DictWriter(f,fieldnames=list(rows[0]));w.writeheader();w.writerows(rows)
@@ -49,6 +51,7 @@ for row in components['B monolito']:
  if '.integration.' in name or short=='OwnerRepository':
   purpose={'OwnerRepository':'adaptacao HTTP e composicao com Pets locais','OwnersClient':'HTTP, contrato de cadastro, encoding, timeouts','IntegrationErrorHandler':'HTTP 503 e view de indisponibilidade','OwnersUnavailableException':'falha de rede/servidor/contrato','OwnerNotFoundException':'404 e vinculo incorreto','OwnerValidationException':'400 remoto'}[short]
   integration.append({'classe':name,'papel':purpose,**{m:row[m] for m in M}})
+totals.append({'componente':'V2 completa (B+C+Gateway)','tipos_CK':sum(r['tipos_CK'] for r in summary[1:]),**{m:sum(r[m] for r in totals[1:]) for m in M if m!='lcom*'},'soma_lcom*':'nao interpretada (normalizada)'})
 for filename,rows in [('tabela-1-gerais.csv',summary),('estatisticas-descritivas.csv',descriptive),('tabela-2-equivalentes.csv',equivalents),('tabela-3-extracao.csv',extraction),('tabela-4-integracao.csv',integration),('tabela-5-arquitetura.csv',totals)]:save(filename,rows)
 prod=[]
 for directory in ['src/main/java','owners-service/src/main/java','gateway/src/main/java']:

@@ -1,0 +1,7 @@
+classe,papel,cbo,wmc,rfc,lcom,lcom*
+org.springframework.samples.petclinic.integration.OwnerValidationException,400 remoto,1,0,0,0,0.0
+org.springframework.samples.petclinic.integration.OwnersClient,"HTTP, contrato de cadastro, encoding, timeouts",13,12,21,0,0.2
+org.springframework.samples.petclinic.integration.IntegrationErrorHandler,HTTP 503 e view de indisponibilidade,4,1,0,0,0.0
+org.springframework.samples.petclinic.integration.OwnersUnavailableException,falha de rede/servidor/contrato,0,1,0,0,0.0
+org.springframework.samples.petclinic.owner.OwnerRepository,adaptacao HTTP e composicao com Pets locais,6,7,8,0,0.4
+org.springframework.samples.petclinic.integration.OwnerNotFoundException,404 e vinculo incorreto,1,0,0,0,0.0
