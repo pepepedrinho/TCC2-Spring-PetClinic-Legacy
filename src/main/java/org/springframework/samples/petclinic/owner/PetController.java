@@ -63,6 +63,7 @@ class PetController {
     @InitBinder("pet")
     public void initPetBinder(WebDataBinder dataBinder) {
         dataBinder.setValidator(new PetValidator());
+        dataBinder.setAllowedFields("name", "birthDate", "type");
     }
 
     @GetMapping("/pets/new")
@@ -89,14 +90,18 @@ class PetController {
     }
 
     @GetMapping("/pets/{petId}/edit")
-    public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
+    public String initUpdateForm(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId, Owner owner, ModelMap model) {
         Pet pet = this.pets.findById(petId);
+        checkOwnership(pet, ownerId);
+        pet.setOwner(owner);
         model.put("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
     @PostMapping("/pets/{petId}/edit")
-    public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+    public String processUpdateForm(@PathVariable("petId") int petId, @Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+        checkOwnership(this.pets.findById(petId), owner.getId());
+        pet.setId(petId);
         if (result.hasErrors()) {
             pet.setOwner(owner);
             model.put("pet", pet);
@@ -108,4 +113,9 @@ class PetController {
         }
     }
 
+    private void checkOwnership(Pet pet, Integer ownerId) {
+        if (pet == null || !ownerId.equals(pet.getOwnerId())) {
+            throw new org.springframework.samples.petclinic.integration.OwnerNotFoundException();
+        }
+    }
 }

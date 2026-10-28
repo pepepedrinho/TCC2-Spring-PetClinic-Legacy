@@ -57,11 +57,20 @@ public class PetControllerTests {
         cat.setId(3);
         cat.setName("hamster");
         given(this.pets.findPetTypes()).willReturn(Lists.newArrayList(cat));
-        given(this.owners.findById(TEST_OWNER_ID)).willReturn(new Owner());
-        given(this.pets.findById(TEST_PET_ID)).willReturn(new Pet());
+        Owner owner = new Owner(); owner.setId(TEST_OWNER_ID);
+        Pet pet = new Pet(); pet.setId(TEST_PET_ID); pet.setName("Leo"); owner.addPet(pet);
+        given(this.owners.findById(TEST_OWNER_ID)).willReturn(owner);
+        given(this.pets.findById(TEST_PET_ID)).willReturn(pet);
 
     }
 
+    @Test
+    public void rejectsPetFromAnotherOwner() throws Exception {
+        Owner other = new Owner(); other.setId(2);
+        Pet pet = new Pet(); other.addPet(pet);
+        given(this.pets.findById(TEST_PET_ID)).willReturn(pet);
+        mockMvc.perform(get("/owners/1/pets/1/edit")).andExpect(status().isNotFound());
+    }
     @Test
     public void testInitCreationForm() throws Exception {
         mockMvc.perform(get("/owners/{ownerId}/pets/new", TEST_OWNER_ID))

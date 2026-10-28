@@ -38,17 +38,19 @@ class VisitController {
 
     private final VisitRepository visits;
     private final PetRepository pets;
+    private final OwnerRepository owners;
 
 
     @Autowired
-    public VisitController(VisitRepository visits, PetRepository pets) {
+    public VisitController(VisitRepository visits, PetRepository pets, OwnerRepository owners) {
         this.visits = visits;
         this.pets = pets;
+        this.owners = owners;
     }
 
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
-        dataBinder.setDisallowedFields("id");
+        dataBinder.setAllowedFields("date", "description");
     }
 
     /**
@@ -62,8 +64,12 @@ class VisitController {
      * @return Pet
      */
     @ModelAttribute("visit")
-    public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
+    public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId, Map<String, Object> model) {
         Pet pet = this.pets.findById(petId);
+        if (pet == null || !Integer.valueOf(ownerId).equals(pet.getOwnerId())) {
+            throw new org.springframework.samples.petclinic.integration.OwnerNotFoundException();
+        }
+        pet.setOwner(this.owners.findById(ownerId));
         model.put("pet", pet);
         Visit visit = new Visit();
         pet.addVisit(visit);
@@ -71,7 +77,7 @@ class VisitController {
     }
 
     // Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
-    @GetMapping("/owners/*/pets/{petId}/visits/new")
+    @GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
     public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
         return "pets/createOrUpdateVisitForm";
     }

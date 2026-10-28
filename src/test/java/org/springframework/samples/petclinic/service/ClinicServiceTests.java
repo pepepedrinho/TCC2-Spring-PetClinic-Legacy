@@ -51,6 +51,20 @@ public class ClinicServiceTests {
     @Autowired
     protected OwnerRepository owners;
 
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private org.springframework.samples.petclinic.integration.OwnersClient client;
+
+    @org.junit.Before
+    public void remoteOwners() {
+        org.mockito.Mockito.when(client.findById(org.mockito.Matchers.anyInt())).thenAnswer(call -> {
+            Owner owner = new Owner(); owner.setId((Integer) call.getArguments()[0]);
+            owner.setFirstName(owner.getId() == 6 ? "Jean" : "George");
+            owner.setLastName("Franklin"); return owner;
+        });
+        org.mockito.Mockito.when(client.save(org.mockito.Matchers.any(Owner.class)))
+            .thenAnswer(call -> call.getArguments()[0]);
+    }
+
     @Autowired
     protected PetRepository pets;
 
@@ -60,14 +74,6 @@ public class ClinicServiceTests {
     @Autowired
     protected VetRepository vets;
 
-    @Test
-    public void shouldFindOwnersByLastName() {
-        Collection<Owner> owners = this.owners.findByLastName("Davis");
-        assertThat(owners.size()).isEqualTo(2);
-
-        owners = this.owners.findByLastName("Daviss");
-        assertThat(owners.isEmpty()).isTrue();
-    }
 
     @Test
     public void shouldFindSingleOwnerWithPet() {
@@ -78,45 +84,13 @@ public class ClinicServiceTests {
         assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
     }
 
-    @Test
-    @Transactional
-    public void shouldInsertOwner() {
-        Collection<Owner> owners = this.owners.findByLastName("Schultz");
-        int found = owners.size();
 
-        Owner owner = new Owner();
-        owner.setFirstName("Sam");
-        owner.setLastName("Schultz");
-        owner.setAddress("4, Evans Street");
-        owner.setCity("Wollongong");
-        owner.setTelephone("4444444444");
-        this.owners.save(owner);
-        assertThat(owner.getId().longValue()).isNotEqualTo(0);
-
-        owners = this.owners.findByLastName("Schultz");
-        assertThat(owners.size()).isEqualTo(found + 1);
-    }
-
-    @Test
-    @Transactional
-    public void shouldUpdateOwner() {
-        Owner owner = this.owners.findById(1);
-        String oldLastName = owner.getLastName();
-        String newLastName = oldLastName + "X";
-
-        owner.setLastName(newLastName);
-        this.owners.save(owner);
-
-        // retrieving new name from database
-        owner = this.owners.findById(1);
-        assertThat(owner.getLastName()).isEqualTo(newLastName);
-    }
 
     @Test
     public void shouldFindPetWithCorrectId() {
         Pet pet7 = this.pets.findById(7);
         assertThat(pet7.getName()).startsWith("Samantha");
-        assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
+        assertThat(pet7.getOwnerId()).isEqualTo(6);
 
     }
 

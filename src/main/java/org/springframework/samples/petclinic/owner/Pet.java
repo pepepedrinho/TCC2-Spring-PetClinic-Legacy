@@ -60,8 +60,10 @@ public class Pet extends NamedEntity {
     @JoinColumn(name = "type_id")
     private PetType type;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @Column(name = "owner_id", nullable = false)
+    private Integer ownerId;
+
+    @javax.persistence.Transient
     private Owner owner;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.EAGER)
@@ -83,12 +85,15 @@ public class Pet extends NamedEntity {
         this.type = type;
     }
 
+    public Integer getOwnerId() { return this.ownerId; }
+
     public Owner getOwner() {
         return this.owner;
     }
 
     protected void setOwner(Owner owner) {
         this.owner = owner;
+        this.ownerId = owner.getId();
     }
 
     protected Set<Visit> getVisitsInternal() {
