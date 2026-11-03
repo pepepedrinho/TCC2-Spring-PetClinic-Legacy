@@ -1,0 +1,54 @@
+[
+  {
+    "component": "monolito",
+    "jdk": 8,
+    "exit_code": 0,
+    "seconds": 52.9,
+    "command": [
+      "C:\\TCC2\\ferramentas\\apache-maven-3.9.11\\bin\\mvn.cmd",
+      "-B",
+      "-o",
+      "clean",
+      "package",
+      "-Dcobertura.skip=true"
+    ],
+    "tests": 61,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  {
+    "component": "owners-service",
+    "jdk": 17,
+    "exit_code": 0,
+    "seconds": 33.8,
+    "command": [
+      "C:\\TCC2\\ferramentas\\apache-maven-3.9.11\\bin\\mvn.cmd",
+      "-B",
+      "-o",
+      "clean",
+      "package"
+    ],
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  {
+    "component": "gateway",
+    "jdk": 17,
+    "exit_code": 0,
+    "seconds": 37.6,
+    "command": [
+      "C:\\TCC2\\ferramentas\\apache-maven-3.9.11\\bin\\mvn.cmd",
+      "-B",
+      "-o",
+      "clean",
+      "package"
+    ],
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+]

@@ -15,6 +15,10 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.Collection;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,9 +26,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.Collection;
 
 /**
  * @author Juergen Hoeller
@@ -36,86 +37,142 @@ import java.util.Collection;
 class PetController {
 
     private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
-    private final PetRepository pets;
-    private final OwnerRepository owners;
+
+    private final PetRepository petRepository;
+
+    private final OwnerRepository ownerRepository;
 
     @Autowired
-    public PetController(PetRepository pets, OwnerRepository owners) {
-        this.pets = pets;
-        this.owners = owners;
+    public PetController(PetRepository petRepository, OwnerRepository ownerRepository) {
+        this.petRepository = petRepository;
+        this.ownerRepository = ownerRepository;
     }
 
     @ModelAttribute("types")
     public Collection<PetType> populatePetTypes() {
-        return this.pets.findPetTypes();
+        return this.petRepository.findPetTypes();
     }
 
     @ModelAttribute("owner")
     public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-        return this.owners.findById(ownerId);
+        return this.ownerRepository.findById(ownerId);
     }
 
     @InitBinder("owner")
-    public void initOwnerBinder(WebDataBinder dataBinder) {
-        dataBinder.setDisallowedFields("id");
+    public void initOwnerBinder(WebDataBinder webDataBinder) {
+        webDataBinder.setDisallowedFields("id");
     }
 
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/main/java/org/springframework/samples/petclinic/owner/PetController.java: initPetBinder
+    // ============================================================
+    // @InitBinder("pet")
+    //     public void initPetBinder(WebDataBinder dataBinder) {
+    //         dataBinder.setValidator(new PetValidator());
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // O fluxo MVC da V2 restringe o binding e valida o vínculo local com o Owner remoto.
+    // ============================================================
+
     @InitBinder("pet")
-    public void initPetBinder(WebDataBinder dataBinder) {
-        dataBinder.setValidator(new PetValidator());
-        dataBinder.setAllowedFields("name", "birthDate", "type");
+    public void initPetBinder(WebDataBinder webDataBinder) {
+        webDataBinder.setValidator(new PetValidator());
+        webDataBinder.setAllowedFields("name", "birthDate", "type");
     }
 
     @GetMapping("/pets/new")
-    public String initCreationForm(Owner owner, ModelMap model) {
+    public String initCreationForm(Owner owner, ModelMap modelMap) {
         Pet pet = new Pet();
         owner.addPet(pet);
-        model.put("pet", pet);
+        modelMap.put("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
     @PostMapping("/pets/new")
-    public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult result, ModelMap model) {
-        if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null){
-            result.rejectValue("name", "duplicate", "already exists");
+    public String processCreationForm(Owner owner, @Valid Pet pet, BindingResult bindingResult, ModelMap modelMap) {
+        if (StringUtils.hasLength(pet.getName()) && pet.isNew() && owner.getPet(pet.getName(), true) != null) {
+            bindingResult.rejectValue("name", "duplicate", "already exists");
         }
         owner.addPet(pet);
-        if (result.hasErrors()) {
-            model.put("pet", pet);
+        if (bindingResult.hasErrors()) {
+            modelMap.put("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
-            this.pets.save(pet);
+            this.petRepository.save(pet);
             return "redirect:/owners/{ownerId}";
         }
     }
 
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/main/java/org/springframework/samples/petclinic/owner/PetController.java: initUpdateForm
+    // ============================================================
+    // @GetMapping("/pets/{petId}/edit")
+    //     public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
+    //         Pet pet = this.pets.findById(petId);
+    //         model.put("pet", pet);
+    //         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // O fluxo MVC da V2 restringe o binding e valida o vínculo local com o Owner remoto.
+    // ============================================================
+
     @GetMapping("/pets/{petId}/edit")
-    public String initUpdateForm(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId, Owner owner, ModelMap model) {
-        Pet pet = this.pets.findById(petId);
+    public String initUpdateForm(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId, Owner owner,
+            ModelMap modelMap) {
+        Pet pet = this.petRepository.findById(petId);
         checkOwnership(pet, ownerId);
         pet.setOwner(owner);
-        model.put("pet", pet);
+        modelMap.put("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/main/java/org/springframework/samples/petclinic/owner/PetController.java: processUpdateForm
+    // ============================================================
+    // @PostMapping("/pets/{petId}/edit")
+    //     public String processUpdateForm(@Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
+    //         if (result.hasErrors()) {
+    //             pet.setOwner(owner);
+    //             model.put("pet", pet);
+    //             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
+    //         } else {
+    //             owner.addPet(pet);
+    //             this.pets.save(pet);
+    //             return "redirect:/owners/{ownerId}";
+    //         }
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // O fluxo MVC da V2 restringe o binding e valida o vínculo local com o Owner remoto.
+    // ============================================================
+
     @PostMapping("/pets/{petId}/edit")
-    public String processUpdateForm(@PathVariable("petId") int petId, @Valid Pet pet, BindingResult result, Owner owner, ModelMap model) {
-        checkOwnership(this.pets.findById(petId), owner.getId());
+    public String processUpdateForm(@PathVariable("petId") int petId, @Valid Pet pet, BindingResult bindingResult,
+            Owner owner,
+            ModelMap modelMap) {
+        checkOwnership(this.petRepository.findById(petId), owner.getId());
         pet.setId(petId);
-        if (result.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             pet.setOwner(owner);
-            model.put("pet", pet);
+            modelMap.put("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
             owner.addPet(pet);
-            this.pets.save(pet);
+            this.petRepository.save(pet);
             return "redirect:/owners/{ownerId}";
         }
     }
 
+    // Auxiliar novo da V2: impede acesso ao Pet por um Owner diferente.
     private void checkOwnership(Pet pet, Integer ownerId) {
         if (pet == null || !ownerId.equals(pet.getOwnerId())) {
-            throw new org.springframework.samples.petclinic.integration.OwnerNotFoundException();
+            // Antes havia uma exceção exclusiva; o handler central agora define o erro de vínculo.
+            throw org.springframework.samples.petclinic.integration.IntegrationErrorHandler.notFound();
         }
     }
 }

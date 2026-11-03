@@ -1,0 +1,13 @@
+{
+  "A_all_fields_except_file_equal_historical_baseline": true,
+  "B_requested_metrics_equal_historical_monolith": true,
+  "historical_owners_control_all_fields_except_file_equal_original_collection": true,
+  "gateway_all_fields_except_file_equal_original_collection": true,
+  "B_C_service_source_bytes_equal": {
+    "owners-service": true,
+    "gateway": true
+  },
+  "http_checks": 59,
+  "maven_passed": 67,
+  "maven_skipped": 1
+}

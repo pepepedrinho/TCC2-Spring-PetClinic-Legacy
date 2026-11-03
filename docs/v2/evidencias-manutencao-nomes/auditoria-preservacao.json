@@ -1,0 +1,28 @@
+{
+  "utc": "2026-11-03T20:23:35.629854+00:00",
+  "java_reviewed": 49,
+  "java_changed": 22,
+  "declarations_renamed": 79,
+  "other_preexisting_files_preserved": 253,
+  "academic_files_preserved": 157,
+  "academic_files_byte_identical": true,
+  "historical_java_comments_unchanged": true,
+  "metrics_recomputed": false,
+  "owners_pets_was_tracked_on_V2": false,
+  "owners_pets_local_residue_removed": true,
+  "owners_service_preserved": true,
+  "backup_outside_repository": true,
+  "cleanup": [
+    "target/",
+    "gateway/target/",
+    "owners-service/target/",
+    "owners-pets-service/",
+    ".work/baseline.zip",
+    ".work/ck-baseline.zip"
+  ],
+  "local_data_and_preferences_preserved": [
+    "data/",
+    ".idea/",
+    "other .work/ files"
+  ]
+}

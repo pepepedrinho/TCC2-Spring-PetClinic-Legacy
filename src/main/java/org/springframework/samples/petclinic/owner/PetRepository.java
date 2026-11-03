@@ -54,8 +54,8 @@ public interface PetRepository extends Repository<Pet, Integer> {
      */
     void save(Pet pet);
 
+    // Consulta nova da V2: encontra os Pets locais para compor o Owner remoto.
     @Transactional(readOnly = true)
     List<Pet> findByOwnerId(Integer ownerId);
 
 }
-

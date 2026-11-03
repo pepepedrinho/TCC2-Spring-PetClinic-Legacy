@@ -10,8 +10,16 @@ _site/
 # V2: artefatos locais e bancos preservados da implementacao anterior
 **/target/
 /data/
-/owners-pets-service/
 /owners-service/data/
 /.work/
 /tools/
 *.log
+
+# Logs acadêmicos são evidências, mesmo quando gerados automaticamente.
+!docs/metricas/**/*.log
+!docs/v2/**/*.log
+
+# Exportações locais temporárias de auditoria; não se aplicam aos snapshots em docs/.
+/tcc2-v2-*.zip
+/tcc2-v2-*.diff
+/tcc2-v2-historico.txt

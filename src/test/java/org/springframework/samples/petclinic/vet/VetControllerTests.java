@@ -36,7 +36,7 @@ public class VetControllerTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private VetRepository vets;
+    private VetRepository vetRepository;
 
     @Before
     public void setup() {
@@ -52,31 +52,31 @@ public class VetControllerTests {
         radiology.setId(1);
         radiology.setName("radiology");
         helen.addSpecialty(radiology);
-        given(this.vets.findAll()).willReturn(Lists.newArrayList(james, helen));
+        given(this.vetRepository.findAll()).willReturn(Lists.newArrayList(james, helen));
     }
 
     @Test
     public void testShowVetListHtml() throws Exception {
         mockMvc.perform(get("/vets.html"))
-            .andExpect(status().isOk())
-            .andExpect(model().attributeExists("vets"))
-            .andExpect(view().name("vets/vetList"));
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("vets"))
+                .andExpect(view().name("vets/vetList"));
     }
 
     @Test
     public void testShowResourcesVetList() throws Exception {
         ResultActions actions = mockMvc.perform(get("/vets.json").accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
         actions.andExpect(content().contentType("application/json;charset=UTF-8"))
-            .andExpect(jsonPath("$.vetList[0].id").value(1));
+                .andExpect(jsonPath("$.vetList[0].id").value(1));
     }
 
     @Test
     public void testShowVetListXml() throws Exception {
         mockMvc.perform(get("/vets.xml").accept(MediaType.APPLICATION_XML))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_XML_VALUE))
-            .andExpect(content().node(hasXPath("/vets/vetList[id=1]/id")));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_XML_VALUE))
+                .andExpect(content().node(hasXPath("/vets/vetList[id=1]/id")));
     }
 
 }

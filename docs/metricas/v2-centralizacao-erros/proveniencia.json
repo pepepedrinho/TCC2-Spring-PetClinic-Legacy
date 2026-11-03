@@ -1,0 +1,71 @@
+{
+  "utc": "2026-11-03T18:54:45.131582+00:00",
+  "ckVersion": "0.7.1-SNAPSHOT",
+  "ckSha256": "98893efdffd22fb2356560e9ed78b0528e01bbbad032dcd63be3863c73bfc517",
+  "ckSourceCommit": "8a1ef916d597d33ad619d748b616bb7dbc3f0c36",
+  "parameters": [
+    "false",
+    "0",
+    "false"
+  ],
+  "java": "java version \"17.0.12\" 2024-07-16 LTS\r\nJava(TM) SE Runtime Environment (build 17.0.12+8-LTS-286)\r\nJava HotSpot(TM) 64-Bit Server VM (build 17.0.12+8-LTS-286, mixed mode, sharing)\r\n",
+  "baseline": "c36452a2c34443ae26b4ecbba4f149906af14717",
+  "head": "d3fea1a9485f7f8cdbf70782acfbb35830ffa269",
+  "branch": "tcc2-strangler-fig-v2",
+  "workingTreeAtCollection": "M gateway/src/main/java/br/edu/tcc/gateway/GatewayApplication.java\n M gateway/src/test/java/br/edu/tcc/gateway/GatewayRoutesTests.java\n M owners-service/src/main/java/br/edu/tcc/owners/Owner.java\n M owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java\n M owners-service/src/main/java/br/edu/tcc/owners/OwnerRepository.java\n M owners-service/src/main/java/br/edu/tcc/owners/OwnersApplication.java\n M owners-service/src/test/java/br/edu/tcc/owners/OwnerApiTests.java\n M scripts/MigrateOwners.java\n M src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java\n M src/main/java/org/springframework/samples/petclinic/integration/OwnerNotFoundException.java\n M src/main/java/org/springframework/samples/petclinic/integration/OwnerValidationException.java\n M src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java\n M src/main/java/org/springframework/samples/petclinic/integration/OwnersUnavailableException.java\n M src/main/java/org/springframework/samples/petclinic/owner/Owner.java\n M src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java\n M src/main/java/org/springframework/samples/petclinic/owner/Pet.java\n M src/main/java/org/springframework/samples/petclinic/owner/PetController.java\n M src/main/java/org/springframework/samples/petclinic/owner/PetRepository.java\n M src/main/java/org/springframework/samples/petclinic/owner/VisitController.java\n M src/main/java/org/springframework/samples/petclinic/system/LegacyDatabaseInitializer.java\n M src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java\n M src/test/java/org/springframework/samples/petclinic/owner/PetControllerTests.java\n M src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java\n M src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java\n?? docs/v2/estudo-codigo-antes-depois.md",
+  "checkpoint": "C is the candidate source snapshot, not yet applied to the original worktree at collection; source SHA-256 and archives identify it exactly. B is the preserved worktree before the intervention, including presentation changes.",
+  "commands": [
+    [
+      "C:\\Program Files\\Java\\jdk-17\\bin\\java.exe",
+      "-jar",
+      "C:\\TCC2\\ferramentas\\ck\\target\\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar",
+      "work\\centralizacao\\A\\src\\main\\java",
+      "false",
+      "0",
+      "false",
+      "work\\centralizacao\\C\\docs\\metricas\\v2-centralizacao-erros\\A-monolito-original"
+    ],
+    [
+      "C:\\Program Files\\Java\\jdk-17\\bin\\java.exe",
+      "-jar",
+      "C:\\TCC2\\ferramentas\\ck\\target\\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar",
+      "work\\centralizacao\\B\\src\\main\\java",
+      "false",
+      "0",
+      "false",
+      "work\\centralizacao\\C\\docs\\metricas\\v2-centralizacao-erros\\B-monolito-anterior"
+    ],
+    [
+      "C:\\Program Files\\Java\\jdk-17\\bin\\java.exe",
+      "-jar",
+      "C:\\TCC2\\ferramentas\\ck\\target\\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar",
+      "work\\centralizacao\\C\\src\\main\\java",
+      "false",
+      "0",
+      "false",
+      "work\\centralizacao\\C\\docs\\metricas\\v2-centralizacao-erros\\C-monolito-centralizado"
+    ],
+    [
+      "C:\\Program Files\\Java\\jdk-17\\bin\\java.exe",
+      "-jar",
+      "C:\\TCC2\\ferramentas\\ck\\target\\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar",
+      "work\\centralizacao\\C\\owners-service\\src\\main\\java",
+      "false",
+      "0",
+      "false",
+      "work\\centralizacao\\C\\docs\\metricas\\v2-centralizacao-erros\\owners"
+    ],
+    [
+      "C:\\Program Files\\Java\\jdk-17\\bin\\java.exe",
+      "-jar",
+      "C:\\TCC2\\ferramentas\\ck\\target\\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar",
+      "work\\centralizacao\\C\\gateway\\src\\main\\java",
+      "false",
+      "0",
+      "false",
+      "work\\centralizacao\\C\\docs\\metricas\\v2-centralizacao-erros\\gateway"
+    ]
+  ],
+  "executionCwd": "C:\\Users\\Theki\\Documents\\Codex\\2026-11-03\\files-pasted-by-the-user-padroniza",
+  "ckSourceCommitVerified": "8a1ef916d597d33ad619d748b616bb7dbc3f0c36"
+}

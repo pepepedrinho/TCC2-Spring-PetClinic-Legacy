@@ -27,13 +27,13 @@ import org.springframework.samples.petclinic.owner.PetTypeFormatter;
 public class PetTypeFormatterTests {
 
     @Mock
-    private PetRepository pets;
+    private PetRepository petRepository;
 
     private PetTypeFormatter petTypeFormatter;
 
     @Before
     public void setup() {
-        this.petTypeFormatter = new PetTypeFormatter(pets);
+        this.petTypeFormatter = new PetTypeFormatter(petRepository);
     }
 
     @Test
@@ -46,14 +46,14 @@ public class PetTypeFormatterTests {
 
     @Test
     public void shouldParse() throws ParseException {
-        Mockito.when(this.pets.findPetTypes()).thenReturn(makePetTypes());
+        Mockito.when(this.petRepository.findPetTypes()).thenReturn(makePetTypes());
         PetType petType = petTypeFormatter.parse("Bird", Locale.ENGLISH);
         assertEquals("Bird", petType.getName());
     }
 
     @Test(expected = ParseException.class)
     public void shouldThrowParseException() throws ParseException {
-        Mockito.when(this.pets.findPetTypes()).thenReturn(makePetTypes());
+        Mockito.when(this.petRepository.findPetTypes()).thenReturn(makePetTypes());
         petTypeFormatter.parse("Fish", Locale.ENGLISH);
     }
 
@@ -64,12 +64,12 @@ public class PetTypeFormatterTests {
      */
     private List<PetType> makePetTypes() {
         List<PetType> petTypes = new ArrayList<>();
-        petTypes.add(new PetType(){
+        petTypes.add(new PetType() {
             {
                 setName("Dog");
             }
         });
-        petTypes.add(new PetType(){
+        petTypes.add(new PetType() {
             {
                 setName("Bird");
             }

@@ -1,0 +1,617 @@
+--- a/src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java
++++ b/src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java
+@@ -1,17 +1,62 @@
+ package org.springframework.samples.petclinic.integration;
++
++import java.io.IOException;
++
++import javax.servlet.http.HttpServletResponse;
+ 
+ import org.springframework.http.HttpStatus;
+ import org.springframework.web.bind.annotation.ControllerAdvice;
+ import org.springframework.web.bind.annotation.ExceptionHandler;
+-import org.springframework.web.bind.annotation.ResponseStatus;
++import org.springframework.web.client.HttpStatusCodeException;
++import org.springframework.web.servlet.ModelAndView;
+ 
+-// Componente novo da coexistência: apresenta a página de indisponibilidade com HTTP 503 quando o serviço
+-// Owners não responde.
++// Componente da coexistência: centraliza classificação e respostas de erros da integração Owner.
+ @ControllerAdvice
+ public class IntegrationErrorHandler {
+-    @ExceptionHandler(OwnersUnavailableException.class)
+-    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+-    public String unavailable() {
+-        return "ownersUnavailable";
++    // Antes, OwnersClient.translate escolhia três exceções. A decisão agora pertence a este ponto central.
++    // O chamador delimita a origem: somente falhas HTTP/conversão capturadas na fronteira remota chegam aqui.
++    public static IntegrationFailure remoteFailure(RuntimeException cause) {
++        HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
++        if (cause instanceof HttpStatusCodeException) {
++            HttpStatus remoteStatus = ((HttpStatusCodeException) cause).getStatusCode();
++            if (remoteStatus == HttpStatus.NOT_FOUND || remoteStatus == HttpStatus.BAD_REQUEST) {
++                status = remoteStatus;
++            }
++        }
++        return new IntegrationFailure(status, cause);
++    }
++
++    // Antes, os controllers lançavam uma exceção exclusiva para o vínculo inválido de Pet e Owner.
++    public static IntegrationFailure notFound() {
++        return new IntegrationFailure(HttpStatus.NOT_FOUND, null);
++    }
++
++    // Antes, o advice só tratava indisponibilidade; 400/404 dependiam de anotações nas exceções removidas.
++    // sendError mantém o despacho das páginas de erro MVC e os motivos usados anteriormente.
++    @ExceptionHandler(IntegrationFailure.class)
++    public ModelAndView handle(IntegrationFailure failure, HttpServletResponse response) throws IOException {
++        HttpStatus status = failure.getStatus();
++        if (status == HttpStatus.SERVICE_UNAVAILABLE) {
++            response.setStatus(status.value());
++            return new ModelAndView("ownersUnavailable");
++        }
++        String reason = status == HttpStatus.NOT_FOUND ? "Owner or Pet not found" : "Invalid owner data";
++        response.sendError(status.value(), reason);
++        return new ModelAndView();
++    }
++
++    // Um único tipo interno transporta status e causa e delimita o advice. Sem esse marcador,
++    // capturar RuntimeException ou falhas HTTP globais poderia mascarar erros fora da integração.
++    public static final class IntegrationFailure extends RuntimeException {
++        private final HttpStatus status;
++
++        private IntegrationFailure(HttpStatus status, Throwable cause) {
++            super("Owner integration failure: " + status.value(), cause);
++            this.status = status;
++        }
++
++        public HttpStatus getStatus() {
++            return this.status;
++        }
+     }
+ }
+--- a/src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java
++++ b/src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java
+@@ -6,19 +6,17 @@
+ import java.util.Map;
+ 
+ import org.springframework.beans.factory.annotation.Value;
+-import org.springframework.http.HttpStatus;
+ import org.springframework.http.client.SimpleClientHttpRequestFactory;
+ import org.springframework.http.converter.HttpMessageConversionException;
+ import org.springframework.samples.petclinic.owner.Owner;
+ import org.springframework.stereotype.Component;
+-import org.springframework.web.client.HttpStatusCodeException;
+ import org.springframework.web.client.RestClientException;
+ import org.springframework.web.client.RestTemplate;
+ import org.springframework.web.util.UriComponentsBuilder;
+ 
+ /** One-way HTTP boundary. Never sends Pets or Visits to Owners. */
+ // Componente novo da extração de Owner: fronteira HTTP do legado com o serviço; envia somente dados de
+-// Owner e traduz falhas remotas.
++// Owner e delimita falhas remotas para o tratamento central.
+ @Component
+ public class OwnersClient {
+     private final String url;
+@@ -33,23 +31,26 @@
+         this.http = new RestTemplate(factory);
+     }
+ 
++    // Antes, translate decidia o status aqui; as capturas restritas agora delegam ao handler central.
+     public Collection<Owner> findByLastName(String name) {
+         java.net.URI uri = UriComponentsBuilder.fromHttpUrl(url).queryParam("lastName", name).build().encode().toUri();
+         try {
+             return Arrays.asList(http.getForObject(uri, Owner[].class));
+         } catch (RestClientException | HttpMessageConversionException ex) {
+-            throw translate(ex);
++            throw IntegrationErrorHandler.remoteFailure(ex);
+         }
+     }
+ 
++    // A chamada HTTP permanece aqui; a classificação antes local foi centralizada no handler.
+     public Owner findById(Integer id) {
+         try {
+             return http.getForObject(url + "/" + id, Owner.class);
+         } catch (RestClientException | HttpMessageConversionException ex) {
+-            throw translate(ex);
++            throw IntegrationErrorHandler.remoteFailure(ex);
+         }
+     }
+ 
++    // Payload e verbos preservados; as falhas antes traduzidas localmente seguem ao handler central.
+     public Owner save(Owner owner) {
+         Map<String, String> body = new LinkedHashMap<>();
+         body.put("firstName", owner.getFirstName());
+@@ -64,20 +65,7 @@
+             http.put(url + "/" + owner.getId(), body);
+             return owner;
+         } catch (RestClientException | HttpMessageConversionException ex) {
+-            throw translate(ex);
++            throw IntegrationErrorHandler.remoteFailure(ex);
+         }
+     }
+-
+-    private RuntimeException translate(RuntimeException ex) {
+-        if (ex instanceof HttpStatusCodeException) {
+-            HttpStatus status = ((HttpStatusCodeException) ex).getStatusCode();
+-            if (status == HttpStatus.NOT_FOUND) {
+-                return new OwnerNotFoundException();
+-            }
+-            if (status == HttpStatus.BAD_REQUEST) {
+-                return new OwnerValidationException();
+-            }
+-        }
+-        return new OwnersUnavailableException(ex);
+-    }
+ }
+--- a/src/main/java/org/springframework/samples/petclinic/owner/PetController.java
++++ b/src/main/java/org/springframework/samples/petclinic/owner/PetController.java
+@@ -170,7 +170,8 @@
+     // Auxiliar novo da V2: impede acesso ao Pet por um Owner diferente.
+     private void checkOwnership(Pet pet, Integer ownerId) {
+         if (pet == null || !ownerId.equals(pet.getOwnerId())) {
+-            throw new org.springframework.samples.petclinic.integration.OwnerNotFoundException();
++            // Antes havia uma exceção exclusiva; o handler central agora define o erro de vínculo.
++            throw org.springframework.samples.petclinic.integration.IntegrationErrorHandler.notFound();
+         }
+     }
+ }
+--- a/src/main/java/org/springframework/samples/petclinic/owner/VisitController.java
++++ b/src/main/java/org/springframework/samples/petclinic/owner/VisitController.java
+@@ -124,7 +124,8 @@
+             Map<String, Object> model) {
+         Pet pet = this.pets.findById(petId);
+         if (pet == null || !Integer.valueOf(ownerId).equals(pet.getOwnerId())) {
+-            throw new org.springframework.samples.petclinic.integration.OwnerNotFoundException();
++            // Antes havia uma exceção exclusiva; o handler central agora define o erro de vínculo.
++            throw org.springframework.samples.petclinic.integration.IntegrationErrorHandler.notFound();
+         }
+         pet.setOwner(this.owners.findById(ownerId));
+         model.put("pet", pet);
+--- a/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java
++++ b/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java
+@@ -40,36 +40,36 @@
+         server.verify();
+     }
+ 
+-    @Test(expected = OwnerNotFoundException.class)
++    @Test
+     public void maps404() {
+         server.expect(anything()).andRespond(withStatus(HttpStatus.NOT_FOUND));
+-        client.findById(999);
++        expectFailure(HttpStatus.NOT_FOUND, () -> client.findById(999));
+     }
+ 
+-    @Test(expected = OwnerValidationException.class)
++    @Test
+     public void maps400() {
+         server.expect(anything()).andRespond(withStatus(HttpStatus.BAD_REQUEST));
+-        client.save(new Owner());
++        expectFailure(HttpStatus.BAD_REQUEST, () -> client.save(new Owner()));
+     }
+ 
+-    @Test(expected = OwnersUnavailableException.class)
++    @Test
+     public void mapsServerFailure() {
+         server.expect(anything()).andRespond(withServerError());
+-        client.findById(1);
++        expectFailure(HttpStatus.SERVICE_UNAVAILABLE, () -> client.findById(1));
+     }
+ 
+-    @Test(expected = OwnersUnavailableException.class)
++    @Test
+     public void mapsTimeout() {
+         server.expect(anything()).andRespond(request -> {
+             throw new java.net.SocketTimeoutException("read timed out");
+         });
+-        client.findById(1);
++        expectFailure(HttpStatus.SERVICE_UNAVAILABLE, () -> client.findById(1));
+     }
+ 
+-    @Test(expected = OwnersUnavailableException.class)
++    @Test
+     public void mapsMalformedBody() {
+         server.expect(anything()).andRespond(withSuccess("not json", MediaType.APPLICATION_JSON));
+-        client.findById(1);
++        expectFailure(HttpStatus.SERVICE_UNAVAILABLE, () -> client.findById(1));
+     }
+ 
+     @Test
+@@ -82,4 +82,39 @@
+         assertEquals(Integer.valueOf(11), client.save(owner).getId());
+         server.verify();
+     }
++
++    @Test
++    public void mapsConnectionFailure() {
++        server.expect(anything()).andRespond(request -> {
++            throw new java.net.ConnectException("connection refused");
++        });
++        expectFailure(HttpStatus.SERVICE_UNAVAILABLE, () -> client.findById(1));
++    }
++
++    @Test
++    public void doesNotMaskProgrammingError() {
++        IllegalStateException original = new IllegalStateException("internal failure");
++        server.expect(anything()).andRespond(request -> {
++            throw original;
++        });
++        try {
++            client.findById(1);
++            fail("Programming error must escape the integration boundary");
++        } catch (IllegalStateException actual) {
++            assertSame(original, actual);
++        }
++        server.verify();
++    }
++
++    // Antes os testes esperavam três tipos; agora verificam o status e a causa do único marcador.
++    private void expectFailure(HttpStatus status, Runnable call) {
++        try {
++            call.run();
++            fail("Expected integration failure");
++        } catch (IntegrationErrorHandler.IntegrationFailure failure) {
++            assertEquals(status, failure.getStatus());
++            assertNotNull(failure.getCause());
++        }
++        server.verify();
++    }
+ }
+--- a/src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java
++++ b/src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java
+@@ -143,4 +143,13 @@
+                 .andExpect(view().name("pets/createOrUpdateVisitForm"));
+     }
+ 
++    @Test
++    public void rejectsVisitForPetFromAnotherOwner() throws Exception {
++        mockMvc.perform(get("/owners/2/pets/{petId}/visits/new", TEST_PET_ID))
++                .andExpect(status().isNotFound());
++        mockMvc.perform(post("/owners/2/pets/{petId}/visits/new", TEST_PET_ID)
++                .param("description", "Wrong owner"))
++                .andExpect(status().isNotFound());
++    }
++
+ }
+--- a/docs/v2/estudo-codigo-antes-depois.md
++++ b/docs/v2/estudo-codigo-antes-depois.md
+@@ -1,6 +1,8 @@
+ # Estudo do código antes e depois — Strangler Fig V2
+ 
+ Este documento acompanha a organização e documentação do código em 03/11/2026. A implementação funcional da V2 já existia: esta intervenção muda apresentação, ordem de declarações e comentários. Não representa uma nova extração ou revisão dos contratos existentes.
++
++> Atualização posterior: as seções 1–10 e os apêndices registram a V2 organizada antes da centralização (cenário B). A seção 11 descreve a intervenção posterior de tratamento de erros (cenário C). Os trechos históricos foram preservados como registro desses checkpoints.
+ 
+ ## 1. Origem dos trechos e limites da comparação
+ 
+@@ -986,6 +988,119 @@
+ As compilações e os testes foram executados em uma cópia isolada, com JDK 8 para o monólito e JDK 17 para Owners, Gateway e o script Java. Maven 3.9.11 executou `-B -o clean package`, com `-Dcobertura.skip=true` no legado, conforme as opções de `scripts/build.ps1`. O legado registrou 47 testes, zero falhas/erros e 1 ignorado; Owners registrou 6 testes e Gateway 1, todos aprovados. Total: 53 aprovados e 1 ignorado. `MigrateOwners.java` compilou com `javac -encoding UTF-8`; não foi executado. Os testes existentes de Owners usam H2 em memória e o legado tem propriedades de teste próprias.
+ 
+ Esses resultados não substituem as evidências acadêmicas anteriores. Não foram reexecutados a bateria HTTP externa, os ensaios de durabilidade, a migração de bancos nem CK. A comparação estrutural também normaliza concatenações de literais de texto constantes: a fixture JSON longa foi apenas dividida em dois literais, com conteúdo idêntico. Logs novos e o relatório final acompanham a entrega fora de `docs/metricas/v2`.
++
++
++## 11. Intervenção posterior: centralização de erros da integração
++
++Em 03/11/2026 foi realizada, por decisão arquitetural do autor, uma simplificação posterior à primeira V2 e à sua organização visual. Os três arquivos `integration/OwnerNotFoundException.java`, `OwnerValidationException.java` e `OwnersUnavailableException.java` foram removidos. Não se deve ler essa mudança como parte da extração original descrita acima.
++
++Antes, `OwnersClient.translate` selecionava essas três classes. Duas usavam `@ResponseStatus` para 404/400; `IntegrationErrorHandler.unavailable` devolvia 503 e `ownersUnavailable`. Agora, o cliente continua com HTTP, encoding, payload e os mesmos timeouts, mas delega as falhas capturadas de `RestClientException | HttpMessageConversionException` a `IntegrationErrorHandler.remoteFailure`. A classificação dos status e a resposta MVC ficam no handler. Não há captura global de RuntimeException nem uso de ResponseStatusException no legado.
++
++PetController.checkOwnership e VisitController.loadPetWithVisit chamam a fábrica `IntegrationErrorHandler.notFound` para o vínculo inválido, preservando HTTP 404. O método `handle` usa `sendError` para 404/400 com os motivos anteriores, mantendo o despacho das páginas MVC, e retorna `ModelAndView("ownersUnavailable")` com 503 nas falhas de disponibilidade. Um erro de programação sem marcador continua no tratamento original.
++
++Um único tipo interno, `IntegrationFailure`, transporta status e causa e delimita o advice. Seu construtor é privado; consumidores utilizam as fábricas do handler. Isso evita interceptar falhas de outros clientes HTTP ou erros gerais de programação. Não foram recriadas três exceções dentro do arquivo: há apenas um marcador com dados, classificação compartilhada e um handler de resposta.
++
++Origem deste passo: `src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java`, método `translate`, cenário B. Destino da classificação: mesmo pacote, `IntegrationErrorHandler.remoteFailure`, cenário C. O trecho anterior real preservado no snapshot B era:
++
++```java
++    private RuntimeException translate(RuntimeException ex) {
++        if (ex instanceof HttpStatusCodeException) {
++            HttpStatus status = ((HttpStatusCodeException) ex).getStatusCode();
++            if (status == HttpStatus.NOT_FOUND) {
++                return new OwnerNotFoundException();
++            }
++            if (status == HttpStatus.BAD_REQUEST) {
++                return new OwnerValidationException();
++            }
++        }
++        return new OwnersUnavailableException(ex);
++    }
++```
++
++Implementação central atual: `src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java`, com as fábricas, handler MVC e tipo interno:
++
++```java
++package org.springframework.samples.petclinic.integration;
++
++import java.io.IOException;
++
++import javax.servlet.http.HttpServletResponse;
++
++import org.springframework.http.HttpStatus;
++import org.springframework.web.bind.annotation.ControllerAdvice;
++import org.springframework.web.bind.annotation.ExceptionHandler;
++import org.springframework.web.client.HttpStatusCodeException;
++import org.springframework.web.servlet.ModelAndView;
++
++// Componente da coexistência: centraliza classificação e respostas de erros da integração Owner.
++@ControllerAdvice
++public class IntegrationErrorHandler {
++    // Antes, OwnersClient.translate escolhia três exceções. A decisão agora pertence a este ponto central.
++    // O chamador delimita a origem: somente falhas HTTP/conversão capturadas na fronteira remota chegam aqui.
++    public static IntegrationFailure remoteFailure(RuntimeException cause) {
++        HttpStatus status = HttpStatus.SERVICE_UNAVAILABLE;
++        if (cause instanceof HttpStatusCodeException) {
++            HttpStatus remoteStatus = ((HttpStatusCodeException) cause).getStatusCode();
++            if (remoteStatus == HttpStatus.NOT_FOUND || remoteStatus == HttpStatus.BAD_REQUEST) {
++                status = remoteStatus;
++            }
++        }
++        return new IntegrationFailure(status, cause);
++    }
++
++    // Antes, os controllers lançavam uma exceção exclusiva para o vínculo inválido de Pet e Owner.
++    public static IntegrationFailure notFound() {
++        return new IntegrationFailure(HttpStatus.NOT_FOUND, null);
++    }
++
++    // Antes, o advice só tratava indisponibilidade; 400/404 dependiam de anotações nas exceções removidas.
++    // sendError mantém o despacho das páginas de erro MVC e os motivos usados anteriormente.
++    @ExceptionHandler(IntegrationFailure.class)
++    public ModelAndView handle(IntegrationFailure failure, HttpServletResponse response) throws IOException {
++        HttpStatus status = failure.getStatus();
++        if (status == HttpStatus.SERVICE_UNAVAILABLE) {
++            response.setStatus(status.value());
++            return new ModelAndView("ownersUnavailable");
++        }
++        String reason = status == HttpStatus.NOT_FOUND ? "Owner or Pet not found" : "Invalid owner data";
++        response.sendError(status.value(), reason);
++        return new ModelAndView();
++    }
++
++    // Um único tipo interno transporta status e causa e delimita o advice. Sem esse marcador,
++    // capturar RuntimeException ou falhas HTTP globais poderia mascarar erros fora da integração.
++    public static final class IntegrationFailure extends RuntimeException {
++        private final HttpStatus status;
++
++        private IntegrationFailure(HttpStatus status, Throwable cause) {
++            super("Owner integration failure: " + status.value(), cause);
++            this.status = status;
++        }
++
++        public HttpStatus getStatus() {
++            return this.status;
++        }
++    }
++}
++```
++
++As portas, rotas do Gateway, contratos REST, validações e modelos foram preservados. Owner continua persistido somente em Owners; Pets e Visits continuam no legado. Os comentários históricos de 1.5.x nos controllers foram mantidos e os pontos alterados receberam notas curtas sobre o tratamento anterior.
++
++As três suítes Maven foram executadas novamente: monólito com JDK 8, 60 aprovados e 1 ignorado; Owners com JDK 17, 6 aprovados; Gateway com JDK 17, 1 aprovado. Total: 67 aprovados e 1 ignorado, zero falhas e erros. Os novos cenários cobrem 404, 400, indisponibilidade, timeout, conexão, conversão, a view 503, vínculo local e erros não pertencentes à integração.
++
++A aceitação integrada passou com 59 checks HTTP, incluindo prontidão, persistência após interrupção/reinicialização, negócios de Owner/Pet/Visit/Vet, rotas, 404, 400 remoto, 500 interno e página 503. A migração de uma fixture histórica passou, preservando IDs, referências e hashes da origem e recusando destino existente.
++
++Nova coleta CK: `../metricas/v2-centralizacao-erros/relatorio.md`, com A = monólito original 1.5.x, B = V2 anterior a esta centralização e C = V2 centralizada. As médias do monólito são:
++
++| Cenário | Tipos CK | CBO | WMC | RFC | LCOM | LCOM* |
++| --- | --- | --- | --- | --- | --- | --- |
++| A | 24 | 6,666667 | 4,916667 | 3,458333 | 5,875000 | 0,256618 |
++| B | 30 | 6,166667 | 4,866667 | 4,366667 | 5,266667 | 0,227258 |
++| C | 28 | 6,571429 | 5,357143 | 4,928571 | 5,750000 | 0,236348 |
++
++O CK conta o tipo interno como uma classe adicional. Três classes removidas e uma interna adicionada resultam em dois tipos a menos. O cliente apresentou queda local de CBO 13→8; o handler passou de 4→7. O CBO médio do monólito aumentou; a redução de arquivos não demonstra melhoria geral. O relatório detalha pares equivalentes, dependências, coesão, somatórios, médias e limitações, inclusive uma diferença de coesão em Owners devida ao checkpoint de organização anterior e reproduzida por controle histórico.
++
++`docs/metricas/v2` e baselines permanecem intactos. As novas fontes, hashes, CSVs, controles e evidências estão em `docs/metricas/v2-centralizacao-erros`. Nenhum resultado anterior foi sobrescrito. A migração validada usa fixture, e timeout/conversão são simulados nos testes; os limites estão explicitados no novo relatório.
+ 
+ ## Apêndice A. Estrutura original integral das classes de dados e repositório
+ 
+--- /dev/null
++++ b/src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java
+@@ -0,0 +1,177 @@
++package org.springframework.samples.petclinic.integration;
++
++import org.junit.Before;
++import org.junit.Test;
++import org.springframework.http.HttpStatus;
++import org.springframework.http.MediaType;
++import org.springframework.http.converter.HttpMessageConversionException;
++import org.springframework.samples.petclinic.owner.Owner;
++import org.springframework.stereotype.Controller;
++import org.springframework.test.util.ReflectionTestUtils;
++import org.springframework.test.web.client.MockRestServiceServer;
++import org.springframework.test.web.servlet.MockMvc;
++import org.springframework.test.web.servlet.setup.MockMvcBuilders;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.ResponseBody;
++import org.springframework.web.client.ResourceAccessException;
++import org.springframework.web.client.RestTemplate;
++import org.springframework.web.util.NestedServletException;
++
++import static org.junit.Assert.assertTrue;
++import static org.junit.Assert.fail;
++import static org.springframework.test.web.client.match.MockRestRequestMatchers.anything;
++import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
++import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
++import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
++import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
++import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
++
++// Exercita a fronteira HTTP real do cliente e o advice MVC, incluindo falhas que não pertencem a ele.
++public class IntegrationErrorHandlerTests {
++    private MockMvc mvc;
++
++    private MockRestServiceServer server;
++
++    @Before
++    public void setup() {
++        OwnersClient client = new OwnersClient("http://localhost:8082");
++        server = MockRestServiceServer.createServer((RestTemplate) ReflectionTestUtils.getField(client, "http"));
++        mvc = MockMvcBuilders.standaloneSetup(new IntegrationEndpoints(client))
++                .setControllerAdvice(new IntegrationErrorHandler())
++                .build();
++    }
++
++    @Test
++    public void missingOwnerUses404AndOriginalReason() throws Exception {
++        server.expect(anything()).andRespond(withStatus(HttpStatus.NOT_FOUND));
++        mvc.perform(get("/integration-test"))
++                .andExpect(status().isNotFound())
++                .andExpect(status().reason("Owner or Pet not found"));
++        server.verify();
++    }
++
++    @Test
++    public void rejectedDataUses400AndOriginalReason() throws Exception {
++        server.expect(anything()).andRespond(withStatus(HttpStatus.BAD_REQUEST));
++        mvc.perform(get("/integration-test"))
++                .andExpect(status().isBadRequest())
++                .andExpect(status().reason("Invalid owner data"));
++        server.verify();
++    }
++
++    @Test
++    public void unavailableUses503AndExistingPage() throws Exception {
++        server.expect(anything()).andRespond(withStatus(HttpStatus.SERVICE_UNAVAILABLE));
++        expectUnavailable("/integration-test");
++        server.verify();
++    }
++
++    @Test
++    public void otherRemoteStatusKeepsUnavailableBehavior() throws Exception {
++        server.expect(anything()).andRespond(withStatus(HttpStatus.UNAUTHORIZED));
++        expectUnavailable("/integration-test");
++        server.verify();
++    }
++
++    @Test
++    public void timeoutUses503AndExistingPage() throws Exception {
++        server.expect(anything()).andRespond(request -> {
++            throw new java.net.SocketTimeoutException("read timed out");
++        });
++        expectUnavailable("/integration-test");
++        server.verify();
++    }
++
++    @Test
++    public void connectionFailureUses503AndExistingPage() throws Exception {
++        server.expect(anything()).andRespond(request -> {
++            throw new java.net.ConnectException("connection refused");
++        });
++        expectUnavailable("/integration-test");
++        server.verify();
++    }
++
++    @Test
++    public void malformedRemoteResponseUses503AndExistingPage() throws Exception {
++        server.expect(anything()).andRespond(withSuccess("not json", MediaType.APPLICATION_JSON));
++        expectUnavailable("/integration-test");
++        server.verify();
++    }
++
++    @Test
++    public void explicitConversionFailureUses503AndExistingPage() throws Exception {
++        expectUnavailable("/conversion-test");
++    }
++
++    @Test
++    public void invalidLocalOwnershipUses404() throws Exception {
++        mvc.perform(get("/ownership-test"))
++                .andExpect(status().isNotFound())
++                .andExpect(status().reason("Owner or Pet not found"));
++    }
++
++    @Test
++    public void programmingErrorIsNotHandledByIntegrationAdvice() throws Exception {
++        expectUnhandled("/internal-test", IllegalStateException.class);
++    }
++
++    @Test
++    public void unrelatedHttpErrorIsNotHandledByIntegrationAdvice() throws Exception {
++        expectUnhandled("/unrelated-http-test", ResourceAccessException.class);
++    }
++
++    private void expectUnavailable(String path) throws Exception {
++        mvc.perform(get(path))
++                .andExpect(status().isServiceUnavailable())
++                .andExpect(view().name("ownersUnavailable"));
++    }
++
++    private void expectUnhandled(String path, Class<? extends RuntimeException> expected) throws Exception {
++        try {
++            mvc.perform(get(path));
++            fail("Unrelated failure must escape this advice");
++        } catch (NestedServletException ex) {
++            assertTrue(expected.isInstance(ex.getCause()));
++        }
++    }
++
++    // Fixture exclusiva dos testes; não adiciona endpoints à aplicação.
++    @Controller
++    public static class IntegrationEndpoints {
++        private final OwnersClient client;
++
++        public IntegrationEndpoints(OwnersClient client) {
++            this.client = client;
++        }
++
++        @GetMapping("/integration-test")
++        @ResponseBody
++        public Owner read() {
++            return client.findById(1);
++        }
++
++        @GetMapping("/conversion-test")
++        @ResponseBody
++        public Owner conversion() {
++            throw IntegrationErrorHandler.remoteFailure(new HttpMessageConversionException("invalid response"));
++        }
++
++        @GetMapping("/ownership-test")
++        @ResponseBody
++        public Owner ownership() {
++            throw IntegrationErrorHandler.notFound();
++        }
++
++        @GetMapping("/internal-test")
++        @ResponseBody
++        public Owner internal() {
++            throw new IllegalStateException("internal programming error");
++        }
++
++        @GetMapping("/unrelated-http-test")
++        @ResponseBody
++        public Owner unrelatedHttp() {
++            throw new ResourceAccessException("unrelated outbound request");
++        }
++    }
++}
+--- a/src/main/java/org/springframework/samples/petclinic/integration/OwnerNotFoundException.java
++++ /dev/null
+@@ -1,7 +0,0 @@
+-package org.springframework.samples.petclinic.integration;
+-
+-// Componente novo da integração: sinaliza HTTP 404 para Owner ausente ou Pet sem vínculo com o Owner solicitado.
+-@org.springframework.web.bind.annotation.ResponseStatus(value = org.springframework.http.HttpStatus.NOT_FOUND,
+-        reason = "Owner or Pet not found")
+-public class OwnerNotFoundException extends RuntimeException {
+-}
+--- a/src/main/java/org/springframework/samples/petclinic/integration/OwnerValidationException.java
++++ /dev/null
+@@ -1,7 +0,0 @@
+-package org.springframework.samples.petclinic.integration;
+-
+-// Componente novo da integração: traduz rejeições HTTP 400 do serviço Owners para o fluxo do legado.
+-@org.springframework.web.bind.annotation.ResponseStatus(value = org.springframework.http.HttpStatus.BAD_REQUEST,
+-        reason = "Invalid owner data")
+-public class OwnerValidationException extends RuntimeException {
+-}
+--- a/src/main/java/org/springframework/samples/petclinic/integration/OwnersUnavailableException.java
++++ /dev/null
+@@ -1,8 +0,0 @@
+-package org.springframework.samples.petclinic.integration;
+-
+-// Componente novo da integração: transporta a causa de indisponibilidade ou resposta inválida do serviço Owners.
+-public class OwnersUnavailableException extends RuntimeException {
+-    public OwnersUnavailableException(Throwable cause) {
+-        super("Owners service unavailable", cause);
+-    }
+-}

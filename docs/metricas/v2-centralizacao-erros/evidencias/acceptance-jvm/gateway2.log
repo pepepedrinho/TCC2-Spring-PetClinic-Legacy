@@ -1,0 +1,33 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-03T15:55:13.666-03:00  INFO 16316 --- [petclinic-gateway] [           main] br.edu.tcc.gateway.GatewayApplication    : Starting GatewayApplication v1.0.0-SNAPSHOT using Java 17.0.12 with PID 16316 (C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\centralizacao\C\gateway\target\petclinic-gateway-1.0.0-SNAPSHOT.jar started by Theki in C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\centralizacao\C)
+2026-11-03T15:55:13.688-03:00  INFO 16316 --- [petclinic-gateway] [           main] br.edu.tcc.gateway.GatewayApplication    : No active profile set, falling back to 1 default profile: "default"
+2026-11-03T15:55:16.743-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=b33ca729-e171-34f6-ae14-17a86e64cae7
+2026-11-03T15:55:19.284-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2026-11-03T15:55:19.976-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2026-11-03T15:55:19.977-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2026-11-03T15:55:19.978-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2026-11-03T15:55:19.979-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2026-11-03T15:55:22.705-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2026-11-03T15:55:22.983-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 8081 (http)
+2026-11-03T15:55:24.150-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2026-11-03T15:55:25.301-03:00  INFO 16316 --- [petclinic-gateway] [           main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2026-11-03T15:55:25.387-03:00  INFO 16316 --- [petclinic-gateway] [           main] br.edu.tcc.gateway.GatewayApplication    : Started GatewayApplication in 14.462 seconds (process running for 15.802)

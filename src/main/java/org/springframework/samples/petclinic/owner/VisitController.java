@@ -15,6 +15,10 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
@@ -22,9 +26,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.Map;
 
 /**
  * @author Juergen Hoeller
@@ -36,22 +37,78 @@ import java.util.Map;
 @Controller
 class VisitController {
 
-    private final VisitRepository visits;
-    private final PetRepository pets;
-    private final OwnerRepository owners;
+    private final VisitRepository visitRepository;
 
+    private final PetRepository petRepository;
+
+    private final OwnerRepository ownerRepository;
+
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/main/java/org/springframework/samples/petclinic/owner/VisitController.java: VisitController
+    // ============================================================
+    // @Autowired
+    //     public VisitController(VisitRepository visits, PetRepository pets) {
+    //         this.visits = visits;
+    //         this.pets = pets;
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // O fluxo MVC recompõe o Owner remoto e valida o vínculo do Pet antes de criar a visita.
+    // ============================================================
 
     @Autowired
-    public VisitController(VisitRepository visits, PetRepository pets, OwnerRepository owners) {
-        this.visits = visits;
-        this.pets = pets;
-        this.owners = owners;
+    public VisitController(VisitRepository visitRepository, PetRepository petRepository,
+            OwnerRepository ownerRepository) {
+        this.visitRepository = visitRepository;
+        this.petRepository = petRepository;
+        this.ownerRepository = ownerRepository;
     }
 
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/main/java/org/springframework/samples/petclinic/owner/VisitController.java: setAllowedFields
+    // ============================================================
+    // @InitBinder
+    //     public void setAllowedFields(WebDataBinder dataBinder) {
+    //         dataBinder.setDisallowedFields("id");
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // O fluxo MVC recompõe o Owner remoto e valida o vínculo do Pet antes de criar a visita.
+    // ============================================================
+
     @InitBinder
-    public void setAllowedFields(WebDataBinder dataBinder) {
-        dataBinder.setAllowedFields("date", "description");
+    public void setAllowedFields(WebDataBinder webDataBinder) {
+        webDataBinder.setAllowedFields("date", "description");
     }
+
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/main/java/org/springframework/samples/petclinic/owner/VisitController.java: loadPetWithVisit
+    // ============================================================
+    // /**
+    //      * Called before each and every @RequestMapping annotated method.
+    //      * 2 goals:
+    //      * - Make sure we always have fresh data
+    //      * - Since we do not use the session scope, make sure that Pet object always has an id
+    //      * (Even though id is not part of the form fields)
+    //      *
+    //      * @param petId
+    //      * @return Pet
+    //      */
+    //     @ModelAttribute("visit")
+    //     public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
+    //         Pet pet = this.pets.findById(petId);
+    //         model.put("pet", pet);
+    //         Visit visit = new Visit();
+    //         pet.addVisit(visit);
+    //         return visit;
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // O fluxo MVC recompõe o Owner remoto e valida o vínculo do Pet antes de criar a visita.
+    // ============================================================
 
     /**
      * Called before each and every @RequestMapping annotated method.
@@ -64,12 +121,14 @@ class VisitController {
      * @return Pet
      */
     @ModelAttribute("visit")
-    public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId, Map<String, Object> model) {
-        Pet pet = this.pets.findById(petId);
+    public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
+            Map<String, Object> model) {
+        Pet pet = this.petRepository.findById(petId);
         if (pet == null || !Integer.valueOf(ownerId).equals(pet.getOwnerId())) {
-            throw new org.springframework.samples.petclinic.integration.OwnerNotFoundException();
+            // Antes havia uma exceção exclusiva; o handler central agora define o erro de vínculo.
+            throw org.springframework.samples.petclinic.integration.IntegrationErrorHandler.notFound();
         }
-        pet.setOwner(this.owners.findById(ownerId));
+        pet.setOwner(this.ownerRepository.findById(ownerId));
         model.put("pet", pet);
         Visit visit = new Visit();
         pet.addVisit(visit);
@@ -77,6 +136,19 @@ class VisitController {
     }
 
     // Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/main/java/org/springframework/samples/petclinic/owner/VisitController.java: initNewVisitForm
+    // ============================================================
+    // @GetMapping("/owners/*/pets/{petId}/visits/new")
+    //     public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
+    //         return "pets/createOrUpdateVisitForm";
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // O fluxo MVC recompõe o Owner remoto e valida o vínculo do Pet antes de criar a visita.
+    // ============================================================
+
     @GetMapping("/owners/{ownerId}/pets/{petId}/visits/new")
     public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
         return "pets/createOrUpdateVisitForm";
@@ -84,11 +156,11 @@ class VisitController {
 
     // Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
     @PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-    public String processNewVisitForm(@Valid Visit visit, BindingResult result) {
-        if (result.hasErrors()) {
+    public String processNewVisitForm(@Valid Visit visit, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "pets/createOrUpdateVisitForm";
         } else {
-            this.visits.save(visit);
+            this.visitRepository.save(visit);
             return "redirect:/owners/{ownerId}";
         }
     }

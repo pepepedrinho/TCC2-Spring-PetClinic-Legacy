@@ -1,0 +1,27 @@
+ M gateway/src/main/java/br/edu/tcc/gateway/GatewayApplication.java
+ M gateway/src/test/java/br/edu/tcc/gateway/GatewayRoutesTests.java
+ M owners-service/src/main/java/br/edu/tcc/owners/Owner.java
+ M owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java
+ M owners-service/src/main/java/br/edu/tcc/owners/OwnerRepository.java
+ M owners-service/src/main/java/br/edu/tcc/owners/OwnersApplication.java
+ M owners-service/src/test/java/br/edu/tcc/owners/OwnerApiTests.java
+ M scripts/MigrateOwners.java
+ M src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java
+ D src/main/java/org/springframework/samples/petclinic/integration/OwnerNotFoundException.java
+ D src/main/java/org/springframework/samples/petclinic/integration/OwnerValidationException.java
+ M src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java
+ D src/main/java/org/springframework/samples/petclinic/integration/OwnersUnavailableException.java
+ M src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+ M src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+ M src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+ M src/main/java/org/springframework/samples/petclinic/owner/PetController.java
+ M src/main/java/org/springframework/samples/petclinic/owner/PetRepository.java
+ M src/main/java/org/springframework/samples/petclinic/owner/VisitController.java
+ M src/main/java/org/springframework/samples/petclinic/system/LegacyDatabaseInitializer.java
+ M src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java
+ M src/test/java/org/springframework/samples/petclinic/owner/PetControllerTests.java
+ M src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java
+ M src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java
+?? docs/metricas/v2-centralizacao-erros/
+?? docs/v2/estudo-codigo-antes-depois.md
+?? src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java

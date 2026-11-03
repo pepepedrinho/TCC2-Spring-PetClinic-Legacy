@@ -1,0 +1,10 @@
+[
+  {
+    "procedure": "acceptance.py",
+    "exit_code": 0
+  },
+  {
+    "procedure": "test-migration.py",
+    "exit_code": 0
+  }
+]

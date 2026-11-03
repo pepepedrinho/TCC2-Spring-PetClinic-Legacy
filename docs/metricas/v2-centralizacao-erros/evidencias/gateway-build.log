@@ -1,0 +1,86 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------< br.edu.tcc:petclinic-gateway >--------------------
+[INFO] Building PetClinic Gateway 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ petclinic-gateway ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ petclinic-gateway ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ petclinic-gateway ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 1 source file with javac [debug parameters release 17] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ petclinic-gateway ---
+[INFO] skip non existing resourceDirectory C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\centralizacao\C\gateway\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ petclinic-gateway ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 17] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ petclinic-gateway ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running br.edu.tcc.gateway.GatewayRoutesTests
+15:53:23.234 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [br.edu.tcc.gateway.GatewayRoutesTests]: GatewayRoutesTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+15:53:23.495 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration br.edu.tcc.gateway.GatewayApplication for test class br.edu.tcc.gateway.GatewayRoutesTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-03T15:53:26.366-03:00  INFO 5772 --- [petclinic-gateway] [           main] br.edu.tcc.gateway.GatewayRoutesTests    : Starting GatewayRoutesTests using Java 17.0.12 with PID 5772 (started by Theki in C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\centralizacao\C\gateway)
+2026-11-03T15:53:26.370-03:00  INFO 5772 --- [petclinic-gateway] [           main] br.edu.tcc.gateway.GatewayRoutesTests    : No active profile set, falling back to 1 default profile: "default"
+2026-11-03T15:53:30.204-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=7a183f61-2165-3695-a812-3fae8ce19f07
+2026-11-03T15:53:33.650-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2026-11-03T15:53:34.510-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [After]
+2026-11-03T15:53:34.510-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Before]
+2026-11-03T15:53:34.511-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Between]
+2026-11-03T15:53:34.511-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Cookie]
+2026-11-03T15:53:34.511-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Header]
+2026-11-03T15:53:34.511-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Host]
+2026-11-03T15:53:34.511-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Method]
+2026-11-03T15:53:34.511-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Path]
+2026-11-03T15:53:34.511-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Query]
+2026-11-03T15:53:34.511-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [ReadBody]
+2026-11-03T15:53:34.511-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [RemoteAddr]
+2026-11-03T15:53:34.512-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2026-11-03T15:53:34.512-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [Weight]
+2026-11-03T15:53:34.512-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.c.g.r.RouteDefinitionRouteLocator    : Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2026-11-03T15:53:36.219-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2026-11-03T15:53:36.956-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.b.web.embedded.netty.NettyWebServer  : Netty started on port 55824 (http)
+2026-11-03T15:53:38.477-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2026-11-03T15:53:39.664-03:00  INFO 5772 --- [petclinic-gateway] [           main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2026-11-03T15:53:39.765-03:00  INFO 5772 --- [petclinic-gateway] [           main] br.edu.tcc.gateway.GatewayRoutesTests    : Started GatewayRoutesTests in 15.515 seconds (process running for 18.152)
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.76 s -- in br.edu.tcc.gateway.GatewayRoutesTests
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ petclinic-gateway ---
+[INFO] Building jar: C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\centralizacao\C\gateway\target\petclinic-gateway-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.5.16:repackage (repackage) @ petclinic-gateway ---
+[INFO] Replacing main artifact C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\centralizacao\C\gateway\target\petclinic-gateway-1.0.0-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\centralizacao\C\gateway\target\petclinic-gateway-1.0.0-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  34.789 s
+[INFO] Finished at: 2026-11-03T15:53:45-03:00
+[INFO] ------------------------------------------------------------------------

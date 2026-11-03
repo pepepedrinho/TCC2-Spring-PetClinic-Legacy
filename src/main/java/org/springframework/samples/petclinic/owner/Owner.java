@@ -38,6 +38,8 @@ import org.springframework.samples.petclinic.model.Person;
  * @author Michael Isvy
  */
 // View adapter: authoritative owner data is remote; never persisted here.
+// Na V2 esta classe é um modelo de apresentação sem @Entity. O mapeamento original completo está em
+// docs/v2/estudo-codigo-antes-depois.md.
 public class Owner extends Person {
     @NotEmpty
     private String address;
@@ -50,7 +52,6 @@ public class Owner extends Person {
     private String telephone;
 
     private Set<Pet> pets;
-
 
     public String getAddress() {
         return this.address;
@@ -93,13 +94,6 @@ public class Owner extends Person {
         return Collections.unmodifiableList(sortedPets);
     }
 
-    public void addPet(Pet pet) {
-        if (!getPetsInternal().contains(pet)) {
-            getPetsInternal().add(pet);
-        }
-        pet.setOwner(this);
-    }
-
     /**
      * Return the Pet with the given name, or null if none found for this Owner.
      *
@@ -130,17 +124,39 @@ public class Owner extends Person {
         return null;
     }
 
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/main/java/org/springframework/samples/petclinic/owner/Owner.java: addPet
+    // ============================================================
+    // public void addPet(Pet pet) {
+    //         if (pet.isNew()) {
+    //             getPetsInternal().add(pet);
+    //         }
+    //         pet.setOwner(this);
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // O Owner remoto é composto com Pets persistidos no legado.
+    // ============================================================
+
+    public void addPet(Pet pet) {
+        if (!getPetsInternal().contains(pet)) {
+            getPetsInternal().add(pet);
+        }
+        pet.setOwner(this);
+    }
+
     @Override
     public String toString() {
         return new ToStringCreator(this)
 
-            .append("id", this.getId())
-            .append("new", this.isNew())
-            .append("lastName", this.getLastName())
-            .append("firstName", this.getFirstName())
-            .append("address", this.address)
-            .append("city", this.city)
-            .append("telephone", this.telephone)
-            .toString();
+                .append("id", this.getId())
+                .append("new", this.isNew())
+                .append("lastName", this.getLastName())
+                .append("firstName", this.getFirstName())
+                .append("address", this.address)
+                .append("city", this.city)
+                .append("telephone", this.telephone)
+                .toString();
     }
 }

@@ -1,0 +1,296 @@
+[
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java",
+    "deliveredSha256": "cbfab778777d54b37fa295b0d5903061d826ef3616cb215b743d6abc73d927ae",
+    "compiledSourceSha256Lf": "cbfab778777d54b37fa295b0d5903061d826ef3616cb215b743d6abc73d927ae",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java",
+    "deliveredSha256": "90c1c5ecf88a7983b9fe30bfcd6c60a2b97e3b07efa97ef8584e511a6571e68c",
+    "compiledSourceSha256Lf": "90c1c5ecf88a7983b9fe30bfcd6c60a2b97e3b07efa97ef8584e511a6571e68c",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/model/ValidatorTests.java",
+    "deliveredSha256": "9333ed4f48ed854eeb8795a93ecb3cb46e38d90dbaf4ce105b1efe890e1495e5",
+    "compiledSourceSha256Lf": "0b24414490159988ffee06380546cfba2234b3292adf8f7ab4097a0e3f081c35",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java",
+    "deliveredSha256": "a16acd0eb17e097a315a8f08daab9e9efc013facefa0643a9b45a59ce65efeef",
+    "compiledSourceSha256Lf": "a16acd0eb17e097a315a8f08daab9e9efc013facefa0643a9b45a59ce65efeef",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/PetControllerTests.java",
+    "deliveredSha256": "a713f68ec6c81179ae88a3a728be3875a74eb88943f0e5a9a873a8de21e64b8e",
+    "compiledSourceSha256Lf": "a713f68ec6c81179ae88a3a728be3875a74eb88943f0e5a9a873a8de21e64b8e",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java",
+    "deliveredSha256": "16ad38ad58ec551d7a0db299931ca7951b87e65364b3d10869c9770a01b9b604",
+    "compiledSourceSha256Lf": "16ad38ad58ec551d7a0db299931ca7951b87e65364b3d10869c9770a01b9b604",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java",
+    "deliveredSha256": "bfaae6f40b040c9af39ebdb0d10d1645407daae7c0571fc3f5be23df4e980e68",
+    "compiledSourceSha256Lf": "bfaae6f40b040c9af39ebdb0d10d1645407daae7c0571fc3f5be23df4e980e68",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java",
+    "deliveredSha256": "d577dc09eb7bf921c9b6ba6ca37148b941e5e614b6541a97cc7d952959ba6a58",
+    "compiledSourceSha256Lf": "d577dc09eb7bf921c9b6ba6ca37148b941e5e614b6541a97cc7d952959ba6a58",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/service/EntityUtils.java",
+    "deliveredSha256": "411edb92b0a8e7fb66a0852f53a790700c55f8caf4d35827c2bd16422048ea13",
+    "compiledSourceSha256Lf": "555b4c2918870896f89edd54e4a85c8290d448bbcc67440f6dd572f7428fad6d",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/system/CrashControllerTests.java",
+    "deliveredSha256": "782a7cc16975976997f4aa15f317455e381156f1592e9899a740649275a35bb1",
+    "compiledSourceSha256Lf": "872f6b1328ad4d15a68248c5bc324f16d178ea00ff12dbfc1c6eff4c2ace152a",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/system/ProductionConfigurationTests.java",
+    "deliveredSha256": "49fbbe954c5f0d4a17a8569857020206f3288c2e13bf2401155649ea8e28ed34",
+    "compiledSourceSha256Lf": "49fbbe954c5f0d4a17a8569857020206f3288c2e13bf2401155649ea8e28ed34",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/vet/VetControllerTests.java",
+    "deliveredSha256": "dc2e06544be16458f7accdc05134bcb1f1d8621396a6d6eb003fa911c60a9f1c",
+    "compiledSourceSha256Lf": "dc2e06544be16458f7accdc05134bcb1f1d8621396a6d6eb003fa911c60a9f1c",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/vet/VetTests.java",
+    "deliveredSha256": "62d97f4835d60cf498e13995ce62d020d9e7d6bd4225f679af32050aa6cdbc01",
+    "compiledSourceSha256Lf": "62d97f4835d60cf498e13995ce62d020d9e7d6bd4225f679af32050aa6cdbc01",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java",
+    "deliveredSha256": "f2fe1671adf3be3f6ea0972b3e40c56cdb2a05fb379e7737a96ba2209237c470",
+    "compiledSourceSha256Lf": "af17490572a0d46948700886ca278cd920f0eec7226fc5ee9e90a8ec2d343e33",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java",
+    "deliveredSha256": "d3f1487cfcb0175dd5725b33203882e446f5f83d92c50695bb8d32797ecc755b",
+    "compiledSourceSha256Lf": "d3f1487cfcb0175dd5725b33203882e446f5f83d92c50695bb8d32797ecc755b",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java",
+    "deliveredSha256": "78354d641c35385c5a435134c91eead7e7d915ea96ae40a362e93fd3aec69701",
+    "compiledSourceSha256Lf": "78354d641c35385c5a435134c91eead7e7d915ea96ae40a362e93fd3aec69701",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java",
+    "deliveredSha256": "78ee040b56bebb0f292cd41eefd1c9fb0bb13f597c1849b5822c24d43e1fd054",
+    "compiledSourceSha256Lf": "1fb4c7a7076afd079c2385d0636ea573a0982bcabc03ac728a48eeeb8941d73d",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java",
+    "deliveredSha256": "35642a01c4d5e7a25d5d689f8bf9d3609764627b65967d439f01a945bee5c7dc",
+    "compiledSourceSha256Lf": "3f359f3e177e8a4c4495fde63a66a95da8b180567dc8e7b0cacefbef76319c9c",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/model/package-info.java",
+    "deliveredSha256": "057448772508143b847c612d57027b081cd47bbe840f643c7dcaa757b9bee088",
+    "compiledSourceSha256Lf": "0d841b6a758933ba143c81b22e55836fe32b6b4fa55d75fca375c990945687de",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/model/Person.java",
+    "deliveredSha256": "bd3b9da6ed77bbf67b576f985514f1a7d89f37f467faf21cf37adb997f16a5e1",
+    "compiledSourceSha256Lf": "23f1cf4b003da2878ffa5d567086bcf569a5b4e6baf2007fee68a6f9fa71e4fa",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/Owner.java",
+    "deliveredSha256": "1e2875d33ec3a98592b6acb33ebc135baee1b3bb009d3cb0f2660c2a4b6a6103",
+    "compiledSourceSha256Lf": "1e2875d33ec3a98592b6acb33ebc135baee1b3bb009d3cb0f2660c2a4b6a6103",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "deliveredSha256": "bbea0d3c4fe7f523417329c223e616f211feb8e18cf1cefd9a7121356ab5e1a7",
+    "compiledSourceSha256Lf": "bbea0d3c4fe7f523417329c223e616f211feb8e18cf1cefd9a7121356ab5e1a7",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java",
+    "deliveredSha256": "4f9c8defe92222a2c7aa0645a8d67a6161a498cfbbf1d57e9899b1c2947e64c7",
+    "compiledSourceSha256Lf": "4f9c8defe92222a2c7aa0645a8d67a6161a498cfbbf1d57e9899b1c2947e64c7",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/Pet.java",
+    "deliveredSha256": "fd7eaef33f5adc18390db8ed9de581029ff405cafc287b67a9db3ce5c0b5d4b6",
+    "compiledSourceSha256Lf": "fd7eaef33f5adc18390db8ed9de581029ff405cafc287b67a9db3ce5c0b5d4b6",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "deliveredSha256": "53f6f5b7195e73216dc56112d9bf53fcd9639d7a933f2fcb969c1d99b5962347",
+    "compiledSourceSha256Lf": "53f6f5b7195e73216dc56112d9bf53fcd9639d7a933f2fcb969c1d99b5962347",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetRepository.java",
+    "deliveredSha256": "793da2b690aebde7a6c775f91814c342c6e7b77fd3af12ab5385e115ff3a69d7",
+    "compiledSourceSha256Lf": "793da2b690aebde7a6c775f91814c342c6e7b77fd3af12ab5385e115ff3a69d7",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetType.java",
+    "deliveredSha256": "007486615ec691a1f9d9d496bebf73621993e6334e410eb100c206d809bd16da",
+    "compiledSourceSha256Lf": "7944f66e2a375938e1566f32bc0a08e4bd0c40c326a4e476e8f9c2f27e7a2653",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java",
+    "deliveredSha256": "ff54e9b0b66e996d7803916a6e5e9ce7814e0b4b56297cf30163dc16c6ebefdf",
+    "compiledSourceSha256Lf": "ff54e9b0b66e996d7803916a6e5e9ce7814e0b4b56297cf30163dc16c6ebefdf",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetValidator.java",
+    "deliveredSha256": "5ad1e65e2369f8a6e8f7f3eaf429e93c70b616c8bd025b4bc9c8f728f998c719",
+    "compiledSourceSha256Lf": "4731da17f6318ef631318df89a9caae5d6fb5ed62d0628ea0dc468eab2b93b08",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "deliveredSha256": "e2f33398391a5f604bedf3e791bba076c735dff72007771be82cb257be19f2ee",
+    "compiledSourceSha256Lf": "e2f33398391a5f604bedf3e791bba076c735dff72007771be82cb257be19f2ee",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/system/CacheConfig.java",
+    "deliveredSha256": "be396eeec507032bcc21fe740e2aef3b3aeb80a50bb1a7105315e3b24901c701",
+    "compiledSourceSha256Lf": "5203e6f6dad9a3af390f17e281a2c5a06e8d2d59c53317eeccba81573a2001b0",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/system/CrashController.java",
+    "deliveredSha256": "4290d84b52b4f143a4550b86316525ebaaaa212e93be971eaf85a8d8c427246a",
+    "compiledSourceSha256Lf": "86b3260b82dca761e2d8369841190f9548ebe1a1fbc3e37af720bec8a6151d39",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/system/LegacyDatabaseInitializer.java",
+    "deliveredSha256": "8c1269b08b894bc7024254fa3d8b947db289faee55cfe2928eba093668fd0f9c",
+    "compiledSourceSha256Lf": "8c1269b08b894bc7024254fa3d8b947db289faee55cfe2928eba093668fd0f9c",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/system/WelcomeController.java",
+    "deliveredSha256": "606e7a6017d5a5714a2f35a75b3f26592f65c497ae7b315e88db7f6a15fbb1c0",
+    "compiledSourceSha256Lf": "9e0e0c8e0a1068b2f4950708bbfb371869a2ebebfa832babefb168973931e4c1",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/vet/Specialty.java",
+    "deliveredSha256": "4d61cc83f9376802f892c62755dd882c9f219edb21b3a712509250d641847349",
+    "compiledSourceSha256Lf": "109972c56e21041631452bad11d4c76f7dbc3c4efeb3a5d8e031c0d61f98a449",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/vet/Vet.java",
+    "deliveredSha256": "b17b16328dd6ca784ce69ecbd4e1d85ff7fd29a390bbebc53823f413167b191b",
+    "compiledSourceSha256Lf": "88599fe256993f2ed01c4b52150e9bc570d2b4f255a9b152eb4d866a92068cb1",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/vet/VetController.java",
+    "deliveredSha256": "23e2126b83daa0ea5b2442cc8ec38d95927ae0f1efed4ecd1ca7a3f096577205",
+    "compiledSourceSha256Lf": "23e2126b83daa0ea5b2442cc8ec38d95927ae0f1efed4ecd1ca7a3f096577205",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java",
+    "deliveredSha256": "6896b980c29f6bc1b8e39a950ca654c4979fbee3a2d134197100b187c8fec584",
+    "compiledSourceSha256Lf": "b49f3b4275cad5f7fe4c7d3d4749f095f8288243116b83299381744b56e0f4c7",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/vet/Vets.java",
+    "deliveredSha256": "04fa06c2d600e902d005c2c794d1a363f165c60977de9f3e3172d05ac5088ba1",
+    "compiledSourceSha256Lf": "669e343c12d911fc0bc8dcd6983c48db39047ab2656f4f22d132a42456e42be1",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/visit/Visit.java",
+    "deliveredSha256": "8f7d62e09c76c375c78c7c783930022c3cbc2d380496202b73976850abf3b08b",
+    "compiledSourceSha256Lf": "b659ac17c349c90a98c9ca098fcea37cb6d752e21b178591a765d5e5ed1b4525",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/visit/VisitRepository.java",
+    "deliveredSha256": "897f265fb79566cdb2b8e4d91d3fb11aa6efa9f7319a158e42271cd0490c10d5",
+    "compiledSourceSha256Lf": "c08ae17fa518e4d5a9e7d765cb60ae0c4cbdf1611f85646e0cd451078bc22167",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "owners-service/src/test/java/br/edu/tcc/owners/OwnerApiTests.java",
+    "deliveredSha256": "3738eb39ae1a24feebce3a0fed3ae9a19111d3da636ffa57c89739afa19f48c5",
+    "compiledSourceSha256Lf": "3738eb39ae1a24feebce3a0fed3ae9a19111d3da636ffa57c89739afa19f48c5",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "owners-service/src/main/java/br/edu/tcc/owners/Owner.java",
+    "deliveredSha256": "23b9490db398d988c27297b6b439418fe782d471b77bf254548359c5dd9ecf0e",
+    "compiledSourceSha256Lf": "23b9490db398d988c27297b6b439418fe782d471b77bf254548359c5dd9ecf0e",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java",
+    "deliveredSha256": "4b41b24ec0ddefeea952494f6af22ccf66a48f5bd3e79eab924c583178dc59d9",
+    "compiledSourceSha256Lf": "4b41b24ec0ddefeea952494f6af22ccf66a48f5bd3e79eab924c583178dc59d9",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "owners-service/src/main/java/br/edu/tcc/owners/OwnerRepository.java",
+    "deliveredSha256": "b5a185dac306786f4ca7161d4993852cfd78423ab0aceab9b29ce1f6e92abb56",
+    "compiledSourceSha256Lf": "b5a185dac306786f4ca7161d4993852cfd78423ab0aceab9b29ce1f6e92abb56",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "owners-service/src/main/java/br/edu/tcc/owners/OwnersApplication.java",
+    "deliveredSha256": "e50ce7c2dff541a46449674594ff41a75f7f7952ebb312e7428f646115d22980",
+    "compiledSourceSha256Lf": "e50ce7c2dff541a46449674594ff41a75f7f7952ebb312e7428f646115d22980",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "gateway/src/test/java/br/edu/tcc/gateway/GatewayRoutesTests.java",
+    "deliveredSha256": "95459ac47d25c518ef28b19b824244e2247eb49612754700f5be75e3b9450f54",
+    "compiledSourceSha256Lf": "95459ac47d25c518ef28b19b824244e2247eb49612754700f5be75e3b9450f54",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "gateway/src/main/java/br/edu/tcc/gateway/GatewayApplication.java",
+    "deliveredSha256": "c7d648e5ddf529c88b848d6464c5f7c6382ed2063b28c4a8358e149b132ff898",
+    "compiledSourceSha256Lf": "c7d648e5ddf529c88b848d6464c5f7c6382ed2063b28c4a8358e149b132ff898",
+    "equalIgnoringLineEndings": true
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "deliveredSha256": "bb8adf2088fe57de071a82ea53c6db814aec5f8bb8ceb2342c30d236a7a66b2f",
+    "compiledSourceSha256Lf": "bb8adf2088fe57de071a82ea53c6db814aec5f8bb8ceb2342c30d236a7a66b2f",
+    "equalIgnoringLineEndings": true
+  }
+]

@@ -1,0 +1,13 @@
+
+owners: 11 rows copied
+vets: 6 rows copied
+specialties: 3 rows copied
+vet_specialties: 5 rows copied
+types: 6 rows copied
+pets: 14 rows copied
+visits: 5 rows copied
+PASS: migration complete: C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\centralizacao\C\.work\migration-20261103-155624\target
+
+PASS: IDs, Owner-Pet-Visit, absence of local Owners, identity sequence
+
+PASS: existing target refused; source files unchanged (SHA-256)

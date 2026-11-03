@@ -1,55 +1,67 @@
-# TCC II — Strangler Fig V2: Owners
+# TCC II — Strangler Fig V2: extração exclusiva de Owner
 
-Branch `tcc2-strangler-fig-v2`, derivada do monólito de 2017 (`c36452a2c34443ae26b4ecbba4f149906af14717`). Apenas o cadastro de proprietários foi extraído. Pets, PetTypes, Visits e Vets continuam no legado Java 8/Spring Boot 1.5.4.RELEASE com Thymeleaf e HSQLDB.
+A branch `tcc2-strangler-fig-v2` mantém o Spring PetClinic legado e extrai somente o cadastro de Owner. Pets, PetTypes, Visits e Vets permanecem no monólito. A baseline original é a branch `1.5.x`, commit `c36452a2c34443ae26b4ecbba4f149906af14717`.
 
-| Componente | Tecnologia | Porta | Dados |
+| Componente ativo | Plataforma | Porta | Persistência |
 | --- | --- | --- | --- |
-| Legado | Java 8 / Boot 1.5.4 | 8080 | Pets, tipos, visitas, veterinários — HSQLDB |
-| Gateway reutilizado | Java 17 / Boot 3.5.16 / Cloud 2025.0.3 WebFlux | 8081 | sem banco |
-| Owners | Java 17 / Boot 3.5.16 | 8082 | somente proprietários — H2 |
+| Monólito | Java 8 / Spring Boot 1.5.4.RELEASE / Thymeleaf | 8080 | Pets, tipos, visitas e veterinários — HSQLDB |
+| Gateway | Java 17 / Boot 3.5.16 / Spring Cloud 2025.0.3 WebFlux | 8081 | Sem banco |
+| owners-service | Java 17 / Boot 3.5.16 | 8082 | Exclusivamente Owner — H2 |
 
-O Gateway encaminha `/api/owners` e `/api/owners/**` ao Owners. O restante, inclusive as páginas `/owners/**`, vai ao legado. Acesse [PetClinic pelo Gateway](http://localhost:8081). Não há API Pets no microsserviço.
+O Gateway encaminha `/api/owners` e `/api/owners/**` para Owners e os demais caminhos, inclusive os formulários `/owners/**`, para o monólito. Acesse [a aplicação pelo Gateway](http://localhost:8081). O monólito consulta o serviço pelo `OwnersClient` e compõe os Pets locais usando `ownerId`.
 
-## Executar no PowerShell
+O `IntegrationErrorHandler` centraliza classificação e respostas dos erros de integração: 404 para Owner inexistente ou vínculo inválido de Pet, 400 para dados rejeitados e 503 com `ownersUnavailable` para indisponibilidade, conexão, timeout ou conversão remota. Um único tipo interno delimita esse tratamento; erros internos não relacionados seguem o tratamento original.
 
-Na raiz do repositório, com JDK 8, JDK 17 e Maven 3.9.11 instalados:
+## Compilar e executar os testes
+
+Pré-requisitos: PowerShell, JDK 8, JDK 17 e Maven 3.9.11. Na raiz:
 
 ```powershell
-# Os parâmetros podem ser alterados para suas instalações.
-./scripts/build.ps1 -Offline
-# Remova -Offline se precisar baixar dependências.
+./scripts/build.ps1 -MavenHome 'C:\TCC2\ferramentas\apache-maven-3.9.11' `
+    -Java8Home 'C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot' `
+    -Java17Home 'C:\Program Files\Java\jdk-17'
 ```
 
-Inicie cada comando abaixo em um terminal separado, todos na raiz:
+O script executa `clean package` com todas as suítes dos três projetos, usando o JDK de cada módulo. Acrescente `-Offline` quando as dependências já estiverem disponíveis. Ajuste os caminhos à sua instalação. O Maven Wrapper histórico é 3.3.3; para os módulos Boot 3, use Maven 3.9.11 pelo script.
+
+## Iniciar os três componentes
+
+Depois do build, use três terminais, todos na raiz do repositório:
 
 ```powershell
 # Terminal 1 — Owners
 & 'C:\Program Files\Java\jdk-17\bin\java.exe' -jar owners-service/target/owners-service-1.0.0-SNAPSHOT.jar
-# Terminal 2 — legado
+```
+
+```powershell
+# Terminal 2 — monólito
 & 'C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot\bin\java.exe' -jar target/spring-petclinic-1.5.1.jar
+```
+
+```powershell
 # Terminal 3 — Gateway
 & 'C:\Program Files\Java\jdk-17\bin\java.exe' -jar gateway/target/petclinic-gateway-1.0.0-SNAPSHOT.jar
 ```
 
-A primeira inicialização cria bancos V2 separados em `data/v2/petclinic.*` e `data/owners-v2.mv.db`, mantendo IDs históricos. Reinícios não apagam nem recarregam registros existentes. Os bancos da implementação anterior não são usados. Encerre com Ctrl+C. Não use o perfil MySQL histórico nesta V2.
+A primeira inicialização cria bancos separados em `data/v2/petclinic.*` e `data/owners-v2.mv.db`. Reinícios mantêm os registros e as sequências; bancos existentes não são reinicializados. `LEGACY_DB_URL` e `OWNERS_DB_URL` permitem caminhos isolados. Encerre com Ctrl+C. O perfil MySQL e o docker-compose históricos não fazem parte desta execução V2.
 
-## Validar e medir
+## Testes e rastreabilidade acadêmica
 
-Com as portas 8080–8082 livres (os testes iniciam e encerram suas próprias JVMs):
+A validação da centralização registrou 60 testes aprovados e 1 ignorado no monólito, 6 aprovados em Owners e 1 no Gateway, além de 59 checks HTTP com reinicialização e migração em fixture. As execuções posteriores desta manutenção estão registradas na [nota de manutenção](docs/v2/manutencao-nomes-publicacao.md). Checks HTTP incluem prontidão e não representam cobertura percentual.
 
-```powershell
-python scripts/acceptance.py
-python scripts/test-migration.py
-./scripts/collect-ck.ps1 -CkJar 'C:\TCC2\ferramentas\ck\target\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar' -Java17Home 'C:\Program Files\Java\jdk-17'
-```
+- [Estudo do código antes/depois](docs/v2/estudo-codigo-antes-depois.md): trechos reais de 1.5.x, V2 e intervenção posterior de erros.
+- [Implementação V2 original](docs/v2/implementacao.md): fronteiras, integridade, migração e limitações daquele checkpoint.
+- [CK e evidências da primeira V2](docs/metricas/v2/relatorio.md).
+- [CK e evidências da centralização posterior](docs/metricas/v2-centralizacao-erros/relatorio.md): A/B/C, snapshots e limitações da ferramenta.
+- [Procedimento de reprodução em nova pasta](docs/metricas/v2-centralizacao-erros/README.md).
+- [README original de 2017](docs/historico/README-original-2017.md).
 
-Os testes HTTP usam bancos novos em `.work/`, verificam formulários, relacionamento Owner–Pet–Visit, persistência após reinício forçado, 503 e Vets independente. `test-migration.py` usa uma base original sintética e verifica os hashes da origem. Python 3 (biblioteca padrão) é suficiente. O Maven Wrapper histórico permanece em 3.3.3; para os módulos Boot 3 use Maven 3.9.11 via script.
+As métricas são vinculadas aos fontes e hashes do checkpoint medido. A padronização posterior de identificadores não recalcula nem substitui CK e não autoriza atribuir automaticamente esses valores ao fonte atual. Não execute os coletores históricos sobre suas saídas preservadas. Para nova medição, use uma pasta separada e o procedimento documentado.
 
-## Evidências da entrega
+`scripts/acceptance.py` e `scripts/test-migration.py` preservam os procedimentos HTTP/migração da primeira V2 e seus destinos históricos de evidências. Para repeti-los sem sobrescrever resultados acadêmicos, execute cópias isoladas com os destinos redirecionados, conforme as cópias registradas em `docs/metricas/v2-centralizacao-erros/evidencias/procedimentos-executados/`.
 
-- Legado: **46 passaram, 0 falhas, 0 erros, 1 ignorado** (47 contabilizados pelo Surefire).
-- Owners: **6 passaram**; Gateway: **1 passou**. O ignorado é `CrashControllerTests`, já desabilitado na baseline.
-- Aceitação HTTP e migração offline: **PASS**, com evidências em `docs/metricas/v2/evidencias/`. Isso não representa cobertura percentual.
-- CK efetivamente executado: baseline **24 tipos**, legado **30**, Owners **4**, Gateway **1**; os valores completos e cinco tabelas estão no relatório abaixo.
+## Implementação histórica removida da árvore atual
 
-Leia [a documentação V2](docs/v2/implementacao.md) para fronteiras, mapas de classes, integridade, migração e limitações; [o relatório CK](docs/metricas/v2/relatorio.md) para valores e interpretação. O [README original](docs/historico/README-original-2017.md) foi preservado. Nenhum push remoto faz parte desta entrega.
+`owners-pets-service` pertence à implementação anterior, que extraía Owners e Pets juntos, e não integra esta V2. Seus fontes permanecem no histórico Git e na branch `tcc2-strangler-fig`; o diretório não é necessário para compilar, testar, executar ou medir os componentes atuais. A árvore ativa usa somente `owners-service`, Gateway e monólito. Documentos e evidências históricos continuam preservados.
+
+Arquivos de build e configuração local de IDE permanecem ignorados. Logs acadêmicos dentro de `docs/metricas` são intencionalmente versionáveis, assim como CSVs, snapshots de fontes e proveniência.

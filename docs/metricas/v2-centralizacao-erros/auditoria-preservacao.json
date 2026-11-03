@@ -1,0 +1,30 @@
+{
+  "utc": "2026-11-03T19:03:32.158037+00:00",
+  "modified": [
+    "src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java",
+    "src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java",
+    "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java",
+    "src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java",
+    "docs/v2/estudo-codigo-antes-depois.md"
+  ],
+  "added": [
+    "src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java"
+  ],
+  "deleted": [
+    "src/main/java/org/springframework/samples/petclinic/integration/OwnerNotFoundException.java",
+    "src/main/java/org/springframework/samples/petclinic/integration/OwnerValidationException.java",
+    "src/main/java/org/springframework/samples/petclinic/integration/OwnersUnavailableException.java"
+  ],
+  "preserved_original_files": 174,
+  "docs_metricas_v2_byte_identical": true,
+  "baseline_and_history_byte_identical": true,
+  "other_preexisting_files_byte_identical": true,
+  "branches_and_head_unchanged": true,
+  "index_unchanged": true,
+  "diff_check_passed": true,
+  "no_references_to_removed_exceptions_in_java": true,
+  "delivered_sources_match_C_owners_gateway_CK_hashes": true,
+  "workingTreeB_preserved_in_archives": true
+}

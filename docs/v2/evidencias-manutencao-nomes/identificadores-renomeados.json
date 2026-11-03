@@ -1,0 +1,634 @@
+[
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java",
+    "type": "MockMvc",
+    "kind": "field",
+    "before": "mvc",
+    "after": "mockMvc",
+    "binding": "Lorg/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests;.mvc)LMockMvc;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java",
+    "type": "MockRestServiceServer",
+    "kind": "field",
+    "before": "server",
+    "after": "mockRestServiceServer",
+    "binding": "Lorg/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests;.server)LMockRestServiceServer;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java",
+    "type": "OwnersClient",
+    "kind": "local",
+    "before": "client",
+    "after": "ownersClient",
+    "binding": "Lorg/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests;.setup()V#client"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java",
+    "type": "OwnersClient",
+    "kind": "field",
+    "before": "client",
+    "after": "ownersClient",
+    "binding": "Lorg/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests$IntegrationEndpoints;.client)LOwnersClient;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java",
+    "type": "OwnersClient",
+    "kind": "parameter",
+    "before": "client",
+    "after": "ownersClient",
+    "binding": "Lorg/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests$IntegrationEndpoints;.(LOwnersClient;)V#client#0#0"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java",
+    "type": "OwnersClient",
+    "kind": "field",
+    "before": "client",
+    "after": "ownersClient",
+    "binding": "Lorg/springframework/samples/petclinic/integration/OwnersClientTests;.client)LOwnersClient;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java",
+    "type": "MockRestServiceServer",
+    "kind": "field",
+    "before": "server",
+    "after": "mockRestServiceServer",
+    "binding": "Lorg/springframework/samples/petclinic/integration/OwnersClientTests;.server)LMockRestServiceServer;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java",
+    "type": "OwnerRepository",
+    "kind": "field",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerControllerTests;.owners)LOwnerRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/PetControllerTests.java",
+    "type": "PetRepository",
+    "kind": "field",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetControllerTests;.pets)LPetRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/PetControllerTests.java",
+    "type": "OwnerRepository",
+    "kind": "field",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetControllerTests;.owners)LOwnerRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/PetControllerTests.java",
+    "type": "PetType",
+    "kind": "local",
+    "before": "cat",
+    "after": "petType",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetControllerTests;.setup()V#cat"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java",
+    "type": "PetRepository",
+    "kind": "field",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetTypeFormatterTests;.pets)LPetRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java",
+    "type": "VisitRepository",
+    "kind": "field",
+    "before": "visits",
+    "after": "visitRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitControllerTests;.visits)LVisitRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java",
+    "type": "PetRepository",
+    "kind": "field",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitControllerTests;.pets)LPetRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java",
+    "type": "OwnerRepository",
+    "kind": "field",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitControllerTests;.owners)LOwnerRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java",
+    "type": "OwnerRepository",
+    "kind": "field",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/service/ClinicServiceTests;.owners)LOwnerRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java",
+    "type": "OwnersClient",
+    "kind": "field",
+    "before": "client",
+    "after": "ownersClient",
+    "binding": "Lorg/springframework/samples/petclinic/service/ClinicServiceTests;.client)Lorg/springframework/samples/petclinic/integration/OwnersClient;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java",
+    "type": "PetRepository",
+    "kind": "field",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/service/ClinicServiceTests;.pets)LPetRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java",
+    "type": "VisitRepository",
+    "kind": "field",
+    "before": "visits",
+    "after": "visitRepository",
+    "binding": "Lorg/springframework/samples/petclinic/service/ClinicServiceTests;.visits)LVisitRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java",
+    "type": "VetRepository",
+    "kind": "field",
+    "before": "vets",
+    "after": "vetRepository",
+    "binding": "Lorg/springframework/samples/petclinic/service/ClinicServiceTests;.vets)LVetRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/system/ProductionConfigurationTests.java",
+    "type": "VetRepository",
+    "kind": "field",
+    "before": "vets",
+    "after": "vetRepository",
+    "binding": "Lorg/springframework/samples/petclinic/system/ProductionConfigurationTests;.vets)LVetRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/vet/VetControllerTests.java",
+    "type": "VetRepository",
+    "kind": "field",
+    "before": "vets",
+    "after": "vetRepository",
+    "binding": "Lorg/springframework/samples/petclinic/vet/VetControllerTests;.vets)LVetRepository;"
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/vet/VetTests.java",
+    "type": "Vet",
+    "kind": "local",
+    "before": "other",
+    "after": "copiedVet",
+    "binding": "Lorg/springframework/samples/petclinic/vet/VetTests;.testSerialization()V#other"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java",
+    "type": "RestTemplate",
+    "kind": "field",
+    "before": "http",
+    "after": "restTemplate",
+    "binding": "Lorg/springframework/samples/petclinic/integration/OwnersClient;.http)LRestTemplate;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java",
+    "type": "SimpleClientHttpRequestFactory",
+    "kind": "local",
+    "before": "factory",
+    "after": "simpleClientHttpRequestFactory",
+    "binding": "Lorg/springframework/samples/petclinic/integration/OwnersClient;.(Ljava/lang/String;)V#factory"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "type": "OwnerRepository",
+    "kind": "field",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerController;.owners)LOwnerRepository;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "type": "OwnerRepository",
+    "kind": "parameter",
+    "before": "clinicService",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerController;.(LOwnerRepository;)V#clinicService#0#0"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "type": "WebDataBinder",
+    "kind": "parameter",
+    "before": "dataBinder",
+    "after": "webDataBinder",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerController;.setAllowedFields(LWebDataBinder;)V#dataBinder#0#0"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "type": "BindingResult",
+    "kind": "parameter",
+    "before": "result",
+    "after": "bindingResult",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerController;.processCreationForm(LOwner;LBindingResult;)Ljava/lang/String;#result#0#1"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "type": "BindingResult",
+    "kind": "parameter",
+    "before": "result",
+    "after": "bindingResult",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerController;.processFindForm(LOwner;LBindingResult;Ljava/util/Map<Ljava/lang/String;Ljava/lang/Object;>;)Ljava/lang/String;#result#0#1"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "type": "BindingResult",
+    "kind": "parameter",
+    "before": "result",
+    "after": "bindingResult",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerController;.processUpdateOwnerForm(LOwner;LBindingResult;I)Ljava/lang/String;#result#0#1"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "type": "ModelAndView",
+    "kind": "local",
+    "before": "mav",
+    "after": "modelAndView",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerController;.showOwner(I)LModelAndView;#mav"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java",
+    "type": "OwnersClient",
+    "kind": "field",
+    "before": "client",
+    "after": "ownersClient",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerRepository;.client)LOwnersClient;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java",
+    "type": "PetRepository",
+    "kind": "field",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerRepository;.pets)LPetRepository;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java",
+    "type": "OwnersClient",
+    "kind": "parameter",
+    "before": "client",
+    "after": "ownersClient",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerRepository;.(LOwnersClient;LPetRepository;)V#client#0#0"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java",
+    "type": "PetRepository",
+    "kind": "parameter",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/OwnerRepository;.(LOwnersClient;LPetRepository;)V#pets#0#1"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "PetRepository",
+    "kind": "field",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.pets)LPetRepository;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "OwnerRepository",
+    "kind": "field",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.owners)LOwnerRepository;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "PetRepository",
+    "kind": "parameter",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.(LPetRepository;LOwnerRepository;)V#pets#0#0"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "OwnerRepository",
+    "kind": "parameter",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.(LPetRepository;LOwnerRepository;)V#owners#0#1"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "WebDataBinder",
+    "kind": "parameter",
+    "before": "dataBinder",
+    "after": "webDataBinder",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.initOwnerBinder(LWebDataBinder;)V#dataBinder#0#0"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "WebDataBinder",
+    "kind": "parameter",
+    "before": "dataBinder",
+    "after": "webDataBinder",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.initPetBinder(LWebDataBinder;)V#dataBinder#0#0"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "ModelMap",
+    "kind": "parameter",
+    "before": "model",
+    "after": "modelMap",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.initCreationForm(LOwner;LModelMap;)Ljava/lang/String;#model#0#1"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "BindingResult",
+    "kind": "parameter",
+    "before": "result",
+    "after": "bindingResult",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.processCreationForm(LOwner;LPet;LBindingResult;LModelMap;)Ljava/lang/String;#result#0#2"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "ModelMap",
+    "kind": "parameter",
+    "before": "model",
+    "after": "modelMap",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.processCreationForm(LOwner;LPet;LBindingResult;LModelMap;)Ljava/lang/String;#model#0#3"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "ModelMap",
+    "kind": "parameter",
+    "before": "model",
+    "after": "modelMap",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.initUpdateForm(IILOwner;LModelMap;)Ljava/lang/String;#model#0#3"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "BindingResult",
+    "kind": "parameter",
+    "before": "result",
+    "after": "bindingResult",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.processUpdateForm(ILPet;LBindingResult;LOwner;LModelMap;)Ljava/lang/String;#result#0#2"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "type": "ModelMap",
+    "kind": "parameter",
+    "before": "model",
+    "after": "modelMap",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetController;.processUpdateForm(ILPet;LBindingResult;LOwner;LModelMap;)Ljava/lang/String;#model#0#4"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java",
+    "type": "PetRepository",
+    "kind": "field",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetTypeFormatter;.pets)LPetRepository;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java",
+    "type": "PetRepository",
+    "kind": "parameter",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/PetTypeFormatter;.(LPetRepository;)V#pets#0#0"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "type": "VisitRepository",
+    "kind": "field",
+    "before": "visits",
+    "after": "visitRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitController;.visits)LVisitRepository;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "type": "PetRepository",
+    "kind": "field",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitController;.pets)LPetRepository;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "type": "OwnerRepository",
+    "kind": "field",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitController;.owners)LOwnerRepository;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "type": "VisitRepository",
+    "kind": "parameter",
+    "before": "visits",
+    "after": "visitRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitController;.(LVisitRepository;LPetRepository;LOwnerRepository;)V#visits#0#0"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "type": "PetRepository",
+    "kind": "parameter",
+    "before": "pets",
+    "after": "petRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitController;.(LVisitRepository;LPetRepository;LOwnerRepository;)V#pets#0#1"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "type": "OwnerRepository",
+    "kind": "parameter",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitController;.(LVisitRepository;LPetRepository;LOwnerRepository;)V#owners#0#2"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "type": "WebDataBinder",
+    "kind": "parameter",
+    "before": "dataBinder",
+    "after": "webDataBinder",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitController;.setAllowedFields(LWebDataBinder;)V#dataBinder#0#0"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "type": "BindingResult",
+    "kind": "parameter",
+    "before": "result",
+    "after": "bindingResult",
+    "binding": "Lorg/springframework/samples/petclinic/owner/VisitController;.processNewVisitForm(LVisit;LBindingResult;)Ljava/lang/String;#result#0#1"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/system/LegacyDatabaseInitializer.java",
+    "type": "Connection",
+    "kind": "local",
+    "before": "c",
+    "after": "connection",
+    "binding": "Lorg/springframework/samples/petclinic/system/LegacyDatabaseInitializer;.afterPropertiesSet()V|Ljava/lang/Exception;#0#0#c"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/vet/VetController.java",
+    "type": "VetRepository",
+    "kind": "field",
+    "before": "vets",
+    "after": "vetRepository",
+    "binding": "Lorg/springframework/samples/petclinic/vet/VetController;.vets)LVetRepository;"
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/vet/VetController.java",
+    "type": "VetRepository",
+    "kind": "parameter",
+    "before": "clinicService",
+    "after": "vetRepository",
+    "binding": "Lorg/springframework/samples/petclinic/vet/VetController;.(LVetRepository;)V#clinicService#0#0"
+  },
+  {
+    "file": "owners-service/src/test/java/br/edu/tcc/owners/OwnerApiTests.java",
+    "type": "MockMvc",
+    "kind": "field",
+    "before": "mvc",
+    "after": "mockMvc",
+    "binding": "Lbr/edu/tcc/owners/OwnerApiTests;.mvc)LMockMvc;"
+  },
+  {
+    "file": "owners-service/src/test/java/br/edu/tcc/owners/OwnerApiTests.java",
+    "type": "OwnerRepository",
+    "kind": "field",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lbr/edu/tcc/owners/OwnerApiTests;.owners)LOwnerRepository;"
+  },
+  {
+    "file": "owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java",
+    "type": "OwnerRepository",
+    "kind": "field",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lbr/edu/tcc/owners/OwnerController;.owners)LOwnerRepository;"
+  },
+  {
+    "file": "owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java",
+    "type": "OwnerRepository",
+    "kind": "parameter",
+    "before": "owners",
+    "after": "ownerRepository",
+    "binding": "Lbr/edu/tcc/owners/OwnerController;.(LOwnerRepository;)V#owners#0#0"
+  },
+  {
+    "file": "owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java",
+    "type": "Owner",
+    "kind": "local",
+    "before": "fresh",
+    "after": "newOwner",
+    "binding": "Lbr/edu/tcc/owners/OwnerController;.create(LOwner;)LResponseEntity<LOwner;>;#fresh"
+  },
+  {
+    "file": "owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java",
+    "type": "Owner",
+    "kind": "local",
+    "before": "saved",
+    "after": "savedOwner",
+    "binding": "Lbr/edu/tcc/owners/OwnerController;.create(LOwner;)LResponseEntity<LOwner;>;#saved"
+  },
+  {
+    "file": "gateway/src/test/java/br/edu/tcc/gateway/GatewayRoutesTests.java",
+    "type": "RouteDefinitionLocator",
+    "kind": "field",
+    "before": "routes",
+    "after": "routeDefinitionLocator",
+    "binding": "Lbr/edu/tcc/gateway/GatewayRoutesTests;.routes)LRouteDefinitionLocator;"
+  },
+  {
+    "file": "gateway/src/test/java/br/edu/tcc/gateway/GatewayRoutesTests.java",
+    "type": "Object",
+    "kind": "local",
+    "before": "definitions",
+    "after": "routeDefinitions",
+    "binding": "Lbr/edu/tcc/gateway/GatewayRoutesTests;.preservesOwnersOnlyRoutesAndHostFilter()V#definitions"
+  },
+  {
+    "file": "gateway/src/test/java/br/edu/tcc/gateway/GatewayRoutesTests.java",
+    "type": "Object",
+    "kind": "local",
+    "before": "owners",
+    "after": "ownersRouteDefinition",
+    "binding": "Lbr/edu/tcc/gateway/GatewayRoutesTests;.preservesOwnersOnlyRoutesAndHostFilter()V#owners"
+  },
+  {
+    "file": "gateway/src/test/java/br/edu/tcc/gateway/GatewayRoutesTests.java",
+    "type": "Object",
+    "kind": "local",
+    "before": "legacy",
+    "after": "legacyRouteDefinition",
+    "binding": "Lbr/edu/tcc/gateway/GatewayRoutesTests;.preservesOwnersOnlyRoutesAndHostFilter()V#legacy"
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "type": "Connection",
+    "kind": "local",
+    "before": "old",
+    "after": "sourceConnection",
+    "binding": "LMigrateOwners;.main([Ljava/lang/String;)V|Ljava/lang/Exception;#0#0#old"
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "type": "ResultSet",
+    "kind": "local",
+    "before": "orphans",
+    "after": "orphanResultSet",
+    "binding": "LMigrateOwners;.main([Ljava/lang/String;)V|Ljava/lang/Exception;#0#0#0#orphans"
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "type": "Connection",
+    "kind": "local",
+    "before": "legacy",
+    "after": "legacyConnection",
+    "binding": "LMigrateOwners;.main([Ljava/lang/String;)V|Ljava/lang/Exception;#0#0#0#0#0#legacy"
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "type": "Connection",
+    "kind": "local",
+    "before": "owners",
+    "after": "ownersConnection",
+    "binding": "LMigrateOwners;.main([Ljava/lang/String;)V|Ljava/lang/Exception;#0#0#0#0#0#owners"
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "type": "Connection",
+    "kind": "parameter",
+    "before": "c",
+    "after": "connection",
+    "binding": "LMigrateOwners;.sql(Ljava/sql/Connection;Ljava/lang/String;)V|Ljava/lang/Exception;#c#0#0"
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "type": "ResultSet",
+    "kind": "local",
+    "before": "rows",
+    "after": "resultSet",
+    "binding": "LMigrateOwners;.copy(Ljava/sql/Connection;Ljava/sql/Connection;Ljava/lang/String;)V|Ljava/lang/Exception;#0#0#rows"
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "type": "PreparedStatement",
+    "kind": "local",
+    "before": "insert",
+    "after": "preparedStatement",
+    "binding": "LMigrateOwners;.copy(Ljava/sql/Connection;Ljava/sql/Connection;Ljava/lang/String;)V|Ljava/lang/Exception;#0#0#0#0#0#insert"
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "type": "ResultSet",
+    "kind": "local",
+    "before": "max",
+    "after": "maxResultSet",
+    "binding": "LMigrateOwners;.copy(Ljava/sql/Connection;Ljava/sql/Connection;Ljava/lang/String;)V|Ljava/lang/Exception;#1#max"
+  }
+]

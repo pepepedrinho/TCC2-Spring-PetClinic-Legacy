@@ -1,0 +1,15 @@
+{
+  "purpose": "Controle da diferença de LCOM já existente entre fontes históricos e fontes organizados antes da centralização; não integra os cenários de monólito A/B/C.",
+  "commit": "5b6a3b173153d5be8f4625e96ab627aa5f3bd4e6",
+  "command": [
+    "C:\\Program Files\\Java\\jdk-17\\bin\\java.exe",
+    "-jar",
+    "C:\\TCC2\\ferramentas\\ck\\target\\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar",
+    "C:\\Users\\Theki\\Documents\\Codex\\2026-11-03\\files-pasted-by-the-user-padroniza\\work\\centralizacao\\owners-historico-controle\\owners-service\\src\\main\\java",
+    "false",
+    "0",
+    "false",
+    "C:\\Users\\Theki\\Documents\\Codex\\2026-11-03\\files-pasted-by-the-user-padroniza\\work\\centralizacao\\C\\docs\\metricas\\v2-centralizacao-erros\\owners-historico-controle"
+  ],
+  "archiveSha256": "db4292bb0d7b0a15ba74edbe6346f09f83163598cd61f51b4d546c42b2d8583d"
+}

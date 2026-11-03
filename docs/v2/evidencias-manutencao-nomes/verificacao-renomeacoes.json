@@ -1,0 +1,113 @@
+[
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true,
+    "lambda_references_verified": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/PetControllerTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/PetTypeFormatterTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/system/ProductionConfigurationTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/vet/VetControllerTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/test/java/org/springframework/samples/petclinic/vet/VetTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/integration/OwnersClient.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetController.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/system/LegacyDatabaseInitializer.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "src/main/java/org/springframework/samples/petclinic/vet/VetController.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "owners-service/src/test/java/br/edu/tcc/owners/OwnerApiTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "gateway/src/test/java/br/edu/tcc/gateway/GatewayRoutesTests.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  },
+  {
+    "file": "scripts/MigrateOwners.java",
+    "variable_rename_only": true,
+    "comments_unchanged": true
+  }
+]

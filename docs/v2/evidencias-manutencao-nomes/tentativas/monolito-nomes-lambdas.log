@@ -1,0 +1,109 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------< org.springframework.samples:spring-petclinic >------------
+[INFO] Building petclinic 1.5.1
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:2.6.1:clean (default-clean) @ spring-petclinic ---
+[INFO] 
+[INFO] --- cobertura:2.7:clean (default) @ spring-petclinic ---
+[INFO] Skipping cobertura execution
+[INFO] 
+[INFO] --- git-commit-id:2.2.2:revision (default) @ spring-petclinic ---
+[INFO] dotGitDirectory is null, aborting execution!
+[INFO] 
+[INFO] --- spring-boot:1.5.4.RELEASE:build-info (default) @ spring-petclinic ---
+[INFO] 
+[INFO] --- wro4j:1.8.0:run (default) @ spring-petclinic ---
+[INFO] C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current/src/main/less
+[INFO] Executing the mojo: 
+[INFO] Wro4j Model path: C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current\src\main\wro\wro.xml
+[INFO] targetGroups: null
+[INFO] minimize: true
+[INFO] ignoreMissingResources: null
+[INFO] parallelProcessing: false
+[INFO] buildDirectory: C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current\target
+[INFO] destinationFolder: C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current\target
+[INFO] cssDestinationFolder: C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current\target\classes\static\resources\css
+[INFO] The following groups will be processed: [petclinic]
+[INFO] folder: C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current\target\classes\static\resources\css
+[INFO] processing group: petclinic.css
+[WARNING] Less warnings are:
+[WARNING] 10:1 Cannot link source map. Css result location is not know and could not be deduced from input less source..
+[INFO] file size: petclinic.css -> 152399 bytes
+[INFO] C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current\target\classes\static\resources\css\petclinic.css (152399 bytes)
+[INFO] folder: C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current\target
+[INFO] processing group: petclinic.js
+[INFO] 
+[INFO] --- resources:2.6:resources (default-resources) @ spring-petclinic ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] Copying 36 resources
+[INFO] 
+[INFO] --- compiler:3.1:compile (default-compile) @ spring-petclinic ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 28 source files to C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current\target\classes
+[INFO] 
+[INFO] --- resources:2.6:testResources (default-testResources) @ spring-petclinic ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- compiler:3.1:testCompile (default-testCompile) @ spring-petclinic ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 13 source files to C:\Users\Theki\Documents\Codex\2026-11-03\files-pasted-by-the-user-padroniza\work\finalizacao\current\target\test-classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[47,51] cannot find symbol
+  symbol:   variable client
+  location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[53,53] cannot find symbol
+  symbol:   variable client
+  location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[59,61] cannot find symbol
+  symbol:   variable client
+  location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[67,61] cannot find symbol
+  symbol:   variable client
+  location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[73,61] cannot find symbol
+  symbol:   variable client
+  location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[92,61] cannot find symbol
+  symbol:   variable client
+  location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[INFO] 6 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  21.752 s
+[INFO] Finished at: 2026-11-03T17:18:29-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:testCompile (default-testCompile) on project spring-petclinic: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[47,51] cannot find symbol
+[ERROR]   symbol:   variable client
+[ERROR]   location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[53,53] cannot find symbol
+[ERROR]   symbol:   variable client
+[ERROR]   location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[59,61] cannot find symbol
+[ERROR]   symbol:   variable client
+[ERROR]   location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[67,61] cannot find symbol
+[ERROR]   symbol:   variable client
+[ERROR]   location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[73,61] cannot find symbol
+[ERROR]   symbol:   variable client
+[ERROR]   location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] /C:/Users/Theki/Documents/Codex/2026-11-03/files-pasted-by-the-user-padroniza/work/finalizacao/current/src/test/java/org/springframework/samples/petclinic/integration/OwnersClientTests.java:[92,61] cannot find symbol
+[ERROR]   symbol:   variable client
+[ERROR]   location: class org.springframework.samples.petclinic.integration.OwnersClientTests
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

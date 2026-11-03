@@ -1,0 +1,3 @@
+# Raw academic artifacts retain CRLF and whitespace exactly; active sources keep normal checks.
+/docs/metricas/v2-centralizacao-erros/** -text -whitespace
+/docs/v2/evidencias-manutencao-nomes/** -text -whitespace

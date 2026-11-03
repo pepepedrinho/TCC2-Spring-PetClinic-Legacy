@@ -13,11 +13,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class ProductionConfigurationTests {
 
     @Autowired
-    private VetRepository vets;
+    private VetRepository vetRepository;
 
     @Test
     public void testFindAll() throws Exception {
-        vets.findAll();
-        vets.findAll(); // served from cache
+        vetRepository.findAll();
+        vetRepository.findAll(); // served from cache
     }
 }

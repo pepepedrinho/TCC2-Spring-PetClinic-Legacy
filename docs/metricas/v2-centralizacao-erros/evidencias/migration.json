@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "utc": "2026-11-03T18:56:30.623493+00:00",
+  "output": [
+    "",
+    "owners: 11 rows copied\nvets: 6 rows copied\nspecialties: 3 rows copied\nvet_specialties: 5 rows copied\ntypes: 6 rows copied\npets: 14 rows copied\nvisits: 5 rows copied\nPASS: migration complete: C:\\Users\\Theki\\Documents\\Codex\\2026-11-03\\files-pasted-by-the-user-padroniza\\work\\centralizacao\\C\\.work\\migration-20261103-155624\\target\n",
+    "PASS: IDs, Owner-Pet-Visit, absence of local Owners, identity sequence\n",
+    "PASS: existing target refused; source files unchanged (SHA-256)"
+  ],
+  "sourceHashes": {
+    "source.properties": "09d8379ad1b261302c006c54335b8841989d8654cb0bbe590ada9170549d0e74",
+    "source.script": "f73b95c3ae2f9a105780faa57e2b123f85d04dc5465ff3790445f0b48c660756"
+  }
+}

@@ -60,14 +60,16 @@ public class Pet extends NamedEntity {
     @JoinColumn(name = "type_id")
     private PetType type;
 
+    // Na origem, @ManyToOne e @JoinColumn mapeavam Owner diretamente.
+    // O trecho original integral e o mapeamento atual estão no documento de estudo.
     @Column(name = "owner_id", nullable = false)
     private Integer ownerId;
 
-    @javax.persistence.Transient
-    private Owner owner;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.EAGER)
     private Set<Visit> visits = new LinkedHashSet<>();
+
+    @javax.persistence.Transient
+    private Owner owner;
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
@@ -85,11 +87,25 @@ public class Pet extends NamedEntity {
         this.type = type;
     }
 
-    public Integer getOwnerId() { return this.ownerId; }
+    public Integer getOwnerId() {
+        return this.ownerId;
+    }
 
     public Owner getOwner() {
         return this.owner;
     }
+
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/main/java/org/springframework/samples/petclinic/owner/Pet.java: setOwner
+    // ============================================================
+    // protected void setOwner(Owner owner) {
+    //         this.owner = owner;
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // O vínculo usa ownerId persistente e Owner transitório, composto pelo legado.
+    // ============================================================
 
     protected void setOwner(Owner owner) {
         this.owner = owner;

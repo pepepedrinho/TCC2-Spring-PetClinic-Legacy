@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Collection;
 import java.util.Date;
 
@@ -22,6 +20,8 @@ import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration test of the Service and the Repository layer.
@@ -49,46 +49,61 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClinicServiceTests {
 
     @Autowired
-    protected OwnerRepository owners;
+    protected OwnerRepository ownerRepository;
 
     @org.springframework.boot.test.mock.mockito.MockBean
-    private org.springframework.samples.petclinic.integration.OwnersClient client;
+    private org.springframework.samples.petclinic.integration.OwnersClient ownersClient;
+
+    @Autowired
+    protected PetRepository petRepository;
+
+    @Autowired
+    protected VisitRepository visitRepository;
+
+    @Autowired
+    protected VetRepository vetRepository;
 
     @org.junit.Before
     public void remoteOwners() {
-        org.mockito.Mockito.when(client.findById(org.mockito.Matchers.anyInt())).thenAnswer(call -> {
-            Owner owner = new Owner(); owner.setId((Integer) call.getArguments()[0]);
+        org.mockito.Mockito.when(ownersClient.findById(org.mockito.Matchers.anyInt())).thenAnswer(call -> {
+            Owner owner = new Owner();
+            owner.setId((Integer) call.getArguments()[0]);
             owner.setFirstName(owner.getId() == 6 ? "Jean" : "George");
-            owner.setLastName("Franklin"); return owner;
+            owner.setLastName("Franklin");
+            return owner;
         });
-        org.mockito.Mockito.when(client.save(org.mockito.Matchers.any(Owner.class)))
-            .thenAnswer(call -> call.getArguments()[0]);
+        org.mockito.Mockito.when(ownersClient.save(org.mockito.Matchers.any(Owner.class)))
+                .thenAnswer(call -> call.getArguments()[0]);
     }
-
-    @Autowired
-    protected PetRepository pets;
-
-    @Autowired
-    protected VisitRepository visits;
-
-    @Autowired
-    protected VetRepository vets;
-
 
     @Test
     public void shouldFindSingleOwnerWithPet() {
-        Owner owner = this.owners.findById(1);
+        Owner owner = this.ownerRepository.findById(1);
         assertThat(owner.getLastName()).startsWith("Franklin");
         assertThat(owner.getPets().size()).isEqualTo(1);
         assertThat(owner.getPets().get(0).getType()).isNotNull();
         assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
     }
 
-
+    // ============================================================
+    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+    // Origem: src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java: shouldFindPetWithCorrectId
+    // ============================================================
+    // @Test
+    //     public void shouldFindPetWithCorrectId() {
+    //         Pet pet7 = this.pets.findById(7);
+    //         assertThat(pet7.getName()).startsWith("Samantha");
+    //         assertThat(pet7.getOwner().getFirstName()).isEqualTo("Jean");
+    //
+    //     }
+    // ============================================================
+    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+    // A asserção da V2 verifica ownerId local em vez de navegar em associação JPA para Owner.
+    // ============================================================
 
     @Test
     public void shouldFindPetWithCorrectId() {
-        Pet pet7 = this.pets.findById(7);
+        Pet pet7 = this.petRepository.findById(7);
         assertThat(pet7.getName()).startsWith("Samantha");
         assertThat(pet7.getOwnerId()).isEqualTo(6);
 
@@ -96,7 +111,7 @@ public class ClinicServiceTests {
 
     @Test
     public void shouldFindAllPetTypes() {
-        Collection<PetType> petTypes = this.pets.findPetTypes();
+        Collection<PetType> petTypes = this.petRepository.findPetTypes();
 
         PetType petType1 = EntityUtils.getById(petTypes, PetType.class, 1);
         assertThat(petType1.getName()).isEqualTo("cat");
@@ -107,21 +122,21 @@ public class ClinicServiceTests {
     @Test
     @Transactional
     public void shouldInsertPetIntoDatabaseAndGenerateId() {
-        Owner owner6 = this.owners.findById(6);
+        Owner owner6 = this.ownerRepository.findById(6);
         int found = owner6.getPets().size();
 
         Pet pet = new Pet();
         pet.setName("bowser");
-        Collection<PetType> types = this.pets.findPetTypes();
+        Collection<PetType> types = this.petRepository.findPetTypes();
         pet.setType(EntityUtils.getById(types, PetType.class, 2));
         pet.setBirthDate(new Date());
         owner6.addPet(pet);
         assertThat(owner6.getPets().size()).isEqualTo(found + 1);
 
-        this.pets.save(pet);
-        this.owners.save(owner6);
+        this.petRepository.save(pet);
+        this.ownerRepository.save(owner6);
 
-        owner6 = this.owners.findById(6);
+        owner6 = this.ownerRepository.findById(6);
         assertThat(owner6.getPets().size()).isEqualTo(found + 1);
         // checks that id has been generated
         assertThat(pet.getId()).isNotNull();
@@ -130,20 +145,20 @@ public class ClinicServiceTests {
     @Test
     @Transactional
     public void shouldUpdatePetName() throws Exception {
-        Pet pet7 = this.pets.findById(7);
+        Pet pet7 = this.petRepository.findById(7);
         String oldName = pet7.getName();
 
         String newName = oldName + "X";
         pet7.setName(newName);
-        this.pets.save(pet7);
+        this.petRepository.save(pet7);
 
-        pet7 = this.pets.findById(7);
+        pet7 = this.petRepository.findById(7);
         assertThat(pet7.getName()).isEqualTo(newName);
     }
 
     @Test
     public void shouldFindVets() {
-        Collection<Vet> vets = this.vets.findAll();
+        Collection<Vet> vets = this.vetRepository.findAll();
 
         Vet vet = EntityUtils.getById(vets, Vet.class, 3);
         assertThat(vet.getLastName()).isEqualTo("Douglas");
@@ -155,22 +170,22 @@ public class ClinicServiceTests {
     @Test
     @Transactional
     public void shouldAddNewVisitForPet() {
-        Pet pet7 = this.pets.findById(7);
+        Pet pet7 = this.petRepository.findById(7);
         int found = pet7.getVisits().size();
         Visit visit = new Visit();
         pet7.addVisit(visit);
         visit.setDescription("test");
-        this.visits.save(visit);
-        this.pets.save(pet7);
+        this.visitRepository.save(visit);
+        this.petRepository.save(pet7);
 
-        pet7 = this.pets.findById(7);
+        pet7 = this.petRepository.findById(7);
         assertThat(pet7.getVisits().size()).isEqualTo(found + 1);
         assertThat(visit.getId()).isNotNull();
     }
 
     @Test
     public void shouldFindVisitsByPetId() throws Exception {
-        Collection<Visit> visits = this.visits.findByPetId(7);
+        Collection<Visit> visits = this.visitRepository.findByPetId(7);
         assertThat(visits.size()).isEqualTo(2);
         Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
         assertThat(visitArr[0].getDate()).isNotNull();
