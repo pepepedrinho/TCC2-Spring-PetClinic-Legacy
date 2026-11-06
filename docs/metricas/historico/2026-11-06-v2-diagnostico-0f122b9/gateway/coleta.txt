@@ -1,0 +1,6 @@
+"C:\Program Files\Java\jdk-17\bin\java.exe" -jar C:\TCC2\ferramentas\ck\target\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\projects\gateway\src\main\java" false 0 false "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\validacao-final-v2-2026-11-06\ck-diagnostica\gateway"
+
+log4j:WARN No appenders could be found for logger (com.github.mauricioaniche.ck.CK).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+Metrics extracted!!!

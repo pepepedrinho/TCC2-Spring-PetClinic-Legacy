@@ -1,0 +1,11 @@
+PASS: hidden ID rendered; forged edit retained URL ID and left Leo with Owner 1.
+REPRODUCED: forged Visit request saved to Pet 1 instead of the Pet in the URL.
+PASS: browser-style empty ID created a Pet; remote Owner composed with each local Pet once.
+{
+  "result": "PASS",
+  "utc": "2026-11-06T08:08:08.080940+00:00",
+  "ownerId": 11,
+  "petId": 14,
+  "databases": "C:\\Users\\Theki\\OneDrive\\\u00c1rea de Trabalho\\spring-petclinic-legado\\.work\\acceptance-20261106-050509",
+  "restart": "abrupt process termination; same file databases"
+}

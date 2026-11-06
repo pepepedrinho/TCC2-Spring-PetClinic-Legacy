@@ -1,0 +1,6 @@
+componente,tipos_CK,cbo,wmc,rfc,lcom,soma_lcom*
+A baseline,24,160.0,118.0,83.0,141.0,nao interpretada (normalizada)
+B monolito,28,182.0,149.0,134.0,164.0,nao interpretada (normalizada)
+C owners,4,32.0,20.0,11.0,36.0,nao interpretada (normalizada)
+Gateway (separado),1,2.0,1.0,1.0,0.0,nao interpretada (normalizada)
+V2 completa (B+C+Gateway),33,216.0,170.0,146.0,200.0,nao interpretada (normalizada)

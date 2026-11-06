@@ -1,0 +1,271 @@
+diff --git a/projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/OwnerIntegrationAdapter.java b/projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/OwnerIntegrationAdapter.java
+index c306d75..270f827 100644
+--- a/projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/OwnerIntegrationAdapter.java
++++ b/projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/OwnerIntegrationAdapter.java
+@@ -24,9 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
+ @Service
+ public class OwnerIntegrationAdapter implements OwnerRepository {
+     private final String url;
+-
+     private final RestTemplate restTemplate;
+-
+     private final PetRepository petRepository;
+ 
+     public OwnerIntegrationAdapter(@Value("${owners.base-url}") String url, PetRepository petRepository) {
+diff --git a/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Owner.java b/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+index 05d2292..d6b2688 100644
+--- a/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Owner.java
++++ b/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Owner.java
+@@ -1,3 +1,4 @@
++
+ /*
+  * Copyright 2002-2013 the original author or authors.
+  *
+@@ -37,10 +38,11 @@ import org.springframework.samples.petclinic.model.Person;
+  * @author Sam Brannen
+  * @author Michael Isvy
+  */
+-// View adapter: authoritative owner data is remote; never persisted here.
+-// Na V2 esta classe é um modelo de apresentação sem @Entity. O mapeamento original completo está em
+-// docs/v2/estudo-codigo-antes-depois.md.
++
++// Originalmente, Owner era uma entidade JPA (@Entity).
++// Agora representa os dados do Owner remoto, sem persistência no monólito.
+ public class Owner extends Person {
++
+     @NotEmpty
+     private String address;
+ 
+@@ -124,25 +126,15 @@ public class Owner extends Person {
+         return null;
+     }
+ 
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+-    // Origem: src/main/java/org/springframework/samples/petclinic/owner/Owner.java: addPet
+-    // ============================================================
+-    // public void addPet(Pet pet) {
+-    //         if (pet.isNew()) {
+-    //             getPetsInternal().add(pet);
+-    //         }
+-    //         pet.setOwner(this);
+-    //     }
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+-    // O Owner remoto é composto com Pets persistidos no legado.
+-    // ============================================================
+-
+     public void addPet(Pet pet) {
++
++        // Original: if (pet.isNew())
++        // Permite associar também Pets existentes ao Owner remoto,
++        // necessário para a recomposição da coleção no monólito.
+         if (!getPetsInternal().contains(pet)) {
+             getPetsInternal().add(pet);
+         }
++
+         pet.setOwner(this);
+     }
+ 
+@@ -150,13 +142,13 @@ public class Owner extends Person {
+     public String toString() {
+         return new ToStringCreator(this)
+ 
+-                .append("id", this.getId())
+-                .append("new", this.isNew())
+-                .append("lastName", this.getLastName())
+-                .append("firstName", this.getFirstName())
+-                .append("address", this.address)
+-                .append("city", this.city)
+-                .append("telephone", this.telephone)
+-                .toString();
++            .append("id", this.getId())
++            .append("new", this.isNew())
++            .append("lastName", this.getLastName())
++            .append("firstName", this.getFirstName())
++            .append("address", this.address)
++            .append("city", this.city)
++            .append("telephone", this.telephone)
++            .toString();
+     }
+ }
+diff --git a/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java b/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+index b506e2f..f49e3f1 100644
+--- a/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
++++ b/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java
+@@ -1,62 +1,43 @@
++
+ package org.springframework.samples.petclinic.owner;
+ 
+ import java.util.Collection;
+ 
+-/** Contrato de acesso a Owners para o código legado. */
++// Originalmente, o Spring Data JPA implementava a persistência local.
++// Agora, a implementação é realizada por OwnerIntegrationAdapter via HTTP.
+ public interface OwnerRepository {
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+-    // Origem: src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java: findByLastName
+-    // ============================================================
+-    // /**
+-    //      * Retrieve {@link Owner}s from the data store by last name, returning all owners
+-    //      * whose last name <i>starts</i> with the given name.
+-    //      * @param lastName Value to search for
+-    //      * @return a Collection of matching {@link Owner}s (or an empty Collection if none
+-    //      * found)
+-    //      */
+-    //     @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
+-    //     @Transactional(readOnly = true)
+-    //     Collection<Owner> findByLastName(@Param("lastName") String lastName);
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+-    // A implementação via HTTP e a composição com Pets locais ficam em OwnerIntegrationAdapter.
+-    // ============================================================
++
++    /**
++     * Retrieve {@link Owner}s from the data store by last name, returning all owners
++     * whose last name <i>starts</i> with the given name.
++     * @param lastName Value to search for
++     * @return a Collection of matching {@link Owner}s (or an empty Collection if none
++     * found)
++     */
++
++
++    // @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
++    // @Transactional(readOnly = true)
++    // Collection<Owner> findByLastName(@Param("lastName") String lastName);
+ 
+     Collection<Owner> findByLastName(String lastName);
+ 
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+-    // Origem: src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java: findById
+-    // ============================================================
+-    // /**
+-    //      * Retrieve an {@link Owner} from the data store by id.
+-    //      * @param id the id to search for
+-    //      * @return the {@link Owner} if found
+-    //      */
+-    //     @Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
+-    //     @Transactional(readOnly = true)
+-    //     Owner findById(@Param("id") Integer id);
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+-    // A implementação via HTTP e a composição com Pets locais ficam em OwnerIntegrationAdapter.
+-    // ============================================================
++    /**
++     * Retrieve an {@link Owner} from the data store by id.
++     * @param id the id to search for
++     * @return the {@link Owner} if found
++     */
++
++    // @Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
++    // @Transactional(readOnly = true)
++    // Owner findById(@Param("id") Integer id);
+ 
+     Owner findById(Integer id);
+ 
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+-    // Origem: src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java: save
+-    // ============================================================
+-    // /**
+-    //      * Save an {@link Owner} to the data store, either inserting or updating it.
+-    //      * @param owner the {@link Owner} to save
+-    //      */
+-    //     void save(Owner owner);
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+-    // A persistência via HTTP fica em OwnerIntegrationAdapter.
+-    // ============================================================
++    /**
++     * Save an {@link Owner} to the data store, either inserting or updating it.
++     * @param owner the {@link Owner} to save
++     */
+ 
+     void save(Owner owner);
+ }
+diff --git a/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Pet.java b/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+index 7d17231..dbf3493 100644
+--- a/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Pet.java
++++ b/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Pet.java
+@@ -68,6 +68,7 @@ public class Pet extends NamedEntity {
+     @OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.EAGER)
+     private Set<Visit> visits = new LinkedHashSet<>();
+ 
++    // Mantém o Owner remoto em memória, sem persistir seus dados no monólito.
+     @javax.persistence.Transient
+     private Owner owner;
+ 
+@@ -87,14 +88,13 @@ public class Pet extends NamedEntity {
+         this.type = type;
+     }
+ 
+-    public Integer getOwnerId() {
+-        return this.ownerId;
+-    }
+-
+     public Owner getOwner() {
+         return this.owner;
+     }
+ 
++    public Integer getOwnerId() {
++        return this.ownerId;
++    }
+ 
+     protected void setOwner(Owner owner) {
+         this.owner = owner;
+diff --git a/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetController.java b/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetController.java
+index f6c56b0..8275283 100644
+--- a/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetController.java
++++ b/projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetController.java
+@@ -20,6 +20,7 @@ import java.util.Collection;
+ import javax.validation.Valid;
+ 
+ import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.samples.petclinic.integration.IntegrationErrorHandler;
+ import org.springframework.stereotype.Controller;
+ import org.springframework.ui.ModelMap;
+ import org.springframework.util.StringUtils;
+@@ -61,23 +62,9 @@ class PetController {
+         webDataBinder.setDisallowedFields("id");
+     }
+ 
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
+-    // Origem: src/main/java/org/springframework/samples/petclinic/owner/PetController.java: initPetBinder
+-    // ============================================================
+-    // @InitBinder("pet")
+-    //     public void initPetBinder(WebDataBinder dataBinder) {
+-    //         dataBinder.setValidator(new PetValidator());
+-    //     }
+-    // ============================================================
+-    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
+-    // O fluxo MVC da V2 restringe o binding e valida o vínculo local com o Owner remoto.
+-    // ============================================================
+-
+     @InitBinder("pet")
+     public void initPetBinder(WebDataBinder webDataBinder) {
+         webDataBinder.setValidator(new PetValidator());
+-        webDataBinder.setAllowedFields("name", "birthDate", "type");
+     }
+ 
+     @GetMapping("/pets/new")
+@@ -128,7 +115,7 @@ class PetController {
+         // Verifica se o Pet local pertence ao Owner informado.
+         checkOwnership(this.petRepository.findById(petId), owner.getId());
+ 
+-        // Define o ID do Pet pela URL, sem depender dos dados do formulário.
++        // Mantém o ID do Pet correspondente à rota de edição.
+         pet.setId(petId);
+ 
+         if (bindingResult.hasErrors()) {
+@@ -146,7 +133,7 @@ class PetController {
+     // impedindo operações com um Owner diferente do associado.
+     private void checkOwnership(Pet pet, Integer ownerId) {
+         if (pet == null || !ownerId.equals(pet.getOwnerId())) {
+-            throw org.springframework.samples.petclinic.integration.IntegrationErrorHandler.notFound();
++            throw IntegrationErrorHandler.notFound();
+         }
+     }
+ 

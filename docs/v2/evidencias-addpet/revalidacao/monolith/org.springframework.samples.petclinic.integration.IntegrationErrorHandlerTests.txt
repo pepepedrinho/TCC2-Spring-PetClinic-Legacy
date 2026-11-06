@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.springframework.samples.petclinic.integration.IntegrationErrorHandlerTests
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.369 sec - in org.springframework.samples.petclinic.integration.IntegrationErrorHandlerTests

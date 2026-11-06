@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "utc": "2026-11-06T07:59:13.931739+00:00",
+  "output": [
+    "",
+    "owners: 11 rows copied\nvets: 6 rows copied\nspecialties: 3 rows copied\nvet_specialties: 5 rows copied\ntypes: 6 rows copied\npets: 14 rows copied\nvisits: 5 rows copied\nPASS: migration complete: C:\\Users\\Theki\\OneDrive\\\u00c1rea de Trabalho\\spring-petclinic-legado\\.work\\migration-20261106-045907\\target\n",
+    "PASS: IDs, Owner-Pet-Visit, absence of local Owners, identity sequence\n",
+    "PASS: existing target refused; source files unchanged (SHA-256)"
+  ],
+  "sourceHashes": {
+    "source.properties": "d1e4278350a6262d50d6941822e65cc865e94c71090a4bdb1705c8359d5cbd07",
+    "source.script": "31d393b191921a7e0c8de96513916494e7e9417c07439e9e10898f81b2ed1337"
+  }
+}

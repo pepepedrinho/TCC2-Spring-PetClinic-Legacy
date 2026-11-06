@@ -1,0 +1,70 @@
+{
+  "description": "Revisão local posterior à coleta consolidada, sem commit",
+  "collectedUtc": "2026-11-06T19:06:10.5169104Z",
+  "branch": "tcc2-strangler-fig-v2",
+  "head": "3ccb9e05a304169d1a97806690a287a72386145b",
+  "previousEvaluatedHead": "1e8fa995390adeded74d965478b75240821ce098",
+  "workingTree": [
+    " M projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Owner.java",
+    "?? projects/monolith/src/test/java/org/springframework/samples/petclinic/owner/OwnerTests.java"
+  ],
+  "sourceRoot": "projects/monolith/src/main/java",
+  "changedSources": [
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Owner.java"
+  ],
+  "sourceSha256": {
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java": "f2fe1671adf3be3f6ea0972b3e40c56cdb2a05fb379e7737a96ba2209237c470",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java": "d3f1487cfcb0175dd5725b33203882e446f5f83d92c50695bb8d32797ecc755b",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/OwnerIntegrationAdapter.java": "e58a16fe996d43089a72857f5cfb984e2b0b658af0ba4798217fa0f1722b8ccc",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java": "78ee040b56bebb0f292cd41eefd1c9fb0bb13f597c1849b5822c24d43e1fd054",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java": "35642a01c4d5e7a25d5d689f8bf9d3609764627b65967d439f01a945bee5c7dc",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/package-info.java": "057448772508143b847c612d57027b081cd47bbe840f643c7dcaa757b9bee088",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/Person.java": "bd3b9da6ed77bbf67b576f985514f1a7d89f37f467faf21cf37adb997f16a5e1",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Owner.java": "21623ab3aa314dce62ba153627bfae5dcec426ec97e8a7345cb5cfb1a539a2bc",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java": "bbea0d3c4fe7f523417329c223e616f211feb8e18cf1cefd9a7121356ab5e1a7",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java": "9f89e561c7508dc68d2a355048b0651f091144b817819d25dd91ac3d8f446954",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Pet.java": "d966938c39736e50f8b253fb7fcc9a3a1e8960ae4c7f365f6c5454695e18d6b7",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetController.java": "1de5cb9328b65167cb8e35f6cc0ee1406fecbca8c9593925db550d8815965d6f",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetRepository.java": "f0dbedf55f65507a2f4bba113e97aff27153175a413582d809c87c395098f74a",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetType.java": "007486615ec691a1f9d9d496bebf73621993e6334e410eb100c206d809bd16da",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java": "ff54e9b0b66e996d7803916a6e5e9ce7814e0b4b56297cf30163dc16c6ebefdf",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetValidator.java": "86300c3e49671cad3d93e27835d306feaac6349925789e92c2e1c50980188254",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/VisitController.java": "07d83040c3bc5baab6355ee96c208947664c134905d74e62efd6b0c234c8ad81",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/CacheConfig.java": "be396eeec507032bcc21fe740e2aef3b3aeb80a50bb1a7105315e3b24901c701",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/CrashController.java": "4290d84b52b4f143a4550b86316525ebaaaa212e93be971eaf85a8d8c427246a",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/LegacyDatabaseInitializer.java": "8c1269b08b894bc7024254fa3d8b947db289faee55cfe2928eba093668fd0f9c",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/WelcomeController.java": "606e7a6017d5a5714a2f35a75b3f26592f65c497ae7b315e88db7f6a15fbb1c0",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/Specialty.java": "4d61cc83f9376802f892c62755dd882c9f219edb21b3a712509250d641847349",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/Vet.java": "b17b16328dd6ca784ce69ecbd4e1d85ff7fd29a390bbebc53823f413167b191b",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/VetController.java": "23e2126b83daa0ea5b2442cc8ec38d95927ae0f1efed4ecd1ca7a3f096577205",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java": "6896b980c29f6bc1b8e39a950ca654c4979fbee3a2d134197100b187c8fec584",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/Vets.java": "04fa06c2d600e902d005c2c794d1a363f165c60977de9f3e3172d05ac5088ba1",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/visit/Visit.java": "8f7d62e09c76c375c78c7c783930022c3cbc2d380496202b73976850abf3b08b",
+    "projects/monolith/src/main/java/org/springframework/samples/petclinic/visit/VisitRepository.java": "897f265fb79566cdb2b8e4d91d3fb11aa6efa9f7319a158e42271cd0490c10d5"
+  },
+  "ck": {
+    "version": "0.7.1-SNAPSHOT",
+    "sha256": "98893efdffd22fb2356560e9ed78b0528e01bbbad032dcd63be3863c73bfc517",
+    "parameters": [
+      "false",
+      "0",
+      "false"
+    ],
+    "javaVersion": "java version \"17.0.12\" 2024-07-16 LTS\r\nJava(TM) SE Runtime Environment (build 17.0.12+8-LTS-286)\r\nJava HotSpot(TM) 64-Bit Server VM (build 17.0.12+8-LTS-286, mixed mode, sharing)"
+  },
+  "command": [
+    "C:\\Program Files\\Java\\jdk-17\\bin\\java.exe",
+    "-jar",
+    "C:\\TCC2\\ferramentas\\ck\\target\\ck-0.7.1-SNAPSHOT-jar-with-dependencies.jar",
+    "C:\\Users\\Theki\\OneDrive\\Área de Trabalho\\spring-petclinic-legado\\.work\\refatoracao-addpet\\.work\\ck-addpet-20261106-160610-024\\fontes\\projects\\monolith\\src\\main\\java",
+    "false",
+    "0",
+    "false",
+    "C:\\Users\\Theki\\OneDrive\\Área de Trabalho\\spring-petclinic-legado\\.work\\refatoracao-addpet\\.work\\ck-addpet-20261106-160610-024"
+  ],
+  "outputSha256": {
+    "class.csv": "73b59dd91120a375b85c2d83b5648d712aacdef9e42e1a1733e28efad82bbd81",
+    "method.csv": "561168fce70ba120ab08d2825bcf57bc7395b5779a7eee937368272c0b1d2eb0",
+    "coleta.txt": "8dd210c026762910d237bc87fdf0d501650d9c13d7899d067a4af1c92b02acfb"
+  }
+}

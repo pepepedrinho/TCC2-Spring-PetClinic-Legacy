@@ -1,0 +1,17 @@
+PASS: hidden ID rendered; forged edit retained URL ID and left Leo with Owner 1.
+{
+  "result": "FAIL",
+  "error": "AssertionError('V2Visit')",
+  "logs": "C:\\Users\\Theki\\OneDrive\\\u00c1rea de Trabalho\\spring-petclinic-legado\\.work\\acceptance-20261106-050027"
+}
+Traceback (most recent call last):
+  File "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\validacao-final-v2-2026-11-06/acceptance-directed.py", line 34, in <module>
+    exec(compile(text, str(script), 'exec'), {'__name__': '__main__', '__file__': str(script)})
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\scripts\acceptance.py", line 95, in <module>
+    req(f'/owners/{oid}/pets/{pid}/edit')
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\scripts\acceptance.py", line 54, in has
+    def has(body,text): assert text in body, text
+                               ^^^^^^^^^^^^
+AssertionError: V2Visit

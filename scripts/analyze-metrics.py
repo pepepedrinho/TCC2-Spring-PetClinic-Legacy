@@ -19,7 +19,7 @@ def md(rows):
  keys=list(rows[0]);return '\n'.join(['| '+' | '.join(keys)+' |','| '+' | '.join(['---']*len(keys))+' |']+['| '+' | '.join(str(row[k]).replace('|','/') for k in keys)+' |' for row in rows])
 def vals(row):return ', '.join(f'{m}={row[m]}' for m in M)
 def gitfile(ref,path):return subprocess.check_output(['git','show',ref+':'+path],cwd=ROOT)
-base=read(ROOT/'docs/baseline/class.csv');recollected=read(ROOT/'docs/metricas/v2/baseline-recoletada/class.csv')
+base=read(ROOT/'docs/metricas/historico/baseline-original-c36452a/class.csv');recollected=read(ROOT/'docs/metricas/historico/2026-10-28-v2-extracao-5b6a3b1/baseline-recoletada/class.csv')
 original={r['class']:r for r in base};fresh={r['class']:r for r in recollected}
 assert original.keys()==fresh.keys()
 for name,row in original.items():
@@ -107,7 +107,7 @@ for m in M:
 report+='''
 As medias descrevem populacoes de tamanhos e papeis diferentes. A adaptacao adiciona comunicacao HTTP, composicao e tratamento de falhas, enquanto a logica cadastral passa ao servico. LCOM e LCOM* sao sensiveis a getters/setters e campos: valores altos em representacoes e entidades nao bastam para inferir responsabilidades indevidas. CBO estatico nao mede dependencia operacional, latencia HTTP, consistencia distribuida ou disponibilidade. Os resultados nao demonstram melhoria uniforme de acoplamento, coesao ou complexidade nem causalidade entre Strangler Fig e qualidade global.
 
-Proveniencia: proveniencia.json identifica HEAD no momento da coleta; fontes-avaliadas.json identifica cada arquivo efetivamente analisado, inclusive se havia alteracoes locais. O commit posterior de evidencias nao altera essas fontes. CSVs brutos nao foram normalizados ou reescritos. A baseline original em docs/baseline permanece intacta.
+Proveniencia: proveniencia.json identifica HEAD no momento da coleta; fontes-avaliadas.json identifica cada arquivo efetivamente analisado, inclusive se havia alteracoes locais. O commit posterior de evidencias nao altera essas fontes. CSVs brutos nao foram normalizados ou reescritos. A baseline original em docs/metricas/historico/baseline-original-c36452a permanece intacta.
 '''
 (OUT/'relatorio.md').write_text(report,encoding='utf-8')
 print(md(summary));print('PASS: baseline original == recoleta historica para todos os valores nao relacionados a caminho')

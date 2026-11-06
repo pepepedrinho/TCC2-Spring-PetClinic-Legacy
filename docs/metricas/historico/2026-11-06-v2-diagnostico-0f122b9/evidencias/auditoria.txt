@@ -1,0 +1,9 @@
+PASS owners: all 11 original rows match after reopening; identity probe 102 persisted
+PASS vets: all 6 rows match after reopening
+PASS specialties: all 3 rows match after reopening
+PASS vet_specialties: all 5 rows match after reopening
+PASS types: all 6 rows match after reopening
+PASS pets: all 14 rows match after reopening
+PASS visits: all 5 rows match after reopening
+PASS Owner.addPet: one existing and one new Pet; repeated calls with the same instances do not duplicate entries
+PASS SHA-256: original migration fixture files unchanged after read-only audit
