@@ -4,7 +4,10 @@ from pathlib import Path
 from datetime import datetime,timezone
 root=Path(__file__).resolve().parents[1]
 run=root/'.work'/('migration-'+datetime.now().strftime('%Y%m%d-%H%M%S'));run.mkdir(parents=True)
-java=str(Path(os.environ.get('JAVA17_HOME',r'C:\Program Files\Java\jdk-17'))/'bin/java.exe')
+java_home=os.environ.get('JAVA17_HOME')
+if not java_home:
+    raise SystemExit('Defina JAVA17_HOME.')
+java=str(Path(java_home)/'bin/java.exe')
 repo=Path.home()/'.m2/repository'
 cp=str(repo/'org/hsqldb/hsqldb/2.3.5/hsqldb-2.3.5.jar')+';'+str(repo/'com/h2database/h2/2.3.232/h2-2.3.232.jar')
 for file in ('schema.sql','data.sql'):
@@ -44,7 +47,8 @@ class Fixture {
 }
 ''')
 def call(file,*args):
- return subprocess.run([java,'--class-path',cp,str(file),*map(str,args)],cwd=root,capture_output=True,text=True)
+ return subprocess.run([java,'-Dfile.encoding=UTF-8','--class-path',cp,str(file),*map(str,args)],
+                       cwd=root,capture_output=True,encoding='utf-8')
 def ok(result):
  assert result.returncode==0,result.stdout+result.stderr
  return result.stdout
@@ -57,6 +61,6 @@ outputs.append(ok(call(fixture,run,'verify')))
 retry=call(root/'scripts/MigrateOwners.java',run/'source',run/'target',root)
 assert retry.returncode!=0 and 'Target must not exist' in retry.stderr
 outputs.append('PASS: existing target refused; source files unchanged (SHA-256)')
-out=root/'docs/metricas/v2/evidencias/migration.json'
+out=run/'migration.json'
 out.write_text(json.dumps({'result':'PASS','utc':datetime.now(timezone.utc).isoformat(),'output':outputs,'sourceHashes':before},indent=2))
 print('\n'.join(outputs))

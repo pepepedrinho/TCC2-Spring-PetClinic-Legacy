@@ -34,8 +34,8 @@ class MigrateOwners {
                     Connection ownersConnection = DriverManager.getConnection(
                             "jdbc:h2:file:" + target.resolve("owners"), "sa",
                             "")) {
-                sql(legacyConnection, Files.readString(root.resolve("src/main/resources/db/hsqldb/schema.sql")));
-                String h2 = Files.readString(root.resolve("owners-service/src/main/resources/schema.sql"));
+                sql(legacyConnection, Files.readString(root.resolve("projects/monolith/src/main/resources/db/hsqldb/schema.sql")));
+                String h2 = Files.readString(root.resolve("projects/owners-service/src/main/resources/schema.sql"));
                 sql(ownersConnection, h2.substring(0, h2.indexOf("INSERT INTO")));
                 ownersConnection.createStatement().execute("INSERT INTO seed_history VALUES(1)");
                 copy(sourceConnection, ownersConnection, "owners");

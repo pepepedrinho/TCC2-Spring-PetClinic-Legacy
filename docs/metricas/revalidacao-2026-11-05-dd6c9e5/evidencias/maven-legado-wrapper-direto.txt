@@ -1,0 +1,12 @@
+CWD: C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual
+JAVA_HOME da execucao: C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot
+COMANDO: "C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot\bin\java.exe" -classpath "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\.mvn\wrapper\maven-wrapper.jar" "-Dmaven.multiModuleProjectDirectory=C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual" org.apache.maven.wrapper.MavenWrapperMain -v
+
+Apache Maven 3.3.3 (7994120775791599e205a5524ec3e0dfe41d4a06; 2015-04-22T08:57:37-03:00)
+Maven home: C:\Users\Theki\.m2\wrapper\dists\apache-maven-3.3.3-bin\3opbjp6rgl6qp7k2a6tljcpvgp\apache-maven-3.3.3
+Java version: 1.8.0_504, vendor: Temurin
+Java home: C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot\jre
+Default locale: pt_BR, platform encoding: Cp1252
+OS name: "windows 11", version: "10.0", arch: "amd64", family: "dos"
+
+EXIT CODE: 0

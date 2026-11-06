@@ -1,0 +1,7 @@
+CWD: C:\Users\Theki\OneDrive\√Årea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual
+JAVA_HOME da execucao: C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot
+COMANDO: cmd.exe /d /c call mvnw.cmd -o -B clean package -Dcobertura.skip=true
+
+Erro: N„o foi possÌvel localizar nem carregar a classe principal de
+
+EXIT CODE: 1

@@ -1,0 +1,14 @@
+CWD: C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\execucao-final
+JAVA_HOME da execucao: C:\Program Files\Java\jdk-17
+COMANDO: C:\Users\Theki\AppData\Local\Python\pythoncore-3.14-64\python.exe "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\execucao-final\scripts\acceptance.py"
+
+{
+  "result": "PASS",
+  "utc": "2026-11-05T17:06:18.306028+00:00",
+  "ownerId": 11,
+  "petId": 14,
+  "databases": "C:\\Users\\Theki\\OneDrive\\\u00c1rea de Trabalho\\spring-petclinic-legado\\.work\\revalidacao-2026-11-05\\execucao-final\\.work\\acceptance-20261105-140500",
+  "restart": "abrupt process termination; same file databases"
+}
+
+EXIT CODE: 0

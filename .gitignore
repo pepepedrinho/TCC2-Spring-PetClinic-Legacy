@@ -10,7 +10,8 @@ _site/
 # V2: artefatos locais e bancos preservados da implementacao anterior
 **/target/
 /data/
-/owners-service/data/
+/projects/owners-service/data/
+/projects/monolith/data/
 /.work/
 /tools/
 *.log

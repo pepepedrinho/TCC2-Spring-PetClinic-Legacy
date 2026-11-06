@@ -3,8 +3,11 @@ import json, os, re, socket, subprocess, time, urllib.request, urllib.error, url
 from pathlib import Path
 from datetime import datetime, timezone
 ROOT=Path(__file__).resolve().parents[1]
-JAVA8=os.environ.get('JAVA8_HOME',r'C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot')
-JAVA17=os.environ.get('JAVA17_HOME',r'C:\Program Files\Java\jdk-17')
+JAVA8=os.environ.get('JAVA8_HOME')
+JAVA17=os.environ.get('JAVA17_HOME')
+if not JAVA8 or not JAVA17:
+    raise SystemExit('Defina JAVA8_HOME e JAVA17_HOME.')
+PROJECTS=ROOT/'projects'
 RUN=ROOT/'.work'/('acceptance-'+datetime.now().strftime('%Y%m%d-%H%M%S'))
 RUN.mkdir(parents=True)
 checks=[]; procs={}; logs=[]
@@ -30,7 +33,11 @@ def start(name):
     env['LEGACY_DB_URL']='jdbc:hsqldb:file:'+str(RUN/'legacy').replace('\\','/')+';shutdown=true'
     env['OWNERS_DB_URL']='jdbc:h2:file:'+str(RUN/'owners').replace('\\','/')+';DB_CLOSE_ON_EXIT=FALSE;WRITE_DELAY=0'
     java=JAVA8 if name=='legacy' else JAVA17
-    jar={'legacy':ROOT/'target/spring-petclinic-1.5.1.jar','owners':ROOT/'owners-service/target/owners-service-1.0.0-SNAPSHOT.jar','gateway':ROOT/'gateway/target/petclinic-gateway-1.0.0-SNAPSHOT.jar'}[name]
+    jar={
+        'legacy':PROJECTS/'monolith/target/spring-petclinic-1.5.1.jar',
+        'owners':PROJECTS/'owners-service/target/owners-service-1.0.0-SNAPSHOT.jar',
+        'gateway':PROJECTS/'gateway/target/petclinic-gateway-1.0.0-SNAPSHOT.jar',
+    }[name]
     log=open(RUN/(name+str(len(logs))+'.log'),'w');logs.append(log)
     procs[name]=subprocess.Popen([str(Path(java)/'bin/java.exe'),'-jar',str(jar)],cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,creationflags=0x08000000)
 
@@ -102,6 +109,5 @@ except BaseException as e:
 finally:
     for name in list(procs):stop(name)
     for log in logs:log.close()
-    out=ROOT/'docs/metricas/v2/evidencias';out.mkdir(parents=True,exist_ok=True)
-    (out/'http-acceptance.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
+    (RUN/'http-acceptance.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     print(json.dumps({k:v for k,v in result.items() if k!='checks'},indent=2),flush=True)

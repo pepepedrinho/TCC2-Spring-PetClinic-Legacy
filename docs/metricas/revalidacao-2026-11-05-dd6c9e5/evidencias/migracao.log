@@ -1,0 +1,36 @@
+CWD: C:\Users\Theki\OneDrive\√Årea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual
+JAVA_HOME da execucao: C:\Program Files\Java\jdk-17
+COMANDO: C:\Users\Theki\AppData\Local\Python\pythoncore-3.14-64\python.exe "C:\Users\Theki\OneDrive\√Årea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\scripts\migration-isolada.py"
+
+Traceback (most recent call last):
+  File "C:\Users\Theki\OneDrive\¡rea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\scripts\migration-isolada.py", line 56, in <module>
+    outputs.append(ok(call(fixture,run,'verify')))
+                   ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Theki\OneDrive\¡rea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\scripts\migration-isolada.py", line 49, in ok
+    assert result.returncode==0,result.stdout+result.stderr
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError: nov. 05, 2026 2:02:45 PM org.hsqldb.persist.Logger logInfoEvent
+INFO: Database closed
+Exception in thread "main" org.h2.jdbc.JdbcSQLNonTransientException: The database is read only; SQL statement:
+INSERT INTO owners(first_name,last_name,address,city,telephone) VALUES('Next','Owner','R','C','123') [90097-232]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:566)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.message.DbException.get(DbException.java:188)
+	at org.h2.engine.Database.checkWritingAllowed(Database.java:1755)
+	at org.h2.table.Table.checkWritingAllowed(Table.java:1445)
+	at org.h2.engine.User.hasTableRight(User.java:204)
+	at org.h2.engine.User.checkTableRight(User.java:190)
+	at org.h2.command.dml.Insert.insertRows(Insert.java:143)
+	at org.h2.command.dml.Insert.update(Insert.java:135)
+	at org.h2.command.dml.DataChangeStatement.update(DataChangeStatement.java:74)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:139)
+	at org.h2.command.Command.executeUpdate(Command.java:304)
+	at org.h2.command.Command.executeUpdate(Command.java:248)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:262)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at Fixture.main(Fixture.java:24)
+
+
+EXIT CODE: 1

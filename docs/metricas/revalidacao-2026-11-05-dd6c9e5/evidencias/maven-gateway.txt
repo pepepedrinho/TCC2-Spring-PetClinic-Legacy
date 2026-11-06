@@ -1,0 +1,11 @@
+CWD: C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\gateway
+JAVA_HOME da execucao: C:\Program Files\Java\jdk-17
+COMANDO: cmd.exe /d /c call C:\TCC2\ferramentas\apache-maven-3.9.11\bin\mvn.cmd -v
+
+Apache Maven 3.9.11 (3e54c93a704957b63ee3494413a2b544fd3d825b)
+Maven home: C:\TCC2\ferramentas\apache-maven-3.9.11
+Java version: 17.0.12, vendor: Oracle Corporation, runtime: C:\Program Files\Java\jdk-17
+Default locale: pt_BR, platform encoding: Cp1252
+OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
+
+EXIT CODE: 0

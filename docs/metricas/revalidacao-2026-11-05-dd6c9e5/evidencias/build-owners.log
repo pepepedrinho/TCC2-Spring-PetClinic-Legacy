@@ -1,0 +1,76 @@
+CWD: C:\Users\Theki\OneDrive\√Årea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\owners-service
+JAVA_HOME da execucao: C:\Program Files\Java\jdk-17
+COMANDO: cmd.exe /d /c call C:\TCC2\ferramentas\apache-maven-3.9.11\bin\mvn.cmd -o -B clean package
+
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< br.edu.tcc:owners-service >----------------------
+[INFO] Building owners-service 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ owners-service ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ owners-service ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ owners-service ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 4 source files with javac [debug parameters release 17] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ owners-service ---
+[INFO] skip non existing resourceDirectory C:\Users\Theki\OneDrive\¡rea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\owners-service\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ owners-service ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 17] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.5.6:test (default-test) @ owners-service ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running br.edu.tcc.owners.OwnerApiTests
+14:02:08.810 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [br.edu.tcc.owners.OwnerApiTests]: OwnerApiTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+14:02:09.260 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration br.edu.tcc.owners.OwnersApplication for test class br.edu.tcc.owners.OwnerApiTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-11-05T14:02:11.706-03:00  INFO 3632 --- [owners-service] [           main] br.edu.tcc.owners.OwnerApiTests          : Starting OwnerApiTests using Java 17.0.12 with PID 3632 (started by Theki in C:\Users\Theki\OneDrive\¡rea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\owners-service)
+2026-11-05T14:02:11.708-03:00  INFO 3632 --- [owners-service] [           main] br.edu.tcc.owners.OwnerApiTests          : No active profile set, falling back to 1 default profile: "default"
+2026-11-05T14:02:14.959-03:00  INFO 3632 --- [owners-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-11-05T14:02:15.355-03:00  INFO 3632 --- [owners-service] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 367 ms. Found 1 JPA repository interface.
+2026-11-05T14:02:16.689-03:00  INFO 3632 --- [owners-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-05T14:02:17.870-03:00  INFO 3632 --- [owners-service] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:owners-tests user=SA
+2026-11-05T14:02:17.874-03:00  INFO 3632 --- [owners-service] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-05T14:02:18.470-03:00  INFO 3632 --- [owners-service] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-11-05T14:02:18.660-03:00  INFO 3632 --- [owners-service] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.53.Final
+2026-11-05T14:02:18.762-03:00  INFO 3632 --- [owners-service] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-11-05T14:02:19.809-03:00  INFO 3632 --- [owners-service] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-11-05T14:02:20.297-03:00  INFO 3632 --- [owners-service] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-11-05T14:02:23.179-03:00  INFO 3632 --- [owners-service] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-11-05T14:02:23.193-03:00  INFO 3632 --- [owners-service] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-11-05T14:02:24.024-03:00  INFO 3632 --- [owners-service] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-11-05T14:02:27.002-03:00  WARN 3632 --- [owners-service] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-11-05T14:02:27.883-03:00  INFO 3632 --- [owners-service] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-11-05T14:02:27.883-03:00  INFO 3632 --- [owners-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-11-05T14:02:27.886-03:00  INFO 3632 --- [owners-service] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-11-05T14:02:27.947-03:00  INFO 3632 --- [owners-service] [           main] br.edu.tcc.owners.OwnerApiTests          : Started OwnerApiTests in 17.703 seconds (process running for 21.779)
+Command '['cmd.exe', '/d', '/c', 'call', 'C:\\TCC2\\ferramentas\\apache-maven-3.9.11\\bin\\mvn.cmd', '-o', '-B', 'clean', 'package']' timed out after 300 seconds
+EXIT CODE: -1

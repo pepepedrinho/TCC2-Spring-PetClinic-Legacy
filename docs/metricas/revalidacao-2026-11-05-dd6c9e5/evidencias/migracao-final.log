@@ -1,0 +1,19 @@
+CWD: C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\execucao-final
+JAVA_HOME da execucao: C:\Program Files\Java\jdk-17
+COMANDO: C:\Users\Theki\AppData\Local\Python\pythoncore-3.14-64\python.exe "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\execucao-final\scripts\migration-isolada.py"
+
+
+owners: 11 rows copied
+vets: 6 rows copied
+specialties: 3 rows copied
+vet_specialties: 5 rows copied
+types: 6 rows copied
+pets: 14 rows copied
+visits: 5 rows copied
+PASS: migration complete: C:\Users\Theki\OneDrive\�rea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\execucao-final\.work\migration-20261105-140349\target
+
+PASS: IDs, Owner-Pet-Visit, absence of local Owners, identity sequence
+
+PASS: existing target refused; source files unchanged (SHA-256)
+
+EXIT CODE: 0

@@ -8,42 +8,67 @@ A branch `tcc2-strangler-fig-v2` mantém o Spring PetClinic legado e extrai some
 | Gateway | Java 17 / Boot 3.5.16 / Spring Cloud 2025.0.3 WebFlux | 8081 | Sem banco |
 | owners-service | Java 17 / Boot 3.5.16 | 8082 | Exclusivamente Owner — H2 |
 
-O Gateway encaminha `/api/owners` e `/api/owners/**` para Owners e os demais caminhos, inclusive os formulários `/owners/**`, para o monólito. Acesse [a aplicação pelo Gateway](http://localhost:8081). O monólito consulta o serviço pelo `OwnersClient` e compõe os Pets locais usando `ownerId`.
+O Gateway encaminha `/api/owners` e `/api/owners/**` para Owners e os demais caminhos, inclusive os formulários `/owners/**`, para o monólito. Acesse [a aplicação pelo Gateway](http://localhost:8081). O monólito usa a interface `OwnerRepository`. O `OwnerIntegrationAdapter` consulta o serviço e compõe os Pets locais usando `ownerId`.
 
 O `IntegrationErrorHandler` centraliza classificação e respostas dos erros de integração: 404 para Owner inexistente ou vínculo inválido de Pet, 400 para dados rejeitados e 503 com `ownersUnavailable` para indisponibilidade, conexão, timeout ou conversão remota. Um único tipo interno delimita esse tratamento; erros internos não relacionados seguem o tratamento original.
 
+## Projetos Maven
+
+| POM | JDK | Maven |
+| --- | --- | --- |
+| `projects/monolith/pom.xml` | 8 | Wrapper 3.3.3 |
+| `projects/owners-service/pom.xml` | 17 | 3.9.11 |
+| `projects/gateway/pom.xml` | 17 | 3.9.11 |
+
+Os três projetos são independentes. O repositório não tem POM agregador na raiz.
+
+## Abrir os três projetos no IntelliJ IDEA
+
+1. Abra a **pasta raiz do repositório** em **File → Open**. No painel **Maven**, confira se os três projetos da tabela aparecem. Se faltar algum, use **Link Maven Projects** (ou **Add Maven Project**, conforme a versão) e selecione o POM na mesma janela. [Projetos Maven no IntelliJ](https://www.jetbrains.com/help/idea/delegate-build-and-run-actions-to-maven.html)
+2. Em **File → Project Structure → Modules → Dependencies**, selecione o **Module SDK** de cada projeto conforme a tabela. Em **Sources**, confira os níveis de linguagem 8 e 17. [SDK por módulo](https://www.jetbrains.com/help/idea/configure-modules.html)
+3. Em **Run → Edit Configurations**, crie uma configuração **Maven** para cada POM. Selecione o diretório do respectivo projeto, o Maven da tabela e o **JRE** em **Java Options**. Use `clean package -Dcobertura.skip=true` para o monólito e `clean package` para os outros dois. Assim, o Maven que compila o monólito é executado de fato com Java 8. [Configuração Maven](https://www.jetbrains.com/help/idea/run-debug-configuration-maven.html)
+4. Para iniciar uma aplicação pela IDE, selecione o módulo e o JRE correspondentes na configuração **Application** ou **Spring Boot**. Defina **Working directory** como `$PROJECT_DIR$` (a raiz do repositório), para que os caminhos relativos dos bancos continuem apontando para `data/`. [Configuração Application](https://www.jetbrains.com/help/idea/run-debug-configuration-java-application.html)
+
+Para pesquisar somente Java de produção, crie um escopo local **Java de produção** em **Settings → Appearance & Behavior → Scopes**. Selecione cada uma das pastas abaixo e clique em **Include Recursively**. Em **Find in Files**, use o escopo criado e a máscara `*.java`. A seleção vale apenas para a busca. [Escopos no IntelliJ](https://www.jetbrains.com/help/idea/configuring-scopes-and-file-colors.html)
+
+- `projects/monolith/src/main/java`
+- `projects/owners-service/src/main/java`
+- `projects/gateway/src/main/java`
+
 ## Compilar e executar os testes
 
-Pré-requisitos: PowerShell, JDK 8, JDK 17 e Maven 3.9.11. Na raiz:
+No PowerShell, defina `JAVA8_HOME` e `JAVA17_HOME` com as pastas dos JDKs. Use `MAVEN_HOME` ou coloque o Maven 3.9.11 no `PATH`. Execute na raiz:
 
 ```powershell
-./scripts/build.ps1 -MavenHome 'C:\TCC2\ferramentas\apache-maven-3.9.11' `
-    -Java8Home 'C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot' `
-    -Java17Home 'C:\Program Files\Java\jdk-17'
+./scripts/build.ps1
+python scripts/acceptance.py
+python scripts/test-migration.py
 ```
 
-O script executa `clean package` com todas as suítes dos três projetos, usando o JDK de cada módulo. Acrescente `-Offline` quando as dependências já estiverem disponíveis. Ajuste os caminhos à sua instalação. O Maven Wrapper histórico é 3.3.3; para os módulos Boot 3, use Maven 3.9.11 pelo script.
+O build usa o Wrapper original do monólito e o Maven 3.9.11 para os módulos Boot 3. No Windows, o script invoca o JAR do Wrapper diretamente para contornar as aspas do `mvnw.cmd` em caminhos com espaços. Acrescente `-Offline` ao build quando o cache Maven estiver completo. Também é possível informar as instalações com `-Java8Home`, `-Java17Home` e `-MavenHome`.
+
+A aceitação HTTP precisa das portas locais 8080, 8081 e 8082 livres e usa os JARs do build. Ela grava bancos descartáveis, logs e `http-acceptance.json` em `.work/acceptance-*`. A migração de teste usa uma fixture descartável e grava `migration.json` em `.work/migration-*`.
 
 ## Iniciar os três componentes
 
-Depois do build, use três terminais, todos na raiz do repositório:
+Depois do build, use três terminais na raiz do repositório, com as mesmas variáveis dos JDKs:
 
 ```powershell
 # Terminal 1 — Owners
-& 'C:\Program Files\Java\jdk-17\bin\java.exe' -jar owners-service/target/owners-service-1.0.0-SNAPSHOT.jar
+& "$env:JAVA17_HOME/bin/java.exe" -jar projects/owners-service/target/owners-service-1.0.0-SNAPSHOT.jar
 ```
 
 ```powershell
 # Terminal 2 — monólito
-& 'C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot\bin\java.exe' -jar target/spring-petclinic-1.5.1.jar
+& "$env:JAVA8_HOME/bin/java.exe" -jar projects/monolith/target/spring-petclinic-1.5.1.jar
 ```
 
 ```powershell
 # Terminal 3 — Gateway
-& 'C:\Program Files\Java\jdk-17\bin\java.exe' -jar gateway/target/petclinic-gateway-1.0.0-SNAPSHOT.jar
+& "$env:JAVA17_HOME/bin/java.exe" -jar projects/gateway/target/petclinic-gateway-1.0.0-SNAPSHOT.jar
 ```
 
-A primeira inicialização cria bancos separados em `data/v2/petclinic.*` e `data/owners-v2.mv.db`. Reinícios mantêm os registros e as sequências; bancos existentes não são reinicializados. `LEGACY_DB_URL` e `OWNERS_DB_URL` permitem caminhos isolados. Encerre com Ctrl+C. O perfil MySQL e o docker-compose históricos não fazem parte desta execução V2.
+A primeira inicialização cria bancos separados em `data/v2/petclinic.*` e `data/owners-v2.mv.db`, relativos à raiz. Reinícios mantêm os registros e as sequências. `LEGACY_DB_URL` e `OWNERS_DB_URL` permitem caminhos isolados. Encerre com Ctrl+C. O perfil MySQL e o docker-compose históricos não fazem parte desta execução V2.
 
 ## Testes e rastreabilidade acadêmica
 
@@ -56,9 +81,13 @@ A validação da centralização registrou 60 testes aprovados e 1 ignorado no m
 - [Procedimento de reprodução em nova pasta](docs/metricas/v2-centralizacao-erros/README.md).
 - [README original de 2017](docs/historico/README-original-2017.md).
 
-As métricas são vinculadas aos fontes e hashes do checkpoint medido. A padronização posterior de identificadores não recalcula nem substitui CK e não autoriza atribuir automaticamente esses valores ao fonte atual. Não execute os coletores históricos sobre suas saídas preservadas. Para nova medição, use uma pasta separada e o procedimento documentado.
+As métricas são vinculadas aos fontes e hashes do checkpoint medido. Para uma nova coleta, defina `JAVA17_HOME` e aponte `$ckJar` para o JAR `ck-0.7.1-SNAPSHOT` com o SHA-256 histórico:
 
-`scripts/acceptance.py` e `scripts/test-migration.py` preservam os procedimentos HTTP/migração da primeira V2 e seus destinos históricos de evidências. Para repeti-los sem sobrescrever resultados acadêmicos, execute cópias isoladas com os destinos redirecionados, conforme as cópias registradas em `docs/metricas/v2-centralizacao-erros/evidencias/procedimentos-executados/`.
+```powershell
+./scripts/collect-ck.ps1 -CkJar $ckJar
+```
+
+O script coleta somente `src/main/java` dos três projetos. A análise usa o CSV histórico como referência e grava seus resultados junto à coleta em uma nova pasta `.work/ck-*`.
 
 ## Implementação histórica removida da árvore atual
 

@@ -1,0 +1,28 @@
+CWD: C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual
+JAVA_HOME da execucao: C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot
+COMANDO: "C:\Program Files\Eclipse Adoptium\jdk-8.0.504.1-hotspot\bin\java.exe" -classpath "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\.mvn\wrapper\maven-wrapper.jar" "-Dmaven.multiModuleProjectDirectory=C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual" org.apache.maven.wrapper.MavenWrapperMain -o -B -f "C:\Users\Theki\OneDrive\Área de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\pom.xml" clean package -Dcobertura.skip=true
+
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building petclinic 1.5.1
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:2.6.1:clean (default-clean) @ spring-petclinic ---
+[INFO] Deleting C:\Users\Theki\OneDrive\�rea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\target
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 6.260 s
+[INFO] Finished at: 2026-11-05T14:02:44-03:00
+[INFO] Final Memory: 17M/309M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-clean-plugin:2.6.1:clean (default-clean) on project spring-petclinic: Failed to clean project: Failed to delete C:\Users\Theki\OneDrive\�rea de Trabalho\spring-petclinic-legado\.work\revalidacao-2026-11-05\atual\target\surefire\surefirebooter8602976396757507599.jar -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+
+EXIT CODE: 1
