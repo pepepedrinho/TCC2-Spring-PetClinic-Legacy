@@ -127,14 +127,10 @@ public class Owner extends Person {
     }
 
     public void addPet(Pet pet) {
-
-        // Original: if (pet.isNew())
-        // Permite associar também Pets existentes ao Owner remoto,
-        // necessário para a recomposição da coleção no monólito.
-        if (!getPetsInternal().contains(pet)) {
-            getPetsInternal().add(pet);
-        }
-
+        // Original: adicionava à coleção apenas Pets novos (pet.isNew()).
+        // V2: permite recompor o Owner com Pets já persistidos.
+        // Set.add() evita duplicatas segundo a igualdade de Pet.
+        getPetsInternal().add(pet);
         pet.setOwner(this);
     }
 
