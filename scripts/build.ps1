@@ -2,7 +2,8 @@ param(
     [string]$MavenHome = $env:MAVEN_HOME,
     [string]$Java8Home = $env:JAVA8_HOME,
     [string]$Java17Home = $env:JAVA17_HOME,
-    [switch]$Offline
+    [switch]$Offline,
+    [switch]$SkipGitMetadata
 )
 $ErrorActionPreference = 'Stop'
 if (-not $Java8Home -or -not $Java17Home) {
@@ -29,7 +30,9 @@ try {
     Push-Location -LiteralPath $monolith
     try {
         $wrapperJar = Join-Path $monolith '.mvn/wrapper/maven-wrapper.jar'
-        & $java8 -classpath $wrapperJar "-Dmaven.multiModuleProjectDirectory=$monolith" org.apache.maven.wrapper.MavenWrapperMain @argsMaven '-Dcobertura.skip=true'
+        $legacyArgs = $argsMaven + '-Dcobertura.skip=true'
+        if ($SkipGitMetadata) { $legacyArgs += '-Dmaven.gitcommitid.skip=true' }
+        & $java8 -classpath $wrapperJar "-Dmaven.multiModuleProjectDirectory=$monolith" org.apache.maven.wrapper.MavenWrapperMain @legacyArgs
         if ($LASTEXITCODE -ne 0) { throw 'Build legado falhou.' }
     } finally {
         Pop-Location
