@@ -1,11 +1,16 @@
-"""HTTP acceptance test. Uses isolated new files and stops only its own JVMs."""
+"""HTTP acceptance for isolated JVMs or an explicitly selected disposable Compose project."""
 import json, os, re, socket, subprocess, time, urllib.request, urllib.error, urllib.parse
 from pathlib import Path
 from datetime import datetime, timezone
 ROOT=Path(__file__).resolve().parents[1]
+COMPOSE_PROJECT=os.environ.get('TCC2_COMPOSE_PROJECT')
+GATEWAY_PORT=int(os.environ.get('GATEWAY_PORT', '8081')) if COMPOSE_PROJECT else 8081
+compose=['docker','compose','-p',COMPOSE_PROJECT] if COMPOSE_PROJECT else None
+services={'legacy':'monolith','owners':'owners-service','gateway':'gateway'}
+legacy_started=False
 JAVA8=os.environ.get('JAVA8_HOME')
 JAVA17=os.environ.get('JAVA17_HOME')
-if not JAVA8 or not JAVA17:
+if not compose and (not JAVA8 or not JAVA17):
     raise SystemExit('Defina JAVA8_HOME e JAVA17_HOME.')
 PROJECTS=ROOT/'projects'
 RUN=ROOT/'.work'/('acceptance-'+datetime.now().strftime('%Y%m%d-%H%M%S'))
@@ -20,6 +25,7 @@ def req(path,expected=200,data=None,method=None,port=8081):
         data=urllib.parse.urlencode(data).encode(); headers['Content-Type']='application/x-www-form-urlencoded'
     elif data is not None:
         data=data.encode();headers['Content-Type']='application/json'
+    port=GATEWAY_PORT if compose else port
     r=urllib.request.Request(f'http://localhost:{port}'+path,data=data,headers=headers,method=method)
     try: response=opener.open(r,timeout=10)
     except urllib.error.HTTPError as e: response=e
@@ -29,8 +35,16 @@ def req(path,expected=200,data=None,method=None,port=8081):
     return body,response.headers
 
 def start(name):
+    global legacy_started
+    if compose:
+        subprocess.run([*compose,'start',services[name]],cwd=ROOT,check=True)
+        return
     env=os.environ.copy()
-    env['LEGACY_DB_URL']='jdbc:hsqldb:file:'+str(RUN/'legacy').replace('\\','/')+';shutdown=true'
+    if name=='legacy':
+        # Only the first boot of the disposable standalone database runs the scripts.
+        env['SPRING_DATASOURCE_INITIALIZE']='false' if legacy_started else 'true'
+        legacy_started=True
+    env['LEGACY_DB_URL']='jdbc:hsqldb:file:'+str(RUN/'legacy').replace('\\','/')+';shutdown=true;hsqldb.write_delay=false'
     env['OWNERS_DB_URL']='jdbc:h2:file:'+str(RUN/'owners').replace('\\','/')+';DB_CLOSE_ON_EXIT=FALSE;WRITE_DELAY=0'
     java=JAVA8 if name=='legacy' else JAVA17
     jar={
@@ -42,6 +56,9 @@ def start(name):
     procs[name]=subprocess.Popen([str(Path(java)/'bin/java.exe'),'-jar',str(jar)],cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,creationflags=0x08000000)
 
 def stop(name):
+    if compose:
+        subprocess.run([*compose,'stop',services[name]],cwd=ROOT,check=True)
+        return
     p=procs.pop(name,None)
     if p and p.poll() is None: p.terminate();p.wait(timeout=20)
 
@@ -53,10 +70,11 @@ def ready(path,port):
 
 def has(body,text): assert text in body, text
 try:
-    for port in (8080,8081,8082):
-        with socket.socket() as s:
-            assert s.connect_ex(('localhost',port))!=0, f'Port {port} in use; existing process will not be stopped'
-    start('owners');start('legacy');start('gateway')
+    if not compose:
+        for port in (8080,8081,8082):
+            with socket.socket() as s:
+                assert s.connect_ex(('localhost',port))!=0, f'Port {port} in use; existing process will not be stopped'
+        start('owners');start('legacy');start('gateway')
     ready('/api/owners/1',8082);ready('/vets.html',8080);ready('/',8081)
     for path in ('/','/owners','/owners/find','/owners/new','/owners/1','/owners/1/edit','/owners/1/pets/new','/owners/1/pets/1/edit','/owners/1/pets/1/visits/new','/vets.html','/vets.json','/resources/css/petclinic.css'):
         req(path)
@@ -102,7 +120,9 @@ try:
     req('/owners',503);req(f'/owners/{oid}/pets/new',503,data=pet)
     req('/vets.html');req('/vets.json');req('/')
     start('owners');ready('/api/owners/1',8082);req(f'/owners/{oid}')
-    result={'result':'PASS','utc':datetime.now(timezone.utc).isoformat(),'checks':checks,'ownerId':oid,'petId':pid,'databases':str(RUN),'restart':'abrupt process termination; same file databases'}
+    result={'result':'PASS','utc':datetime.now(timezone.utc).isoformat(),'checks':checks,'ownerId':oid,'petId':pid,
+            'databases':COMPOSE_PROJECT if compose else str(RUN),
+            'restart':'Compose stop/start; database services remain active' if compose else 'abrupt process termination; same file databases'}
 except BaseException as e:
     result={'result':'FAIL','error':repr(e),'checks':checks,'logs':str(RUN)}
     raise

@@ -1,0 +1,113 @@
+x-db-health: &db-health
+  interval: 5s
+  timeout: 5s
+  retries: 20
+  start_period: 10s
+
+x-app-health: &app-health
+  interval: 5s
+  timeout: 5s
+  retries: 24
+  start_period: 25s
+
+services:
+  legacy-db:
+    image: tcc2-v2-experiment/legacy-db:local
+    build:
+      context: .
+      dockerfile: docker/databases.Dockerfile
+      target: legacy-db
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms16m -Xmx128m -XX:ActiveProcessorCount=2"
+    volumes:
+      - legacy-data:/var/lib/petclinic
+    networks: [legacy-data]
+    healthcheck:
+      <<: *db-health
+      test: ["CMD", "bash", "/opt/db/db-entrypoint", "legacy", "health"]
+
+  owners-db:
+    image: tcc2-v2-experiment/owners-db:local
+    build:
+      context: .
+      dockerfile: docker/databases.Dockerfile
+      target: owners-db
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms16m -Xmx128m -XX:ActiveProcessorCount=2"
+      OWNERS_DB_PASSWORD: ${OWNERS_DB_PASSWORD:-}
+    volumes:
+      - owners-data:/var/lib/petclinic
+    networks: [owners-data]
+    healthcheck:
+      <<: *db-health
+      test: ["CMD", "bash", "/opt/db/db-entrypoint", "owners", "health"]
+
+  monolith:
+    image: tcc2-v2-experiment/monolith:local
+    build:
+      context: .
+      dockerfile: projects/monolith/Dockerfile
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms32m -Xmx384m -XX:ActiveProcessorCount=2"
+      LEGACY_DB_URL: "jdbc:hsqldb:hsql://legacy-db:9001/petclinic"
+      OWNERS_URL: "http://owners-service:8082"
+    networks: [app, legacy-data]
+    depends_on:
+      legacy-db:
+        condition: service_healthy
+      owners-service:
+        condition: service_healthy
+    healthcheck:
+      <<: *app-health
+      test: ["CMD", "bash", "/usr/local/bin/http-healthcheck", "8080", "/vets.html"]
+
+  owners-service:
+    image: tcc2-v2-experiment/owners-service:local
+    build:
+      context: .
+      dockerfile: projects/owners-service/Dockerfile
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms32m -Xmx256m -XX:ActiveProcessorCount=2"
+      OWNERS_DB_URL: "jdbc:h2:tcp://owners-db:9092/./owners;IFEXISTS=TRUE"
+      SPRING_DATASOURCE_PASSWORD: ${OWNERS_DB_PASSWORD:-}
+      SPRING_SQL_INIT_MODE: "never"
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: "1500"
+    networks: [app, owners-data]
+    depends_on:
+      owners-db:
+        condition: service_healthy
+    healthcheck:
+      <<: *app-health
+      test: ["CMD", "bash", "/usr/local/bin/http-healthcheck", "8082", "/api/owners?lastName=Franklin"]
+
+  gateway:
+    image: tcc2-v2-experiment/gateway:local
+    build:
+      context: .
+      dockerfile: projects/gateway/Dockerfile
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xms32m -Xmx256m -XX:ActiveProcessorCount=2"
+      OWNERS_ROUTE_URI: "http://owners-service:8082"
+      MONOLITH_ROUTE_URI: "http://monolith:8080"
+    ports:
+      - "127.0.0.1:${GATEWAY_PORT:-8081}:8081"
+    networks: [app]
+    depends_on:
+      monolith:
+        condition: service_healthy
+      owners-service:
+        condition: service_healthy
+    healthcheck:
+      <<: *app-health
+      test: ["CMD", "bash", "/usr/local/bin/http-healthcheck", "8081", "/"]
+
+networks:
+  app:
+  legacy-data:
+    internal: true
+  owners-data:
+    internal: true
+
+volumes:
+  legacy-data:
+  owners-data:

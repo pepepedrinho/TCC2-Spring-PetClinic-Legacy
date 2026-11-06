@@ -1,0 +1,31 @@
+services:
+  owners-service:
+    scale: 2
+
+  owners-lb:
+    image: haproxy:3.2-alpine@sha256:96ec3c75a9264ba94e733eeacb44051ed6e7b79bb77a73c2c36f236b6423f1f0
+    volumes:
+      - ./docker/owners-haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    networks: [app]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8082/api/owners?lastName=Franklin"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+    depends_on:
+      owners-service:
+        condition: service_healthy
+
+  monolith:
+    environment:
+      OWNERS_URL: "http://owners-lb:8082"
+    depends_on:
+      owners-lb:
+        condition: service_healthy
+
+  gateway:
+    environment:
+      OWNERS_ROUTE_URI: "http://owners-lb:8082"
+    depends_on:
+      owners-lb:
+        condition: service_healthy

@@ -1,0 +1,9 @@
+**
+!projects/
+!projects/*/
+!projects/*/pom.xml
+!projects/*/Dockerfile
+!projects/*/src/
+!projects/*/src/**
+!docker/
+!docker/**

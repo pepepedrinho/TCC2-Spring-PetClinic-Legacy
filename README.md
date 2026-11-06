@@ -8,6 +8,10 @@ Este projeto aplica o padrão Strangler Fig ao Spring PetClinic legado para migr
 | [Owners Service](projects/owners-service/) | API REST de proprietários em Spring Boot 3, com banco H2 próprio. | 17 | 8082 |
 | [Gateway](projects/gateway/) | Spring Cloud Gateway. Encaminha `/api/owners` e seus subcaminhos para Owners e os demais caminhos para o monólito. | 17 | 8081 |
 
+## Executar com Docker Compose
+
+Nesta branch experimental, os contêineres de banco provisionam os volumes antes de iniciar as aplicações. O [guia Docker](DOCKER.md) descreve a execução, a importação de dados e a opção de duas réplicas de Owners.
+
 ## Compilar e testar
 
 Na raiz do repositório, em PowerShell 7, defina `JAVA8_HOME` e `JAVA17_HOME`. Configure `MAVEN_HOME` ou adicione o Maven 3.9.11 ao `PATH`. O monólito usa o Wrapper 3.3.3. Python 3 é necessário para a aceitação e a migração de teste.
@@ -22,7 +26,7 @@ O build compila, executa os testes Maven e empacota os três JARs. Use `-Offline
 
 ## Executar a aplicação
 
-Depois do build, inicie cada componente em um terminal separado, sempre na raiz:
+Fora do Compose, configure `LEGACY_DB_URL` para um banco HSQLDB já provisionado e com atraso de gravação zero. Para um banco em arquivo comprovadamente novo, use uma URL com `hsqldb.write_delay=false` e passe `--spring.datasource.initialize=true` somente à primeira execução do monólito. Nas próximas partidas, omita essa opção. Depois do build, inicie cada componente em um terminal separado, sempre na raiz:
 
 ```powershell
 & "$env:JAVA17_HOME/bin/java.exe" -jar projects/owners-service/target/owners-service-1.0.0-SNAPSHOT.jar

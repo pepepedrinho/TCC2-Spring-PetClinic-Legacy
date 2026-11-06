@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+set -euo pipefail
+shopt -s nullglob
+kind=$1
+action=${2:-serve}
+home=${DB_VOLUME:-/var/lib/petclinic}
+tools=${DB_TOOLS:-/opt/db}
+case $kind in
+    legacy)
+        name=petclinic
+        primary=properties
+        local_url="jdbc:hsqldb:file:$home/db/$name"
+        remote_url="jdbc:hsqldb:hsql://127.0.0.1:9001/$name"
+        ;;
+    owners)
+        name=owners
+        primary=mv.db
+        local_url="jdbc:h2:file:$home/db/$name;DB_CLOSE_ON_EXIT=FALSE;WRITE_DELAY=0"
+        remote_url="jdbc:h2:tcp://127.0.0.1:9092/./$name;IFEXISTS=TRUE"
+        ;;
+    *) exit 2 ;;
+esac
+
+run_sql() {
+    local url=$1
+    shift
+    if [[ $kind == legacy ]]; then
+        java -cp "$tools/*" org.hsqldb.cmdline.SqlTool \
+            --noAutoFile --autoCommit --continueOnErr=false "--inlineRc=url=$url,user=SA,password=" "$@"
+    else
+        for script in "$@"; do
+            java -cp "$tools/*" org.h2.tools.RunScript \
+                -url "$url" -user sa -password "${OWNERS_DB_PASSWORD:-}" -script "$script"
+        done
+    fi
+}
+
+check="$tools/$kind-check.sql"
+if [[ $action == health ]]; then
+    run_sql "$remote_url" "$check"
+    exit
+fi
+[[ $action == serve || $action == import ]] || exit 2
+mkdir -p "$home/db"
+marker="$home/.provisioned-v1"
+exec 9>"$home/.provision.lock"
+flock -n 9 || { echo 'Volume ocupado por outro provisionamento.' >&2; exit 1; }
+files=("$home/db/"*)
+if [[ -f $marker ]]; then
+    if [[ $action != serve || $(cat "$marker") != "$kind" ]]; then
+        echo 'Volume já provisionado ou marcador incompatível. Importação recusada.' >&2
+        exit 1
+    fi
+elif (( ${#files[@]} )); then
+    echo 'Volume contém dados sem confirmação de provisionamento. Inspecione ou restaure um backup. Nenhum SQL de carga foi executado.' >&2
+    exit 1
+elif [[ $action == import ]]; then
+    source=${IMPORT_DIR:-/import}
+    [[ -s $source/migration-complete.txt && -s $source/$name.$primary ]] || {
+        echo 'Importação exige um destino offline concluído por MigrateOwners.' >&2
+        exit 1
+    }
+    if [[ $kind == legacy ]]; then
+        [[ -s $source/petclinic.script && ! -e $source/petclinic.log && ! -e $source/petclinic.lck ]] || exit 1
+        for suffix in properties script data backup; do
+            if [[ -f $source/petclinic.$suffix ]]; then
+                cp -- "$source/petclinic.$suffix" "$home/db/"
+            fi
+        done
+    else
+        cp -- "$source/owners.mv.db" "$home/db/"
+    fi
+else
+    if [[ $kind == legacy ]]; then
+        run_sql "$local_url" "$tools/schema.sql" "$tools/data.sql"
+    else
+        run_sql "$local_url" "$tools/schema.sql"
+    fi
+fi
+
+[[ -s $home/db/$name.$primary ]] || exit 1
+if [[ $kind == legacy ]]; then
+    # Aplica a bancos novos, migrados e reabertos antes de aceitar conexões.
+    startup=$(mktemp)
+    trap 'rm -f "$startup"' EXIT
+    cat "$check" >"$startup"
+    printf '\nSET FILES WRITE DELAY 0;\nSHUTDOWN;\n' >>"$startup"
+    run_sql "$local_url;ifexists=true" "$startup"
+    rm -f "$startup"
+    trap - EXIT
+else
+    run_sql "$local_url;IFEXISTS=TRUE" "$check"
+fi
+
+if [[ ! -f $marker ]]; then
+    printf '%s\n' "$kind" >"$marker.tmp"
+    mv -- "$marker.tmp" "$marker"
+fi
+[[ $action == serve ]] || exit 0
+
+if [[ $kind == legacy ]]; then
+    exec java -cp "$tools/*" org.hsqldb.Server --address 0.0.0.0 --port 9001 \
+        --remote_open false --database.0 "file:$home/db/$name;ifexists=true" --dbname.0 "$name"
+else
+    exec java -cp "$tools/*" org.h2.tools.Server -tcp -tcpPort 9092 -tcpAllowOthers \
+        -ifExists -baseDir "$home/db"
+fi
