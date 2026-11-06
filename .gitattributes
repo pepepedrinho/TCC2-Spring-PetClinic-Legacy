@@ -10,3 +10,4 @@
 /historico/metricas/2026-11-06-v2-validacao-addpet-3ccb9e0/** -text -whitespace
 /historico/evidencias/evidencias-addpet/** -text -whitespace
 /docker/** text eol=lf
+/historico/metricas/2026-11-06-v2-pre-docker-0ad652a/** -text -whitespace

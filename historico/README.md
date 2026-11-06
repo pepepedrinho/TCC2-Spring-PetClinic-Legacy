@@ -2,7 +2,7 @@
 
 A [coleta CK oficial](../docs/metricas/README.md) fica em `docs/metricas/`. Este arquivo reúne materiais de etapas anteriores e registros de validação.
 
-- [Métricas](metricas/README.md) · nove campanhas e diagnósticos com CSVs, proveniência, snapshots e evidências específicas de cada campanha.
+- [Métricas](metricas/README.md) · dez campanhas e diagnósticos com CSVs, proveniência, snapshots e evidências específicas de cada campanha.
 - [Documentação](documentacao/) · [implementação da V2](documentacao/implementacao.md), [decisões](documentacao/decisoes.md), [estudo antes/depois](documentacao/estudo-codigo-antes-depois.md), [manutenção de nomes](documentacao/manutencao-nomes-publicacao.md) e [README original](documentacao/README-original-2017.md).
 - [Evidências](evidencias/) · [validação de Owner.addPet()](evidencias/evidencias-addpet/README.md) e [validação da manutenção de nomes](evidencias/evidencias-manutencao-nomes/).
 
