@@ -10,7 +10,7 @@ Este projeto aplica o padrão Strangler Fig ao Spring PetClinic legado para migr
 
 ## Executar com Docker Compose
 
-Nesta branch experimental, os contêineres de banco provisionam os volumes antes de iniciar as aplicações. O [guia Docker](DOCKER.md) descreve a execução, a importação de dados e a opção de duas réplicas de Owners.
+Na execução Docker da V2, os contêineres de banco provisionam os volumes antes de iniciar as aplicações. O [guia Docker](DOCKER.md) descreve a execução, a importação de dados e a opção de duas réplicas de Owners.
 
 ## Compilar e testar
 

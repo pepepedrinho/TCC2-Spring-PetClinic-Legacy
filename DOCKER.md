@@ -1,4 +1,4 @@
-# Experimento Docker Compose · Strangler Fig V2
+# Execução com Docker Compose · Strangler Fig V2
 
 A execução básica usa cinco contêineres. O Gateway é o único serviço publicado no host, por padrão em `http://localhost:8081`.
 
@@ -14,7 +14,7 @@ Manter os dois SGBDs preserva os drivers, o dialeto, os arquivos gerados pela mi
 
 ## Iniciar, reiniciar e recriar
 
-Use Docker com contêineres Linux e o plugin Compose. Execute na raiz da worktree experimental.
+Use Docker com contêineres Linux e o plugin Compose. Execute na raiz do repositório.
 
 ```sh
 docker compose -p tcc2-v2 up --build --wait
@@ -74,9 +74,9 @@ docker stop "$replica"
 docker start "$replica"
 ```
 
-O complemento acrescenta uma segunda réplica e um HAProxy, chegando a sete contêineres. O Gateway e o monólito passam a usar o HAProxy. Ele resolve as réplicas via DNS interno, verifica a prontidão via HTTP e distribui requisições em round-robin. O cabeçalho `X-Owners-Replica` identifica o slot que respondeu à chamada REST. O balanceador não repete requisições de escrita.
+O complemento acrescenta uma segunda réplica e um HAProxy, chegando a sete contêineres. O Gateway e o monólito passam a usar o HAProxy. Ele resolve as réplicas via DNS interno, verifica a prontidão via HTTP e distribui requisições em round-robin. O cabeçalho `X-Owners-Replica` identifica o slot que respondeu à chamada REST. O balanceador só tenta outro servidor quando a conexão inicial falha antes do envio da requisição. Ele não reenvia escritas após a conexão nem repete respostas HTTP de erro.
 
-As réplicas compartilham o mesmo H2 via TCP. Há um servidor de banco, um volume de Owners e um balanceador. A perda de uma réplica pode causar falhas transitórias até a detecção pelo healthcheck. A perda do banco interrompe o acesso a Owners. Este cenário não replica o H2, não resolve concorrência de edições simultâneas além das garantias do banco e não demonstra alta disponibilidade do sistema completo.
+As réplicas compartilham o mesmo H2 via TCP. Há um servidor de banco, um volume de Owners e um balanceador. O teste inicial observou um 503 quando o DNS voltou a anunciar uma réplica antes de ela aceitar conexões. O HAProxy passa a iniciar os slots como indisponíveis, a retirar réplicas na primeira falha de saúde e a manter temporariamente registros DNS obsoletos para continuar verificando o estado. A configuração reduz a janela de falha, mas quedas durante uma requisição ainda podem gerar erros transitórios. A perda do banco interrompe o acesso a Owners. Este cenário não replica o H2, não resolve concorrência de edições simultâneas além das garantias do banco e não demonstra alta disponibilidade do sistema completo.
 
 ## Verificação funcional
 
