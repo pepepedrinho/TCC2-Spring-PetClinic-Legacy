@@ -1,0 +1,29 @@
+{
+  "monolito-v2": {
+    "java": "8u504",
+    "maven": "3.3.3",
+    "total": 61,
+    "passed": 60,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0
+  },
+  "owners-service": {
+    "java": "17.0.12",
+    "maven": "3.9.11",
+    "total": 6,
+    "passed": 6,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0
+  },
+  "gateway": {
+    "java": "17.0.12",
+    "maven": "3.9.11",
+    "total": 1,
+    "passed": 1,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0
+  }
+}

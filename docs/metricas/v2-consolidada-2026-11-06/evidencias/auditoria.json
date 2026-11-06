@@ -1,0 +1,30 @@
+{
+  "result": "PASS",
+  "migrationEvidence": "C:\\Users\\Theki\\OneDrive\\\u00c1rea de Trabalho\\spring-petclinic-legado\\.work\\migration-20261106-051630\\migration.json",
+  "httpEvidence": "C:\\Users\\Theki\\OneDrive\\\u00c1rea de Trabalho\\spring-petclinic-legado\\.work\\acceptance-20261106-051748\\http-acceptance.json",
+  "checks": [
+    "PASS owners: all 11 original rows match after reopening; identity probe 102 persisted",
+    "PASS vets: all 6 rows match after reopening",
+    "PASS specialties: all 3 rows match after reopening",
+    "PASS vet_specialties: all 5 rows match after reopening",
+    "PASS types: all 6 rows match after reopening",
+    "PASS pets: all 14 rows match after reopening",
+    "PASS visits: all 5 rows match after reopening",
+    "PASS Owner.addPet: one existing and one new Pet; repeated calls with the same instances do not duplicate entries",
+    "05:21:04.176 [main] INFO hsqldb.db.HSQLDBA1AFEFCE41.ENGINE - checkpointClose start",
+    "05:21:04.180 [main] INFO hsqldb.db.HSQLDBA1AFEFCE41.ENGINE - checkpointClose synched",
+    "05:21:04.194 [main] INFO hsqldb.db.HSQLDBA1AFEFCE41.ENGINE - checkpointClose script done",
+    "05:21:04.221 [main] INFO hsqldb.db.HSQLDBA1AFEFCE41.ENGINE - checkpointClose end",
+    "PASS SQL original Pet: [[1, Leo, 2010-09-07, 1, 1]]",
+    "PASS SQL updated URL Pet, no duplicate: [[14, V2PetEdited, 2020-01-01, 1, 11]]",
+    "PASS SQL forged creation generated a different ID: [[15, ForgedPetId, 2020-01-01, 1, 11]]",
+    "PASS SQL forged Visit preserved the URL Pet: [[5, 14, 2026-10-28, V2Visit]]",
+    "05:21:04.258 [main] INFO hsqldb.db.HSQLDBA1AFEFCE41.ENGINE - Database closed"
+  ],
+  "migrationSourceUnchanged": true,
+  "acceptanceDbSha256": {
+    "legacy.log": "0653673a186a1903a7d09a6922211a1ede48572a2d3556cd0665925cf5ee124b",
+    "legacy.properties": "c8d3061f43c7ec25eca837a4e581c41e4581bf7668669d99b6a37f53ab5c11f4",
+    "legacy.script": "eb82ab83fdc07b71925be06614e01cc422c9285c566143f8507ebcfaa2eebb18"
+  }
+}
