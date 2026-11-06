@@ -48,8 +48,8 @@ class VisitController {
     }
 
     @InitBinder
-    public void setAllowedFields(WebDataBinder dataBinder) {
-        dataBinder.setDisallowedFields("id");
+    public void setAllowedFields(WebDataBinder webDataBinder) {
+        webDataBinder.setAllowedFields("date", "description");
     }
 
     /**

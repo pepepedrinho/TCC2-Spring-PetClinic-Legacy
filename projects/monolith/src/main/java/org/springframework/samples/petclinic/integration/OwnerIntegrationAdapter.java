@@ -24,9 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 public class OwnerIntegrationAdapter implements OwnerRepository {
     private final String url;
-
     private final RestTemplate restTemplate;
-
     private final PetRepository petRepository;
 
     public OwnerIntegrationAdapter(@Value("${owners.base-url}") String url, PetRepository petRepository) {

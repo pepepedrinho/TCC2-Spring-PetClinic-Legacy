@@ -20,6 +20,7 @@ import java.util.Collection;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.integration.IntegrationErrorHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -60,19 +61,6 @@ class PetController {
     public void initOwnerBinder(WebDataBinder webDataBinder) {
         webDataBinder.setDisallowedFields("id");
     }
-
-    // ============================================================
-    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
-    // Origem: src/main/java/org/springframework/samples/petclinic/owner/PetController.java: initPetBinder
-    // ============================================================
-    // @InitBinder("pet")
-    //     public void initPetBinder(WebDataBinder dataBinder) {
-    //         dataBinder.setValidator(new PetValidator());
-    //     }
-    // ============================================================
-    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
-    // O fluxo MVC da V2 restringe o binding e valida o vínculo local com o Owner remoto.
-    // ============================================================
 
     @InitBinder("pet")
     public void initPetBinder(WebDataBinder webDataBinder) {
@@ -128,7 +116,7 @@ class PetController {
         // Verifica se o Pet local pertence ao Owner informado.
         checkOwnership(this.petRepository.findById(petId), owner.getId());
 
-        // Define o ID do Pet pela URL, sem depender dos dados do formulário.
+        // Mantém o ID do Pet correspondente à rota de edição.
         pet.setId(petId);
 
         if (bindingResult.hasErrors()) {
@@ -146,7 +134,7 @@ class PetController {
     // impedindo operações com um Owner diferente do associado.
     private void checkOwnership(Pet pet, Integer ownerId) {
         if (pet == null || !ownerId.equals(pet.getOwnerId())) {
-            throw org.springframework.samples.petclinic.integration.IntegrationErrorHandler.notFound();
+            throw IntegrationErrorHandler.notFound();
         }
     }
 

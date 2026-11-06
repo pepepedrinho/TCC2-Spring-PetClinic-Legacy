@@ -68,6 +68,7 @@ public class Pet extends NamedEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.EAGER)
     private Set<Visit> visits = new LinkedHashSet<>();
 
+    // Mantém o Owner remoto em memória, sem persistir seus dados no monólito.
     @javax.persistence.Transient
     private Owner owner;
 
@@ -87,14 +88,13 @@ public class Pet extends NamedEntity {
         this.type = type;
     }
 
-    public Integer getOwnerId() {
-        return this.ownerId;
-    }
-
     public Owner getOwner() {
         return this.owner;
     }
 
+    public Integer getOwnerId() {
+        return this.ownerId;
+    }
 
     protected void setOwner(Owner owner) {
         this.owner = owner;

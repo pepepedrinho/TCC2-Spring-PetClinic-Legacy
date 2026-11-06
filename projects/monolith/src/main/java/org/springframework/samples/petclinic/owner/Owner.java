@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2002-2013 the original author or authors.
  *
@@ -37,10 +38,11 @@ import org.springframework.samples.petclinic.model.Person;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-// View adapter: authoritative owner data is remote; never persisted here.
-// Na V2 esta classe é um modelo de apresentação sem @Entity. O mapeamento original completo está em
-// docs/v2/estudo-codigo-antes-depois.md.
+
+// Originalmente, Owner era uma entidade JPA (@Entity).
+// Agora representa os dados do Owner remoto, sem persistência no monólito.
 public class Owner extends Person {
+
     @NotEmpty
     private String address;
 
@@ -124,25 +126,15 @@ public class Owner extends Person {
         return null;
     }
 
-    // ============================================================
-    // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
-    // Origem: src/main/java/org/springframework/samples/petclinic/owner/Owner.java: addPet
-    // ============================================================
-    // public void addPet(Pet pet) {
-    //         if (pet.isNew()) {
-    //             getPetsInternal().add(pet);
-    //         }
-    //         pet.setOwner(this);
-    //     }
-    // ============================================================
-    // IMPLEMENTAÇÃO ATUAL — STRANGLER FIG V2
-    // O Owner remoto é composto com Pets persistidos no legado.
-    // ============================================================
-
     public void addPet(Pet pet) {
+
+        // Original: if (pet.isNew())
+        // Permite associar também Pets existentes ao Owner remoto,
+        // necessário para a recomposição da coleção no monólito.
         if (!getPetsInternal().contains(pet)) {
             getPetsInternal().add(pet);
         }
+
         pet.setOwner(this);
     }
 
@@ -150,13 +142,13 @@ public class Owner extends Person {
     public String toString() {
         return new ToStringCreator(this)
 
-                .append("id", this.getId())
-                .append("new", this.isNew())
-                .append("lastName", this.getLastName())
-                .append("firstName", this.getFirstName())
-                .append("address", this.address)
-                .append("city", this.city)
-                .append("telephone", this.telephone)
-                .toString();
+            .append("id", this.getId())
+            .append("new", this.isNew())
+            .append("lastName", this.getLastName())
+            .append("firstName", this.getFirstName())
+            .append("address", this.address)
+            .append("city", this.city)
+            .append("telephone", this.telephone)
+            .toString();
     }
 }
