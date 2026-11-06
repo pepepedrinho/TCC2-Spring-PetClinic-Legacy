@@ -1,6 +1,6 @@
 # Histórico das coletas CK
 
-Cada pasta preserva uma campanha ou um diagnóstico. Os nomes de cenário e de arquivo dentro das campanhas mantêm a nomenclatura de origem. Consulte [a coleta definitiva](../atual/README.md) para a comparação final.
+Cada pasta preserva uma campanha ou um diagnóstico. Os nomes de cenário e de arquivo dentro das campanhas mantêm a nomenclatura de origem. Consulte [a coleta definitiva](../../docs/metricas/README.md) para a comparação final.
 
 | Campanha | Estado e diferença em relação às campanhas vizinhas | Revisão ou snapshot | Cobertura e arquivos |
 | --- | --- | --- | --- |
@@ -12,8 +12,8 @@ Cada pasta preserva uma campanha ou um diagnóstico. Os nomes de cenário e de a
 | [06/11 · Reorganização dos projetos](2026-11-06-v2-reorganizacao-dd6c9e5/) | Medição após a reorganização em `projects/`, antes do checkpoint. | `dd6c9e5` com alterações locais, discriminadas em `proveniencia.json` e `fontes-avaliadas.json`. | CSVs e logs de três componentes, tabelas derivadas e manifesto. Campanha intermediária. |
 | [06/11 · Diagnóstico](2026-11-06-v2-diagnostico-0f122b9/relatorio.md) | Revisão de Owner, Pet, edição de Pet e vínculo com Owners. A aceitação falhou e motivou a estabilização posterior. | `0f122b9` mais `fontes-v2.patch`. | Quatro cenários, proveniência, patch e evidências da falha. Diagnóstico experimental. |
 | [06/11 · V2 anterior a addPet](2026-11-06-v2-pre-refatoracao-addpet-1e8fa99/relatorio.md) | V2 estabilizada após o diagnóstico. `addPet()` ainda usava a verificação `contains()`. | `1e8fa99`, coletado com árvore limpa. | Quatro cenários, comparação com diagnóstico, evidências e hashes. Campanha completa. |
-| [06/11 · Validação local de addPet](2026-11-06-v2-validacao-addpet-3ccb9e0/) | Recoleta apenas do monólito depois de simplificar `addPet()`, antes de integrar o código. | `3ccb9e0` com alteração em `Owner.java`, depois incorporada em `1d0a3a5`. | CSVs, log e proveniência de B. As [evidências de testes](../../v2/evidencias-addpet/) registram a validação funcional. |
+| [06/11 · Validação local de addPet](2026-11-06-v2-validacao-addpet-3ccb9e0/) | Recoleta apenas do monólito depois de simplificar `addPet()`, antes de integrar o código. | `3ccb9e0` com alteração em `Owner.java`, depois incorporada em `1d0a3a5`. | CSVs, log e proveniência de B. As [evidências de testes](../evidencias/evidencias-addpet/) registram a validação funcional. |
 
 Todas as campanhas posteriores à baseline registram CK `0.7.1-SNAPSHOT`, o JAR identificado pelo mesmo SHA-256 da campanha definitiva e os parâmetros `false 0 false`. Os registros de proveniência e os logs das campanhas contêm os detalhes disponíveis.
 
-Os resultados brutos e as referências históricas foram preservados, inclusive quando dois arquivos são iguais. A reorganização, o diagnóstico e a primeira medição de `addPet()` foram copiados das áreas de trabalho locais. Os diretórios de trabalho originais e as tentativas temporárias continuam disponíveis localmente. Caminhos absolutos em CSVs, comandos e proveniência descrevem o ambiente em que os arquivos foram gerados.
+Os resultados brutos e as referências históricas foram preservados. As cópias idênticas consolidadas estão identificadas no [índice do arquivo](../README.md). A reorganização, o diagnóstico e a primeira medição de `addPet()` foram copiados das áreas de trabalho locais. Os diretórios de trabalho originais e as tentativas temporárias continuam disponíveis localmente. Caminhos absolutos em CSVs, comandos e proveniência descrevem o ambiente em que os arquivos foram gerados.

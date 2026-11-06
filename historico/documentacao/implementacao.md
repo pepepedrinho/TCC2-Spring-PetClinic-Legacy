@@ -28,7 +28,7 @@ flowchart LR
 
 ## Mapa de implementação
 
-Todos os caminhos abaixo são relativos à raiz. A lista de todas as fontes avaliadas com hashes está em `docs/metricas/historico/2026-10-28-v2-extracao-5b6a3b1/fontes-avaliadas.json`.
+Todos os caminhos abaixo são relativos à raiz. A lista de todas as fontes avaliadas com hashes está em `historico/metricas/2026-10-28-v2-extracao-5b6a3b1/fontes-avaliadas.json`.
 
 | Arquivo/classe | Papel efetivo na V2 |
 | --- | --- |
@@ -122,7 +122,7 @@ Os testes foram executados no Windows com JDK 8u504, JDK 17.0.12 e Maven 3.9.11.
 
 ## Métricas e interpretação
 
-As cinco tabelas, CSVs brutos class/method, estatísticas e análise estão em [docs/metricas/historico/2026-10-28-v2-extracao-5b6a3b1/relatorio.md](../metricas/historico/2026-10-28-v2-extracao-5b6a3b1/relatorio.md). A baseline histórica não foi sobrescrita. A recoleta da baseline coincidiu em TODOS os campos do CK, exceto caminhos absolutos, usando o JAR local CK 0.7.1-SNAPSHOT (SHA-256 e commit do fonte registrados em `proveniencia.json`). A branch anterior não possuía script/comando de coleta versionado; a equivalência observada permite documentar os parâmetros reconstruídos, sem inventar evidência histórica de execução.
+As cinco tabelas, CSVs brutos class/method, estatísticas e análise estão em [historico/metricas/2026-10-28-v2-extracao-5b6a3b1/relatorio.md](../metricas/2026-10-28-v2-extracao-5b6a3b1/relatorio.md). A baseline histórica não foi sobrescrita. A recoleta da baseline coincidiu em TODOS os campos do CK, exceto caminhos absolutos, usando o JAR local CK 0.7.1-SNAPSHOT (SHA-256 e commit do fonte registrados em `proveniencia.json`). A branch anterior não possuía script/comando de coleta versionado; a equivalência observada permite documentar os parâmetros reconstruídos, sem inventar evidência histórica de execução.
 
 A coleta inclui fontes de produção de cada componente separadamente e todos os tipos reportados pelo CK. A baseline tem 24 tipos, o legado adaptado 30, Owners 4 e Gateway 1. Classes de integração são custos da separação e não são confundidas com funcionalidade extraída. As médias apresentam mudanças em direções diferentes; não se conclui melhoria global a partir delas. Somatórios descritivos não são uma métrica global de qualidade. Metadados e hashes identificam as fontes medidas no checkpoint de implementação.
 

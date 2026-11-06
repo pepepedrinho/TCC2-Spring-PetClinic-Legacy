@@ -35,7 +35,7 @@ Abra [PetClinic no Gateway](http://localhost:8081). Os bancos persistem sob `dat
 ## Código, medições e origem
 
 - [Scripts de build, aceitação, migração e coleta](scripts/).
-- [Implementação e decisões da V2](docs/v2/) e [evidências de validação de Owner.addPet()](docs/v2/evidencias-addpet/).
-- [Metodologia CK](docs/metricas/README.md), [coleta definitiva A/B/C](docs/metricas/atual/README.md) e [coletas históricas](docs/metricas/historico/README.md).
+- [Implementação e decisões da V2](historico/documentacao/) e [evidências de validação de Owner.addPet()](historico/evidencias/evidencias-addpet/).
+- [Coleta CK definitiva A/B/C e metodologia](docs/metricas/README.md). As campanhas anteriores estão no [arquivo histórico](historico/README.md).
 
-A baseline é a branch `1.5.x`, no commit `c36452a2c34443ae26b4ecbba4f149906af14717`, também identificado pela tag `tcc2-baseline-2017`. O código de origem é do projeto Spring PetClinic, distribuído sob a Apache License 2.0. [Projeto Spring PetClinic](https://github.com/spring-projects/spring-petclinic) · [README de 2017 e créditos](docs/historico/README-original-2017.md) · [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+A baseline é a branch `1.5.x`, no commit `c36452a2c34443ae26b4ecbba4f149906af14717`, também identificado pela tag `tcc2-baseline-2017`. O código de origem é do projeto Spring PetClinic, distribuído sob a Apache License 2.0. [Projeto Spring PetClinic](https://github.com/spring-projects/spring-petclinic) · [README de 2017 e créditos](historico/documentacao/README-original-2017.md) · [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)

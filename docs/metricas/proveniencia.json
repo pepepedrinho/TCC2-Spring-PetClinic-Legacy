@@ -51,7 +51,7 @@
         "method.csv": "feec4194ec3a5aff271f7f138695835378ac318250fdc46bc0c515a193113e2a"
       },
       "referenceIdenticalIgnoringFileAndRowOrder": true,
-      "referenceCollection": "../historico/2026-11-06-v2-pre-refatoracao-addpet-1e8fa99/A-monolito-original"
+      "referenceCollection": "../../historico/metricas/2026-11-06-v2-pre-refatoracao-addpet-1e8fa99/A-monolito-original"
     },
     "B-monolito-adaptado": {
       "sourceRoot": "projects/monolith/src/main/java",
@@ -97,7 +97,7 @@
         "method.csv": "561168fce70ba120ab08d2825bcf57bc7395b5779a7eee937368272c0b1d2eb0"
       },
       "referenceIdenticalIgnoringFileAndRowOrder": true,
-      "referenceCollection": "../historico/2026-11-06-v2-validacao-addpet-3ccb9e0"
+      "referenceCollection": "../../historico/metricas/2026-11-06-v2-validacao-addpet-3ccb9e0"
     },
     "C-owners-service": {
       "sourceRoot": "projects/owners-service/src/main/java",
@@ -119,7 +119,7 @@
         "method.csv": "c0e827b30fb9b392603d45a3c114fdd72d0278344ec77a5e5b630fd551dac9b9"
       },
       "referenceIdenticalIgnoringFileAndRowOrder": true,
-      "referenceCollection": "../historico/2026-11-06-v2-pre-refatoracao-addpet-1e8fa99/owners-service"
+      "referenceCollection": "../../historico/metricas/2026-11-06-v2-pre-refatoracao-addpet-1e8fa99/owners-service"
     }
   }
 }

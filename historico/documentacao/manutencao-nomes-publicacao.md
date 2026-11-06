@@ -57,7 +57,7 @@ Maven 3.9.11, modo offline, clean package; JDK 8 no monólito com -Dcobertura.sk
 
 Total: 67 aprovados, 1 ignorado, zero falhas/erros. O script MigrateOwners.java também compilou com JDK 17, sem executar migração. A aceitação HTTP e a migração não foram reexecutadas nesta manutenção de nomes: seus resultados anteriores continuam em docs/metricas/v2-centralizacao-erros. Os testes Maven incluem o advice, contratos MVC/REST, repositórios e roteamento do Gateway.
 
-Novos logs, XMLs Surefire, inventário de renomeações e auditoria estão em [evidencias-manutencao-nomes](evidencias-manutencao-nomes/). Não são uma substituição das evidências das coletas anteriores.
+Novos logs, XMLs Surefire, inventário de renomeações e auditoria estão em [evidencias-manutencao-nomes](../evidencias/evidencias-manutencao-nomes/). Não são uma substituição das evidências das coletas anteriores.
 
 ## Métricas e proveniência
 

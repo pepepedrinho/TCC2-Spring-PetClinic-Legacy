@@ -17,8 +17,8 @@ _site/
 *.log
 
 # Logs acadêmicos são evidências, mesmo quando gerados automaticamente.
-!docs/metricas/**/*.log
-!docs/v2/**/*.log
+!historico/metricas/**/*.log
+!historico/evidencias/**/*.log
 
 # Exportações locais temporárias de auditoria; não se aplicam aos snapshots em docs/.
 /tcc2-v2-*.zip

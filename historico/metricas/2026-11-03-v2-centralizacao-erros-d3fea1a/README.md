@@ -9,16 +9,16 @@
 - `evidencias/`: builds, Surefire, HTTP, reinicialização, migração e cópias dos procedimentos executados.
 - `controles-comparabilidade.json` e `auditoria-preservacao.json`: verificações de fontes e resultados históricos.
 
-Para recalcular apenas as tabelas derivadas desta pasta (sem alterar CSVs brutos nem históricos):
+Para recalcular tabelas sem escrever no arquivo histórico, copie a campanha para uma nova pasta chamada `v2-centralizacao-erros`. Na raiz do repositório, aponte o analisador para essa cópia:
 
 ```powershell
-python docs/metricas/historico/2026-11-03-v2-centralizacao-erros-d3fea1a/analisar.py
+python historico/metricas/2026-11-03-v2-centralizacao-erros-d3fea1a/analisar.py --metrics-dir .work/v2-centralizacao-erros
 ```
 
 Para nova coleta, extraia os ZIPs de fontes em diretórios de trabalho novos A, B e C. O arquivo A-monolito-original.zip deve ser extraído em A, B-monolito-anterior.zip em B e os três arquivos C-monolito-centralizado.zip, owners.zip e gateway.zip em C. As árvores extraídas preservam src/main/java e os prefixos de módulo.
 
 ```powershell
-python docs/metricas/historico/2026-11-03-v2-centralizacao-erros-d3fea1a/coletar.py --a <pasta-A> --b <pasta-B> --c <pasta-C> --repo <repositorio-Git> --output <pasta-nova>/v2-centralizacao-erros --ck-jar <mesmo-JAR> --java <JDK17>/bin/java.exe
+python historico/metricas/2026-11-03-v2-centralizacao-erros-d3fea1a/coletar.py --a <pasta-A> --b <pasta-B> --c <pasta-C> --repo <repositorio-Git> --output <pasta-nova>/v2-centralizacao-erros --ck-jar <mesmo-JAR> --java <JDK17>/bin/java.exe
 ```
 
 O coletor exige o mesmo SHA-256 do JAR e recusa sobrescrever diretórios já coletados. Use um pai novo mantendo o nome final v2-centralizacao-erros. Defaults do JAR e JDK são os caminhos locais registrados na proveniência; podem ser informados explicitamente. Registre a pasta de execução dos comandos; os caminhos da execução original foram relativos ao workspace deste chat e seus absolutos constam nos CSVs/logs. Para analisar uma nova saída, passe `--metrics-dir <pasta-nova>/v2-centralizacao-erros` ao analisador.
