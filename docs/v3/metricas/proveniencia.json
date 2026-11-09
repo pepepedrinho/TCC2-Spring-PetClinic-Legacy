@@ -1,0 +1,76 @@
+{
+  "collectedUtc": "2026-11-09T14:24:29.2059914Z",
+  "ckVersion": "0.7.1-SNAPSHOT",
+  "ckSourceCommit": "8a1ef916d597d33ad619d748b616bb7dbc3f0c36",
+  "ckSha256": "98893efdffd22fb2356560e9ed78b0528e01bbbad032dcd63be3863c73bfc517",
+  "javaVersion": "java version \"17.0.12\" 2024-07-16 LTS\r\nJava(TM) SE Runtime Environment (build 17.0.12+8-LTS-286)\r\nJava HotSpot(TM) 64-Bit Server VM (build 17.0.12+8-LTS-286, mixed mode, sharing)",
+  "parameters": [
+    "false",
+    "0",
+    "false"
+  ],
+  "scenarios": {
+    "A-monolito-original": {
+      "sourceRoot": "src/main/java",
+      "types": 24,
+      "methods": 91,
+      "revision": "c36452a2c34443ae26b4ecbba4f149906af14717",
+      "historicalCsvSha256": {
+        "class.csv": "a5614c211c73367095f8547ceb1ab6cb33b31c950fc9bf146dbc1e2238b0bd4b",
+        "method.csv": "8b195aeefd42fa0896bcafd13a01bf523215013ff1d3cacfcdee46ed4b8e8a49"
+      }
+    },
+    "B-monolito-adaptado": {
+      "sourceRoot": "projects/monolith/src/main/java",
+      "types": 27,
+      "methods": 104,
+      "revision": "9fc9afb839a0ecc85b7b0054e635dc618f0b150a",
+      "historicalCsvSha256": {
+        "class.csv": "498edb242666754e33e8e032d9cfa5234023b873e7549a6bfa53ca124d12e870",
+        "method.csv": "5f82da5c6fb47199a1c2bf03d15f7ba6dd4ad1a40883c670847eb936636ab8a5"
+      }
+    },
+    "C-owners-service": {
+      "sourceRoot": "projects/owners-service/src/main/java",
+      "types": 4,
+      "methods": 20,
+      "revision": "9fc9afb839a0ecc85b7b0054e635dc618f0b150a",
+      "historicalCsvSha256": {
+        "class.csv": "465ee6343f19d2ed66de437962ed8d7275411e678cfededd8d0eff10ed93d7a9",
+        "method.csv": "c01b0ed875f31f416b120c3e2b4fa7900c751832c1e0dba1333e067e99d24b99"
+      }
+    },
+    "D-monolito-v3": {
+      "sourceRoot": "projects/monolith/src/main/java",
+      "types": 29,
+      "methods": 96,
+      "revision": "7c1d0e8052c3bfae7c7ea5d0248b953e876a41b1",
+      "publishedCsvSha256": {
+        "class.csv": "ffd8629e6e9e0b6646d87f77c217e0d21a92f0b8adda784685d2f407ee331a86",
+        "method.csv": "a0c507b4ea16744892743a3df7cf6ec0531ec2f4421523fc1edc869953abc5cb"
+      }
+    },
+    "E-owners-service-v3": {
+      "sourceRoot": "projects/owners-service/src/main/java",
+      "types": 9,
+      "methods": 33,
+      "revision": "7c1d0e8052c3bfae7c7ea5d0248b953e876a41b1",
+      "publishedCsvSha256": {
+        "class.csv": "08c1b8e50dbc39b788016cc8c985d2b8ee410937d76b1324ee81ea07e5dfcd3f",
+        "method.csv": "81d182144b84afb686b11c409c02653a9683207e74f081bbdc70df0b8a027f73"
+      }
+    },
+    "F-gateway-v3": {
+      "sourceRoot": "projects/gateway/src/main/java",
+      "types": 2,
+      "methods": 2,
+      "revision": "7c1d0e8052c3bfae7c7ea5d0248b953e876a41b1",
+      "publishedCsvSha256": {
+        "class.csv": "30390de1c09f3fd9ee9ecfd691e4e9adc06fe5d162d07a74df310b2f5cea12ff",
+        "method.csv": "4d4e4a4bae20fcd3758b031147d68a0f0af23d1b9450bdd43ea148bee5c0fc11"
+      }
+    }
+  },
+  "historicalComparison": "A, B and C reproduced every field except file and row order in both CSVs.",
+  "publishedCsvNormalization": "D, E and F use repository-relative file paths, UTF-8 and stable row ordering. CK values are unchanged."
+}

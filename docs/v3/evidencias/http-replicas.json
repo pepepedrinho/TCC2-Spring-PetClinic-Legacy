@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "replicas": [
+    "owners1",
+    "owners2"
+  ],
+  "ownerId": 12,
+  "paths": [
+    "/api/owners/12",
+    "/owners/12",
+    "/owners/12/pets/new"
+  ]
+}

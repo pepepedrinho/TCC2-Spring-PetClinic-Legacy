@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "utc": "2026-11-09T14:19:17.001032+00:00",
+  "output": [
+    "",
+    "owners: 11 rows copied\nvets: 6 rows copied\nspecialties: 3 rows copied\nvet_specialties: 5 rows copied\ntypes: 6 rows copied\npets: 14 rows copied\nvisits: 5 rows copied\nPASS: migration complete: <diretorio-da-fixture>/target",
+    "PASS: IDs, Owner-Pet-Visit, absence of local Owners, identity sequence",
+    "PASS: existing target refused; source files unchanged (SHA-256)"
+  ],
+  "sourceHashes": {
+    "source.properties": "446bbca029cea2cabe107cc7eabdbb2a17861b9e5819b2533f452f2d3ba829f4",
+    "source.script": "a95c92f538787b4b775f0531b5b8ca713b44521eb6d209efc9023a33cf082a83"
+  }
+}

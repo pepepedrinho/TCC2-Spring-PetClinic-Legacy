@@ -1,16 +1,16 @@
-# TCC II — Spring PetClinic Strangler Fig V2
+# TCC II — Spring PetClinic Strangler Fig V3
 
-Este projeto aplica o padrão Strangler Fig ao Spring PetClinic legado para migrar o cadastro de proprietários em etapas. O microsserviço Owners é a fonte de cadastro de Owner. O monólito continua servindo a interface web e mantendo Pets, tipos de Pet, visitas e veterinários. O Gateway dá acesso aos dois componentes por uma entrada comum.
+Este projeto aplica o padrão Strangler Fig ao Spring PetClinic legado para migrar o cadastro de proprietários em etapas. O microsserviço Owners mantém o cadastro e renderiza as páginas de Owner. O monólito mantém Pets, visitas, veterinários e as demais páginas legadas. O Gateway dá acesso aos dois componentes por uma entrada comum.
 
 | Projeto | Papel | JDK | Porta |
 | --- | --- | --- | ---: |
-| [Monólito](projects/monolith/) | Spring Boot 1.5, Thymeleaf e HSQLDB. O adaptador consulta Owners por HTTP e compõe os Pets locais pelo `ownerId`. | 8 | 8080 |
-| [Owners Service](projects/owners-service/) | API REST de proprietários em Spring Boot 3, com banco H2 próprio. | 17 | 8082 |
-| [Gateway](projects/gateway/) | Spring Cloud Gateway. Encaminha `/api/owners` e seus subcaminhos para Owners e os demais caminhos para o monólito. | 17 | 8081 |
+| [Monólito](projects/monolith/) | Spring Boot 1.5, Thymeleaf e HSQLDB. Consulta Owner para formulários legados e fornece a leitura interna de Pets e Visits. | 8 | 8080 |
+| [Owners Service](projects/owners-service/) | Páginas Thymeleaf e API REST de proprietários em Spring Boot 3, com banco H2 próprio. | 17 | 8082 |
+| [Gateway](projects/gateway/) | Spring Cloud Gateway. Encaminha as páginas e a API de Owner ao Owners Service. Rotas de Pets e Visits seguem para o monólito. | 17 | 8081 |
 
 ## Executar com Docker Compose
 
-Na execução Docker da V2, os contêineres de banco provisionam os volumes antes de iniciar as aplicações. O [guia Docker](DOCKER.md) descreve a execução, a importação de dados e a opção de duas réplicas de Owners.
+Na execução Docker da V3, os contêineres de banco provisionam os volumes antes de iniciar as aplicações. O [guia Docker](DOCKER.md) descreve a execução, a importação de dados e a opção de duas réplicas de Owners.
 
 ## Compilar e testar
 
@@ -40,6 +40,7 @@ Abra [PetClinic no Gateway](http://localhost:8081). Os bancos persistem sob `dat
 
 - [Scripts de build, aceitação, migração e coleta](scripts/).
 - [Implementação e decisões da V2](historico/documentacao/) e [evidências de validação de Owner.addPet()](historico/evidencias/evidencias-addpet/).
+- [Relatório técnico V3, aceitação e comparação CK](docs/v3/relatorio.md).
 - [Coleta CK definitiva A/B/C e metodologia](docs/metricas/README.md). As campanhas anteriores estão no [arquivo histórico](historico/README.md).
 
 A baseline é a branch `1.5.x`, no commit `c36452a2c34443ae26b4ecbba4f149906af14717`, também identificado pela tag `tcc2-baseline-2017`. O código de origem é do projeto Spring PetClinic, distribuído sob a Apache License 2.0. [Projeto Spring PetClinic](https://github.com/spring-projects/spring-petclinic) · [README de 2017 e créditos](historico/documentacao/README-original-2017.md) · [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)

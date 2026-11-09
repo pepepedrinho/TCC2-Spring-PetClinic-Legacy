@@ -1,6 +1,6 @@
-# Execução com Docker Compose · Strangler Fig V2
+# Execução com Docker Compose · Strangler Fig V3
 
-A execução básica usa cinco contêineres. O Gateway é o único serviço publicado no host, por padrão em `http://localhost:8081`.
+A execução básica usa cinco contêineres. Use um nome de projeto e uma porta próprios para executar em paralelo com a V2. O Gateway é o único serviço publicado no host, por padrão em `http://localhost:8081`.
 
 | Serviço | Runtime e acesso interno | Dados |
 | --- | --- | --- |
@@ -17,9 +17,9 @@ Manter os dois SGBDs preserva os drivers, o dialeto, os arquivos gerados pela mi
 Use Docker com contêineres Linux e o plugin Compose. Execute na raiz do repositório.
 
 ```sh
-docker compose -p tcc2-v2 up --build --wait
-docker compose -p tcc2-v2 ps
-docker compose -p tcc2-v2 logs -f
+docker compose -p tcc2-v3 up --build --wait
+docker compose -p tcc2-v3 ps
+docker compose -p tcc2-v3 logs -f
 ```
 
 Acesse [PetClinic pelo Gateway](http://localhost:8081). `GATEWAY_PORT` altera a porta local. As imagens de base e a do HAProxy estão fixadas por digest. As aplicações executam testes Maven no build e separam o JDK de compilação da imagem com JRE. Os healthchecks fazem consultas JDBC aos bancos ou requisições HTTP às aplicações. O Compose aguarda a prontidão inicial dos serviços dependentes.
@@ -27,13 +27,13 @@ Acesse [PetClinic pelo Gateway](http://localhost:8081). `GATEWAY_PORT` altera a 
 É possível parar, iniciar ou reiniciar cada componente individualmente. Por exemplo:
 
 ```sh
-docker compose -p tcc2-v2 stop owners-service
-docker compose -p tcc2-v2 start owners-service
-docker compose -p tcc2-v2 restart monolith
-docker compose -p tcc2-v2 restart gateway
-docker compose -p tcc2-v2 up --force-recreate --wait
-docker compose -p tcc2-v2 down
-docker compose -p tcc2-v2 up --wait
+docker compose -p tcc2-v3 stop owners-service
+docker compose -p tcc2-v3 start owners-service
+docker compose -p tcc2-v3 restart monolith
+docker compose -p tcc2-v3 restart gateway
+docker compose -p tcc2-v3 up --force-recreate --wait
+docker compose -p tcc2-v3 down
+docker compose -p tcc2-v3 up --wait
 ```
 
 Use o mesmo nome de projeto para reabrir os mesmos volumes. Para uma instalação limpa, escolha um nome novo. `down -v` remove os volumes do projeto e apaga os bancos armazenados neles. Use-o apenas se os volumes forem descartáveis e você tiver identificado o projeto correto.
@@ -67,16 +67,16 @@ Confirme o sucesso dos dois imports antes de iniciar. A origem montada é soment
 Use o complemento no mesmo projeto se quiser reaproveitar os volumes, ou escolha outro projeto e outra porta para testar em paralelo.
 
 ```sh
-docker compose -p tcc2-v2 -f compose.yaml -f compose.replicas.yaml up --wait
-docker compose -p tcc2-v2 -f compose.yaml -f compose.replicas.yaml ps
-replica=$(docker compose -p tcc2-v2 -f compose.yaml -f compose.replicas.yaml ps -q owners-service | head -n 1)
+docker compose -p tcc2-v3 -f compose.yaml -f compose.replicas.yaml up --wait
+docker compose -p tcc2-v3 -f compose.yaml -f compose.replicas.yaml ps
+replica=$(docker compose -p tcc2-v3 -f compose.yaml -f compose.replicas.yaml ps -q owners-service | head -n 1)
 docker stop "$replica"
 docker start "$replica"
 ```
 
 O complemento acrescenta uma segunda réplica e um HAProxy, chegando a sete contêineres. O Gateway e o monólito passam a usar o HAProxy. Ele resolve as réplicas via DNS interno, verifica a prontidão via HTTP e distribui requisições em round-robin. O cabeçalho `X-Owners-Replica` identifica o slot que respondeu à chamada REST. O balanceador só tenta outro servidor quando a conexão inicial falha antes do envio da requisição. Ele não reenvia escritas após a conexão nem repete respostas HTTP de erro.
 
-As réplicas compartilham o mesmo H2 via TCP. Há um servidor de banco, um volume de Owners e um balanceador. O teste inicial observou um 503 quando o DNS voltou a anunciar uma réplica antes de ela aceitar conexões. O HAProxy passa a iniciar os slots como indisponíveis, a retirar réplicas na primeira falha de saúde e a manter temporariamente registros DNS obsoletos para continuar verificando o estado. A configuração reduz a janela de falha, mas quedas durante uma requisição ainda podem gerar erros transitórios. A perda do banco interrompe o acesso a Owners. Este cenário não replica o H2, não resolve concorrência de edições simultâneas além das garantias do banco e não demonstra alta disponibilidade do sistema completo.
+As réplicas compartilham o mesmo H2 via TCP. Há um servidor de banco, um volume de Owners e um balanceador. O teste inicial da V2 observou um 503 quando o DNS voltou a anunciar uma réplica antes de ela aceitar conexões. O HAProxy passa a iniciar os slots como indisponíveis, a retirar réplicas na primeira falha de saúde e a manter temporariamente registros DNS obsoletos para continuar verificando o estado. A configuração reduz a janela de falha, mas quedas durante uma requisição ainda podem gerar erros transitórios. A perda do banco interrompe o acesso a Owners. Este cenário não replica o H2, não resolve concorrência de edições simultâneas além das garantias do banco e não demonstra alta disponibilidade do sistema completo.
 
 ## Verificação funcional
 
@@ -89,4 +89,4 @@ docker compose -p $env:TCC2_COMPOSE_PROJECT up --build --wait
 python scripts/acceptance.py
 ```
 
-O roteiro acessa as rotas pelo Gateway e reinicia os serviços de aplicação, mantendo os bancos ativos. O arquivo `.work/acceptance-*/http-acceptance.json` registra as verificações. A fixture offline pode ser criada e validada por `python scripts/test-migration.py` com Java 17 e dependências JDBC no cache Maven. Os builds Docker executam as suítes Java dos três projetos.
+O roteiro acessa as rotas pelo Gateway e reinicia os serviços de aplicação, incluindo os bancos, com os mesmos volumes persistentes. O arquivo `.work/acceptance-*/http-acceptance.json` registra as verificações. A fixture offline pode ser criada e validada por `python scripts/test-migration.py` com Java 17 e dependências JDBC no cache Maven. Os builds Docker executam as suítes Java dos três projetos.

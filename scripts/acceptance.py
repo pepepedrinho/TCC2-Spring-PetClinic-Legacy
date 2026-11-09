@@ -26,7 +26,7 @@ def req(path,expected=200,data=None,method=None,port=8081):
     elif data is not None:
         data=data.encode();headers['Content-Type']='application/json'
     port=GATEWAY_PORT if compose else port
-    r=urllib.request.Request(f'http://localhost:{port}'+path,data=data,headers=headers,method=method)
+    r=urllib.request.Request(f'http://127.0.0.1:{port}'+path,data=data,headers=headers,method=method)
     try: response=opener.open(r,timeout=10)
     except urllib.error.HTTPError as e: response=e
     body=response.read().decode('utf-8'); status=response.code
@@ -72,7 +72,7 @@ def has(body,text): assert text in body, text
 
 def redirect(headers, expected_path=None):
     location = urllib.parse.urlsplit(headers['Location'])
-    assert not location.netloc or (location.scheme, location.netloc) == ('http', f'localhost:{GATEWAY_PORT}'), location
+    assert not location.netloc or (location.scheme, location.netloc) == ('http', f'127.0.0.1:{GATEWAY_PORT}'), location
     if expected_path:
         assert location.path == expected_path, location
     return location.path
@@ -80,7 +80,7 @@ try:
     if not compose:
         for port in (8080,8081,8082):
             with socket.socket() as s:
-                assert s.connect_ex(('localhost',port))!=0, f'Port {port} in use; existing process will not be stopped'
+                assert s.connect_ex(('127.0.0.1',port))!=0, f'Port {port} in use; existing process will not be stopped'
         start('owners');start('legacy');start('gateway')
     ready('/api/owners/1',8082);ready('/vets.html',8080);ready('/',8081)
     for path in ('/','/owners','/owners/find','/owners/new','/owners/1','/owners/1/edit','/owners/1/pets/new','/owners/1/pets/1/edit','/owners/1/pets/1/visits/new','/vets.html','/vets.json','/resources/css/petclinic.css'):
@@ -133,7 +133,7 @@ try:
     req(f'/owners/1/pets/{pid}/edit',404,data=pet)
     req(f'/owners/1/pets/{pid}/visits/new',404,data={'description':'Wrong owner'})
     req('/owners/99999/pets/new',404,data=pet)
-    has(req(f'/owners/{oid}/pets/new',data=pet)[0], 'already exists')
+    has(req(f'/owners/{oid}/pets/new',data=pet)[0], 'is already in use')
     visit = {'date':'2026-10-28','description':'V3Visit','petId':'1'}
     redirect(req(f'/owners/{oid}/pets/{pid}/visits/new',302,data=visit)[1], loc)
     has(req(f'/owners/{oid}')[0],'V3Visit')
@@ -156,7 +156,7 @@ try:
     stop('owners')
     started=time.monotonic();req(f'/owners/{oid}',503);assert time.monotonic()-started<8
     req('/owners',503);req('/api/owners/1',503)
-    has(req(f'/owners/{oid}/pets/new',503,data=pet)[0], 'Owners temporariamente indispon)
+    has(req(f'/owners/{oid}/pets/new',503,data=pet)[0], 'Owners temporariamente indispon')
     req('/vets.html');req('/vets.json');req('/')
     start('owners');ready('/api/owners/1',8082);req(f'/owners/{oid}')
     stop('legacy')
