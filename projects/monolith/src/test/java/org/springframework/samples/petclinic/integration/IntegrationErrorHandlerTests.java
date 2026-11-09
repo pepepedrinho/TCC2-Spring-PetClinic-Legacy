@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.PetRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -20,7 +19,6 @@ import org.springframework.web.util.NestedServletException;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.anything;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -36,7 +34,7 @@ public class IntegrationErrorHandlerTests {
 
     @Before
     public void setup() {
-        OwnerIntegrationAdapter ownerIntegrationAdapter = new OwnerIntegrationAdapter("http://localhost:8082", mock(PetRepository.class));
+        OwnerIntegrationAdapter ownerIntegrationAdapter = new OwnerIntegrationAdapter("http://localhost:8082");
         mockRestServiceServer = MockRestServiceServer
                 .createServer((RestTemplate) ReflectionTestUtils.getField(ownerIntegrationAdapter, "restTemplate"));
         mockMvc = MockMvcBuilders.standaloneSetup(new IntegrationEndpoints(ownerIntegrationAdapter))

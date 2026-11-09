@@ -12,7 +12,7 @@ x-app-health: &app-health
 
 services:
   legacy-db:
-    image: tcc2-v2-experiment/legacy-db:local
+    image: tcc2-v3/legacy-db:local
     build:
       context: .
       dockerfile: docker/databases.Dockerfile
@@ -27,7 +27,7 @@ services:
       test: ["CMD", "bash", "/opt/db/db-entrypoint", "legacy", "health"]
 
   owners-db:
-    image: tcc2-v2-experiment/owners-db:local
+    image: tcc2-v3/owners-db:local
     build:
       context: .
       dockerfile: docker/databases.Dockerfile
@@ -43,7 +43,7 @@ services:
       test: ["CMD", "bash", "/opt/db/db-entrypoint", "owners", "health"]
 
   monolith:
-    image: tcc2-v2-experiment/monolith:local
+    image: tcc2-v3/monolith:local
     build:
       context: .
       dockerfile: projects/monolith/Dockerfile
@@ -55,19 +55,18 @@ services:
     depends_on:
       legacy-db:
         condition: service_healthy
-      owners-service:
-        condition: service_healthy
     healthcheck:
       <<: *app-health
       test: ["CMD", "bash", "/usr/local/bin/http-healthcheck", "8080", "/vets.html"]
 
   owners-service:
-    image: tcc2-v2-experiment/owners-service:local
+    image: tcc2-v3/owners-service:local
     build:
       context: .
       dockerfile: projects/owners-service/Dockerfile
     environment:
       JAVA_TOOL_OPTIONS: "-Xms32m -Xmx256m -XX:ActiveProcessorCount=2"
+      MONOLITH_URL: "http://monolith:8080"
       OWNERS_DB_URL: "jdbc:h2:tcp://owners-db:9092/./owners;IFEXISTS=TRUE"
       SPRING_DATASOURCE_PASSWORD: ${OWNERS_DB_PASSWORD:-}
       SPRING_SQL_INIT_MODE: "never"
@@ -81,7 +80,7 @@ services:
       test: ["CMD", "bash", "/usr/local/bin/http-healthcheck", "8082", "/api/owners?lastName=Franklin"]
 
   gateway:
-    image: tcc2-v2-experiment/gateway:local
+    image: tcc2-v3/gateway:local
     build:
       context: .
       dockerfile: projects/gateway/Dockerfile

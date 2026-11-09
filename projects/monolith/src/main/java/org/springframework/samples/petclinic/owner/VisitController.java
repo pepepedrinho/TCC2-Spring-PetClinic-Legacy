@@ -75,8 +75,7 @@ class VisitController {
             throw IntegrationErrorHandler.notFound();
         }
 
-        // Recupera o Owner pelo adaptador de integração com o microsserviço
-        // e recompõe a associação com o Pet armazenado no monólito.
+        // Recupera os dados de exibição do Owner para o formulário legado.
         pet.setOwner(this.ownerRepository.findById(ownerId));
 
         model.put("pet", pet);

@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory=$true)][string]$CkJar,
-    [string]$Java17Home = $env:JAVA17_HOME
+    [string]$Java17Home = $env:JAVA17_HOME,
+    [switch]$V3
 )
 $ErrorActionPreference = 'Stop'
 if (-not $Java17Home) { throw 'Defina JAVA17_HOME ou -Java17Home.' }
@@ -25,6 +26,15 @@ $scenarios = [ordered]@{
     'A-monolito-original' = @{ revision = $baseline; sourceRoot = 'src/main/java' }
     'B-monolito-adaptado' = @{ revision = $head; sourceRoot = 'projects/monolith/src/main/java' }
     'C-owners-service' = @{ revision = $head; sourceRoot = 'projects/owners-service/src/main/java' }
+}
+
+if ($V3) {
+    $v2 = '9fc9afb839a0ecc85b7b0054e635dc618f0b150a'
+    $scenarios['B-monolito-adaptado'].revision = $v2
+    $scenarios['C-owners-service'].revision = $v2
+    $scenarios['D-monolito-v3'] = @{ revision = $head; sourceRoot = 'projects/monolith/src/main/java' }
+    $scenarios['E-owners-service-v3'] = @{ revision = $head; sourceRoot = 'projects/owners-service/src/main/java' }
+    $scenarios['F-gateway-v3'] = @{ revision = $head; sourceRoot = 'projects/gateway/src/main/java' }
 }
 
 $work = Join-Path $root '.work'

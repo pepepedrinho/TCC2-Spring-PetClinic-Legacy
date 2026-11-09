@@ -78,16 +78,14 @@ public class ClinicServiceTests {
     }
 
     @Test
-    public void shouldFindSingleOwnerWithPet() {
+    public void shouldFindSingleRemoteOwner() {
         ownersServer.expect(requestTo("http://localhost:8082/api/owners/1"))
                 .andRespond(withSuccess("{\"id\":1,\"firstName\":\"George\",\"lastName\":\"Franklin\"}",
                         MediaType.APPLICATION_JSON));
 
         Owner owner = this.ownerRepository.findById(1);
         assertThat(owner.getLastName()).startsWith("Franklin");
-        assertThat(owner.getPets().size()).isEqualTo(1);
-        assertThat(owner.getPets().get(0).getType()).isNotNull();
-        assertThat(owner.getPets().get(0).getType().getName()).isEqualTo("cat");
+        assertThat(owner.getPets()).isEmpty();
         ownersServer.verify();
     }
 
@@ -132,12 +130,9 @@ public class ClinicServiceTests {
         String ownerJson = "{\"id\":6,\"firstName\":\"Jean\",\"lastName\":\"Franklin\"}";
         ownersServer.expect(requestTo(ownerUrl)).andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(ownerJson, MediaType.APPLICATION_JSON));
-        ownersServer.expect(requestTo(ownerUrl)).andExpect(method(HttpMethod.PUT)).andRespond(withSuccess());
-        ownersServer.expect(requestTo(ownerUrl)).andExpect(method(HttpMethod.GET))
-                .andRespond(withSuccess(ownerJson, MediaType.APPLICATION_JSON));
 
         Owner owner6 = this.ownerRepository.findById(6);
-        int found = owner6.getPets().size();
+        int found = this.petRepository.findByOwnerId(6).size();
 
         Pet pet = new Pet();
         pet.setName("bowser");
@@ -145,13 +140,8 @@ public class ClinicServiceTests {
         pet.setType(EntityUtils.getById(types, PetType.class, 2));
         pet.setBirthDate(new Date());
         owner6.addPet(pet);
-        assertThat(owner6.getPets().size()).isEqualTo(found + 1);
-
         this.petRepository.save(pet);
-        this.ownerRepository.save(owner6);
-
-        owner6 = this.ownerRepository.findById(6);
-        assertThat(owner6.getPets().size()).isEqualTo(found + 1);
+        assertThat(this.petRepository.findByOwnerId(6)).hasSize(found + 1);
         // checks that id has been generated
         assertThat(pet.getId()).isNotNull();
         ownersServer.verify();

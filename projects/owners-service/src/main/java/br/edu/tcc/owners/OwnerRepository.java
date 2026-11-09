@@ -7,9 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 // Componente novo da extração: usa JpaRepository para persistir Owner no banco do serviço, sem
-// relacionamentos JPA com Pets do legado. Porém, a integração continua sendo feita no monólito
-// pelo método compose(), que utiliza o ownerId armazenado em cada Pet para recuperar os animais
-// locais e associá-los ao respectivo Owner recebido do microsserviço.
+// relacionamentos JPA com Pets do legado. A apresentação consulta os Pets pelo endpoint interno do monólito.
 public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 
     // Poderia ser utilizado o método de consulta derivada do Spring Data JPA:

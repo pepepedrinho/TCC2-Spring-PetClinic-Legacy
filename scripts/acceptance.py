@@ -69,6 +69,13 @@ def ready(path,port):
     raise AssertionError(f'{port} did not start; inspect {RUN}')
 
 def has(body,text): assert text in body, text
+
+def redirect(headers, expected_path=None):
+    location = urllib.parse.urlsplit(headers['Location'])
+    assert not location.netloc or (location.scheme, location.netloc) == ('http', f'localhost:{GATEWAY_PORT}'), location
+    if expected_path:
+        assert location.path == expected_path, location
+    return location.path
 try:
     if not compose:
         for port in (8080,8081,8082):
@@ -78,38 +85,69 @@ try:
     ready('/api/owners/1',8082);ready('/vets.html',8080);ready('/',8081)
     for path in ('/','/owners','/owners/find','/owners/new','/owners/1','/owners/1/edit','/owners/1/pets/new','/owners/1/pets/1/edit','/owners/1/pets/1/visits/new','/vets.html','/vets.json','/resources/css/petclinic.css'):
         req(path)
-    has(req('/owners/1')[0],'Leo');has(req('/owners/6')[0],'Samantha')
-    _,h=req('/owners?lastName=Franklin',302);assert h['Location'].endswith('/owners/1');assert ':8080' not in h['Location']
-    has(req('/owners?lastName=Davis')[0],'Betty');req('/owners?lastName=Missing')
+    has(req('/owners/find')[0], 'action="/owners"')
+    has(req('/owners/find/')[0], 'action="/owners"')
+    has(req('/owners/')[0], 'George Franklin')
+    details = req('/owners/1')[0]
+    for fragment in ('George Franklin', 'Leo', '2010-09-07', 'href="/owners/1/edit"',
+                     'href="/owners/1/pets/new"', 'href="/owners/1/pets/1/edit"',
+                     'href="/owners/1/pets/1/visits/new"', 'href="/resources/css/petclinic.css"'):
+        has(details, fragment)
+    for fragment in ('Samantha', 'rabies shot', 'spayed'):
+        has(req('/owners/6')[0], fragment)
+    redirect(req('/owners?lastName=frank', 302)[1], '/owners/1')
+    listing = req('/owners?lastName=Davis')[0]
+    for fragment in ('Betty Davis', 'Harold Davis', 'Basil', 'href="/owners/2"'):
+        has(listing, fragment)
+    has(req('/owners?lastName=Missing')[0], 'not found')
+    has(req('/owners/new')[0], 'Add Owner')
+    has(req('/owners/1/edit')[0], 'Update Owner')
+    req('/internal/owner-pets',404,data='[1]')
+    req('/%69nternal/owner-pets',404,data='[1]')
+    req('/owners/../internal/owner-pets',404,data='[1]')
+    req('//internal/owner-pets',404,data='[1]')
     req('/api/pets/1',404);req('/api/pet-types',404)
     req('/api/owners/1',409,method='DELETE')
     req('/api/owners/99999',404);req('/owners/99999',404)
     req('/api/owners',400,data='{}')
-    req('/owners/new',data={'firstName':'Invalid'})
-    owner={'firstName':'Ana','lastName':'V2Acceptance','address':'Rua A','city':'Recife','telephone':'1234567890'}
-    _,h=req('/owners/new',302,data=owner);loc=h['Location'];assert ':8080' not in loc
+    invalid = req('/owners/new',data={'firstName':'Invalid','telephone':'abc'})[0]
+    for fragment in ('has-error', 'must not be blank', 'value="abc"'):
+        has(invalid, fragment)
+    owner={'firstName':'Ana','lastName':'V3Acceptance','address':'Rua A','city':'Recife','telephone':'1234567890'}
+    loc = redirect(req('/owners/new',302,data=dict(owner,id=1))[1])
     oid=int(loc.rsplit('/',1)[1]);assert oid>10
-    owner['city']='Olinda';req(f'/owners/{oid}/edit',302,data=owner)
+    invalid = req(f'/owners/{oid}/edit', data=dict(owner,city=''))[0]
+    has(invalid, 'Update Owner')
+    has(invalid, 'has-error')
+    assert json.loads(req(f'/api/owners/{oid}')[0])['city']=='Recife'
+    owner['city']='Olinda'
+    redirect(req(f'/owners/{oid}/edit',302,data=dict(owner,id=1))[1], loc)
     assert json.loads(req(f'/api/owners/{oid}')[0])['city']=='Olinda'
-    pet={'name':'V2Pet','type':'cat','birthDate':'2020-01-01'}
-    req(f'/owners/{oid}/pets/new',302,data=pet)
-    body=req(f'/owners/{oid}')[0];has(body,'V2Pet')
+    pet={'name':'V3Pet','type':'cat','birthDate':'2020-01-01'}
+    redirect(req(f'/owners/{oid}/pets/new',302,data=pet)[1], loc)
+    body=req(f'/owners/{oid}')[0];has(body,'V3Pet')
     pid=int(re.search(r'/pets/(\d+)/edit',body).group(1));assert pid>13
-    pet['name']='V2PetEdited';req(f'/owners/{oid}/pets/{pid}/edit',302,data=pet)
+    pet['name']='V3PetEdited'
+    redirect(req(f'/owners/{oid}/pets/{pid}/edit',302,data=pet)[1], loc)
     req(f'/owners/1/pets/{pid}/edit',404)
     req(f'/owners/1/pets/{pid}/edit',404,data=pet)
     req(f'/owners/1/pets/{pid}/visits/new',404,data={'description':'Wrong owner'})
     req('/owners/99999/pets/new',404,data=pet)
-    req(f'/owners/{oid}/pets/new',data=pet) # duplicate name stays on form
-    req(f'/owners/{oid}/pets/{pid}/visits/new',302,data={'date':'2026-10-28','description':'V2Visit','petId':'1'})
-    has(req(f'/owners/{oid}')[0],'V2Visit')
-    assert 'V2Visit' not in req('/owners/1')[0] # forged petId ignored
-    has(req(f'/owners/{oid}/pets/{pid}/visits/new')[0],'V2Visit')
-    # Crash/restart with the same database files: commits must survive.
-    stop('legacy');stop('owners');start('owners');start('legacy')
+    has(req(f'/owners/{oid}/pets/new',data=pet)[0], 'already exists')
+    visit = {'date':'2026-10-28','description':'V3Visit','petId':'1'}
+    redirect(req(f'/owners/{oid}/pets/{pid}/visits/new',302,data=visit)[1], loc)
+    has(req(f'/owners/{oid}')[0],'V3Visit')
+    assert 'V3Visit' not in req('/owners/1')[0] # forged petId ignored
+    has(req(f'/owners/{oid}/pets/{pid}/visits/new')[0],'V3Visit')
+    # Restart the isolated deployment and check the same persisted data.
+    if compose:
+        subprocess.run([*compose,'stop'],cwd=ROOT,check=True)
+        subprocess.run([*compose,'up','--no-build','--wait','--wait-timeout','120'],cwd=ROOT,check=True)
+    else:
+        stop('legacy');stop('owners');start('owners');start('legacy')
     ready('/api/owners/1',8082);ready('/vets.html',8080)
     body=req(f'/owners/{oid}')[0]
-    for text in ('Olinda','V2PetEdited','V2Visit'): has(body,text)
+    for text in ('Olinda','V3PetEdited','V3Visit'): has(body,text)
     req(f'/owners/{oid}/pets/{pid}/edit')
     # Identity allocation and seed initialization must not rewind after restart.
     owner2=json.loads(req('/api/owners',201,data=json.dumps(dict(owner,lastName='AfterRestart')))[0]);assert owner2['id']>oid
@@ -117,12 +155,18 @@ try:
     req(f'/api/owners/{oid}',409,method='DELETE')
     stop('owners')
     started=time.monotonic();req(f'/owners/{oid}',503);assert time.monotonic()-started<8
-    req('/owners',503);req(f'/owners/{oid}/pets/new',503,data=pet)
+    req('/owners',503);req('/api/owners/1',503)
+    has(req(f'/owners/{oid}/pets/new',503,data=pet)[0], 'Owners temporariamente indispon)
     req('/vets.html');req('/vets.json');req('/')
     start('owners');ready('/api/owners/1',8082);req(f'/owners/{oid}')
+    stop('legacy')
+    req(f'/owners/{oid}',503);req('/owners',503)
+    req('/owners/find');req('/owners/new');req(f'/owners/{oid}/edit');req(f'/api/owners/{oid}')
+    start('legacy');ready('/vets.html',8080)
+    has(req(f'/owners/{oid}')[0],'V3Visit')
     result={'result':'PASS','utc':datetime.now(timezone.utc).isoformat(),'checks':checks,'ownerId':oid,'petId':pid,
             'databases':COMPOSE_PROJECT if compose else str(RUN),
-            'restart':'Compose stop/start; database services remain active' if compose else 'abrupt process termination; same file databases'}
+            'restart':'Compose stop/up --wait; the same named volumes are mounted' if compose else 'abrupt process termination; same file databases'}
 except BaseException as e:
     result={'result':'FAIL','error':repr(e),'checks':checks,'logs':str(RUN)}
     raise

@@ -2,18 +2,15 @@ package org.springframework.samples.petclinic.integration;
 
 import org.junit.*;
 import org.springframework.http.*;
-import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.PetRepository;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.*;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
-// Teste novo da integração: verifica payloads de Owner e tradução de respostas e falhas HTTP sem acessar um
+// Teste novo da integração: verifica a consulta de Owner e a tradução de respostas e falhas HTTP sem acessar um
 // serviço real.
 public class OwnerIntegrationAdapterTests {
     private OwnerIntegrationAdapter ownerIntegrationAdapter;
@@ -22,7 +19,7 @@ public class OwnerIntegrationAdapterTests {
 
     @Before
     public void setup() {
-        ownerIntegrationAdapter = new OwnerIntegrationAdapter("http://localhost:8082", mock(PetRepository.class));
+        ownerIntegrationAdapter = new OwnerIntegrationAdapter("http://localhost:8082");
         mockRestServiceServer = MockRestServiceServer
                 .createServer((RestTemplate) ReflectionTestUtils.getField(ownerIntegrationAdapter, "restTemplate"));
     }
@@ -36,14 +33,6 @@ public class OwnerIntegrationAdapterTests {
     }
 
     @Test
-    public void prefixIsEncoded() {
-        mockRestServiceServer.expect(requestTo("http://localhost:8082/api/owners?lastName=A%26B"))
-                .andRespond(withSuccess("[]", MediaType.APPLICATION_JSON));
-        assertTrue(ownerIntegrationAdapter.findByLastName("A&B").isEmpty());
-        mockRestServiceServer.verify();
-    }
-
-    @Test
     public void maps404() {
         mockRestServiceServer.expect(anything()).andRespond(withStatus(HttpStatus.NOT_FOUND));
         expectFailure(HttpStatus.NOT_FOUND, () -> ownerIntegrationAdapter.findById(999));
@@ -52,7 +41,7 @@ public class OwnerIntegrationAdapterTests {
     @Test
     public void maps400() {
         mockRestServiceServer.expect(anything()).andRespond(withStatus(HttpStatus.BAD_REQUEST));
-        expectFailure(HttpStatus.BAD_REQUEST, () -> ownerIntegrationAdapter.save(new Owner()));
+        expectFailure(HttpStatus.BAD_REQUEST, () -> ownerIntegrationAdapter.findById(1));
     }
 
     @Test
@@ -73,18 +62,6 @@ public class OwnerIntegrationAdapterTests {
     public void mapsMalformedBody() {
         mockRestServiceServer.expect(anything()).andRespond(withSuccess("not json", MediaType.APPLICATION_JSON));
         expectFailure(HttpStatus.SERVICE_UNAVAILABLE, () -> ownerIntegrationAdapter.findById(1));
-    }
-
-    @Test
-    public void createSendsOnlyOwnerFields() {
-        Owner owner = new Owner();
-        owner.setFirstName("Ana");
-        mockRestServiceServer.expect(anything()).andExpect(method(HttpMethod.POST))
-                .andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("pets"))))
-                .andRespond(withSuccess("{\"id\":11}", MediaType.APPLICATION_JSON));
-        ownerIntegrationAdapter.save(owner);
-        assertEquals(Integer.valueOf(11), owner.getId());
-        mockRestServiceServer.verify();
     }
 
     @Test

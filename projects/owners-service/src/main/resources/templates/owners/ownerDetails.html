@@ -28,9 +28,9 @@
       </tr>
     </table>
   
-    <a th:href="@{{id}/edit(id=${owner.id})}" class="btn btn-default">Edit
+    <a th:href="@{/owners/{id}/edit(id=${owner.id})}" class="btn btn-default">Edit
       Owner</a>
-    <a th:href="@{{id}/pets/new(id=${owner.id})}" class="btn btn-default">Add
+    <a th:href="@{/owners/{id}/pets/new(id=${owner.id})}" class="btn btn-default">Add
       New Pet</a>
   
     <br />
@@ -40,14 +40,14 @@
   
     <table class="table table-striped">
   
-      <tr th:each="pet : ${owner.pets}">
+      <tr th:each="pet : ${pets}">
         <td valign="top">
           <dl class="dl-horizontal">
             <dt>Name</dt>
             <dd th:text="${pet.name}" /></dd>
             <dt>Birth Date</dt>
             <dd
-              th:text="${#calendars.format(pet.birthDate, 'yyyy-MM-dd')}" /></dd>
+              th:text="${pet.birthDate}" /></dd>
             <dt>Type</dt>
             <dd th:text="${pet.type}" /></dd>
           </dl>
@@ -61,15 +61,15 @@
               </tr>
             </thead>
             <tr th:each="visit : ${pet.visits}">
-              <td th:text="${#calendars.format(visit.date, 'yyyy-MM-dd')}"></td>
+              <td th:text="${visit.date}"></td>
               <td th:text="${visit?.description}"></td>
             </tr>
             <tr>
               <td><a
-                th:href="@{{ownerId}/pets/{petId}/edit(ownerId=${owner.id},petId=${pet.id})}">Edit
+                th:href="@{/owners/{ownerId}/pets/{petId}/edit(ownerId=${owner.id},petId=${pet.id})}">Edit
                   Pet</a></td>
               <td><a
-                th:href="@{{ownerId}/pets/{petId}/visits/new(ownerId=${owner.id},petId=${pet.id})}">Add
+                th:href="@{/owners/{ownerId}/pets/{petId}/visits/new(ownerId=${owner.id},petId=${pet.id})}">Add
                   Visit</a></td>
             </tr>
           </table>

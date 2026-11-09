@@ -19,9 +19,6 @@ services:
   monolith:
     environment:
       OWNERS_URL: "http://owners-lb:8082"
-    depends_on:
-      owners-lb:
-        condition: service_healthy
 
   gateway:
     environment:

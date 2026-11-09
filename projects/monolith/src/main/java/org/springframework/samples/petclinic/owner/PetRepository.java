@@ -15,10 +15,12 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -54,9 +56,13 @@ public interface PetRepository extends Repository<Pet, Integer> {
      */
     void save(Pet pet);
 
-    // Consulta os Pets locais pelo ID do Owner remoto,
-    // permitindo recompor a associação no adaptador de integração.
+    // Consulta local usada para validar duplicatas no cadastro de Pets.
     @Transactional(readOnly = true)
     List<Pet> findByOwnerId(Integer ownerId);
+
+    @Query("SELECT DISTINCT pet FROM Pet pet LEFT JOIN FETCH pet.type LEFT JOIN FETCH pet.visits "
+            + "WHERE pet.ownerId IN :ownerIds")
+    @Transactional(readOnly = true)
+    List<Pet> findWithVisitsByOwnerIds(@Param("ownerIds") Collection<Integer> ownerIds);
 
 }
