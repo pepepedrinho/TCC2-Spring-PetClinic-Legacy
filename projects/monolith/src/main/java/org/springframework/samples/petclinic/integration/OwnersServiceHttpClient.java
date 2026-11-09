@@ -4,18 +4,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /** Reads Owner data for the Pet and Visit workflows that remain in the monolith. */
 @Service
-public class OwnerIntegrationAdapter implements OwnerRepository {
+public class OwnersServiceHttpClient {
     private final String url;
     private final RestTemplate restTemplate;
 
-    public OwnerIntegrationAdapter(@Value("${owners.base-url}") String url) {
+    public OwnersServiceHttpClient(@Value("${owners.base-url}") String url) {
         this.url = url + "/api/owners/{id}";
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(1500);
@@ -23,7 +22,6 @@ public class OwnerIntegrationAdapter implements OwnerRepository {
         this.restTemplate = new RestTemplate(factory);
     }
 
-    @Override
     public Owner findById(Integer id) {
         try {
             Owner owner = restTemplate.getForObject(url, Owner.class, id);

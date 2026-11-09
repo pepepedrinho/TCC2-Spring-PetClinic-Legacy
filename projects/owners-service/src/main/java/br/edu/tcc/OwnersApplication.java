@@ -1,4 +1,4 @@
-package br.edu.tcc.owners;
+package br.edu.tcc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

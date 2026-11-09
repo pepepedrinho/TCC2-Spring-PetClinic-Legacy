@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.OwnerRepository;
+import org.springframework.samples.petclinic.integration.OwnersServiceHttpClient;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetController;
 import org.springframework.samples.petclinic.owner.PetRepository;
@@ -46,7 +46,7 @@ public class PetControllerTests {
     private PetRepository petRepository;
 
     @MockBean
-    private OwnerRepository ownerRepository;
+    private OwnersServiceHttpClient ownersServiceHttpClient;
 
     // ============================================================
     // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
@@ -79,7 +79,7 @@ public class PetControllerTests {
         pet.setId(TEST_PET_ID);
         pet.setName("Leo");
         owner.addPet(pet);
-        given(this.ownerRepository.findById(TEST_OWNER_ID)).willReturn(owner);
+        given(this.ownersServiceHttpClient.findById(TEST_OWNER_ID)).willReturn(owner);
         given(this.petRepository.findById(TEST_PET_ID)).willReturn(pet);
 
     }

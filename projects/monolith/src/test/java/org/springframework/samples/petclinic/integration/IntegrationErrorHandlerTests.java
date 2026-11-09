@@ -34,10 +34,10 @@ public class IntegrationErrorHandlerTests {
 
     @Before
     public void setup() {
-        OwnerIntegrationAdapter ownerIntegrationAdapter = new OwnerIntegrationAdapter("http://localhost:8082");
+        OwnersServiceHttpClient ownersServiceHttpClient = new OwnersServiceHttpClient("http://localhost:8082");
         mockRestServiceServer = MockRestServiceServer
-                .createServer((RestTemplate) ReflectionTestUtils.getField(ownerIntegrationAdapter, "restTemplate"));
-        mockMvc = MockMvcBuilders.standaloneSetup(new IntegrationEndpoints(ownerIntegrationAdapter))
+                .createServer((RestTemplate) ReflectionTestUtils.getField(ownersServiceHttpClient, "restTemplate"));
+        mockMvc = MockMvcBuilders.standaloneSetup(new IntegrationEndpoints(ownersServiceHttpClient))
                 .setControllerAdvice(new IntegrationErrorHandler())
                 .build();
     }
@@ -139,16 +139,16 @@ public class IntegrationErrorHandlerTests {
     // Fixture exclusiva dos testes; não adiciona endpoints à aplicação.
     @Controller
     public static class IntegrationEndpoints {
-        private final OwnerIntegrationAdapter ownerIntegrationAdapter;
+        private final OwnersServiceHttpClient ownersServiceHttpClient;
 
-        public IntegrationEndpoints(OwnerIntegrationAdapter ownerIntegrationAdapter) {
-            this.ownerIntegrationAdapter = ownerIntegrationAdapter;
+        public IntegrationEndpoints(OwnersServiceHttpClient ownersServiceHttpClient) {
+            this.ownersServiceHttpClient = ownersServiceHttpClient;
         }
 
         @GetMapping("/integration-test")
         @ResponseBody
         public Owner read() {
-            return ownerIntegrationAdapter.findById(1);
+            return ownersServiceHttpClient.findById(1);
         }
 
         @GetMapping("/conversion-test")

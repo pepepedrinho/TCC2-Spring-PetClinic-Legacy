@@ -1,18 +1,27 @@
 package br.edu.tcc.owners;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.mock.http.client.MockClientHttpResponse;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.client.RestClient;
+
+import br.edu.tcc.integration.LegacyPetsHttpClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -28,12 +37,12 @@ class OwnerWebTests {
     MockMvc mvc;
 
     @MockitoBean
-    LegacyPetsClient pets;
+    LegacyPetsHttpClient pets;
 
     @Test
     void searchesByPrefixAndReadsPetsOnceForMultipleOwners() throws Exception {
         when(pets.findPets(List.of(2, 4))).thenReturn(Map.of(
-                2, List.of(new LegacyPetsClient.PetSummary(4, "Test Cat", null, "cat", List.of())),
+                2, List.of(new LegacyPetsHttpClient.PetSummary(4, "Test Cat", null, "cat", List.of())),
                 4, List.of()));
 
         mvc.perform(get("/owners/find")).andExpect(status().isOk())
@@ -50,8 +59,8 @@ class OwnerWebTests {
 
     @Test
     void rendersVisitsAndLinksToLegacyPetPages() throws Exception {
-        var visit = new LegacyPetsClient.VisitSummary(LocalDate.of(2020, 2, 29), "Annual exam");
-        var pet = new LegacyPetsClient.PetSummary(1, "Leo", LocalDate.of(2018, 1, 1), "cat", List.of(visit));
+        var visit = new LegacyPetsHttpClient.VisitSummary(LocalDate.of(2020, 2, 29), "Annual exam");
+        var pet = new LegacyPetsHttpClient.PetSummary(1, "Leo", LocalDate.of(2018, 1, 1), "cat", List.of(visit));
         when(pets.findPets(List.of(1))).thenReturn(Map.of(1, List.of(pet)));
 
         mvc.perform(get("/owners/1")).andExpect(status().isOk())
@@ -87,10 +96,24 @@ class OwnerWebTests {
         verifyNoInteractions(pets);
     }
 
-    @Test
-    void legacyOutageAffectsOnlyPagesThatNeedPets() throws Exception {
-        when(pets.findPets(List.of(1))).thenThrow(new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE));
-        mvc.perform(get("/owners/1")).andExpect(status().isServiceUnavailable());
+    @ParameterizedTest
+    @NullSource
+    @ValueSource(strings = {"not-json", "{}"})
+    void legacyFailureAffectsOnlyPagesThatNeedPets(String legacyBody) throws Exception {
+        var unavailableLegacy = new LegacyPetsHttpClient(RestClient.builder()
+                .requestInterceptor((request, body, execution) -> {
+                    if (legacyBody == null) {
+                        throw new IOException("Legacy connection unavailable");
+                    }
+                    var response = new MockClientHttpResponse(legacyBody.getBytes(StandardCharsets.UTF_8), HttpStatus.OK);
+                    response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+                    return response;
+                }), "http://localhost:8080");
+        when(pets.findPets(List.of(1))).thenAnswer(call -> unavailableLegacy.findPets(call.getArgument(0)));
+
+        mvc.perform(get("/owners/1"))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(status().reason("Pets and visits are unavailable"));
         mvc.perform(get("/owners/1/edit")).andExpect(status().isOk());
         mvc.perform(get("/api/owners/1")).andExpect(status().isOk());
     }

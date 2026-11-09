@@ -11,8 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.samples.petclinic.integration.OwnersServiceHttpClient;
 import org.springframework.samples.petclinic.owner.Owner;
-import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetRepository;
 import org.springframework.samples.petclinic.owner.PetType;
@@ -58,7 +58,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 public class ClinicServiceTests {
 
     @Autowired
-    protected OwnerRepository ownerRepository;
+    protected OwnersServiceHttpClient ownersServiceHttpClient;
 
     private MockRestServiceServer ownersServer;
 
@@ -73,7 +73,7 @@ public class ClinicServiceTests {
 
     @Before
     public void remoteOwners() {
-        RestTemplate restTemplate = (RestTemplate) ReflectionTestUtils.getField(ownerRepository, "restTemplate");
+        RestTemplate restTemplate = (RestTemplate) ReflectionTestUtils.getField(ownersServiceHttpClient, "restTemplate");
         ownersServer = MockRestServiceServer.createServer(restTemplate);
     }
 
@@ -83,7 +83,7 @@ public class ClinicServiceTests {
                 .andRespond(withSuccess("{\"id\":1,\"firstName\":\"George\",\"lastName\":\"Franklin\"}",
                         MediaType.APPLICATION_JSON));
 
-        Owner owner = this.ownerRepository.findById(1);
+        Owner owner = this.ownersServiceHttpClient.findById(1);
         assertThat(owner.getLastName()).startsWith("Franklin");
         assertThat(owner.getPets()).isEmpty();
         ownersServer.verify();
@@ -131,7 +131,7 @@ public class ClinicServiceTests {
         ownersServer.expect(requestTo(ownerUrl)).andExpect(method(HttpMethod.GET))
                 .andRespond(withSuccess(ownerJson, MediaType.APPLICATION_JSON));
 
-        Owner owner6 = this.ownerRepository.findById(6);
+        Owner owner6 = this.ownersServiceHttpClient.findById(6);
         int found = this.petRepository.findByOwnerId(6).size();
 
         Pet pet = new Pet();

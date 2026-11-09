@@ -21,6 +21,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.integration.IntegrationErrorHandler;
+import org.springframework.samples.petclinic.integration.OwnersServiceHttpClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -39,12 +40,12 @@ class PetController {
 
     private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
     private final PetRepository petRepository;
-    private final OwnerRepository ownerRepository;
+    private final OwnersServiceHttpClient ownersServiceHttpClient;
 
     @Autowired
-    public PetController(PetRepository petRepository, OwnerRepository ownerRepository) {
+    public PetController(PetRepository petRepository, OwnersServiceHttpClient ownersServiceHttpClient) {
         this.petRepository = petRepository;
-        this.ownerRepository = ownerRepository;
+        this.ownersServiceHttpClient = ownersServiceHttpClient;
     }
 
     @ModelAttribute("types")
@@ -54,7 +55,7 @@ class PetController {
 
     @ModelAttribute("owner")
     public Owner findOwner(@PathVariable("ownerId") int ownerId) {
-        return this.ownerRepository.findById(ownerId);
+        return this.ownersServiceHttpClient.findById(ownerId);
     }
 
     @InitBinder("owner")

@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.integration.OwnersServiceHttpClient;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.samples.petclinic.owner.Pet;
@@ -41,7 +42,7 @@ public class VisitControllerTests {
     private PetRepository petRepository;
 
     @MockBean
-    private OwnerRepository ownerRepository;
+    private OwnersServiceHttpClient ownersServiceHttpClient;
 
     // ============================================================
     // IMPLEMENTAÇÃO ORIGINAL — MONÓLITO (branch 1.5.x)
@@ -63,7 +64,7 @@ public class VisitControllerTests {
         Pet pet = new Pet();
         pet.setId(TEST_PET_ID);
         owner.addPet(pet);
-        given(this.ownerRepository.findById(1)).willReturn(owner);
+        given(this.ownersServiceHttpClient.findById(1)).willReturn(owner);
         given(this.petRepository.findById(TEST_PET_ID)).willReturn(pet);
     }
 

@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.integration.IntegrationErrorHandler;
+import org.springframework.samples.petclinic.integration.OwnersServiceHttpClient;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Controller;
@@ -38,13 +39,13 @@ class VisitController {
 
     private final VisitRepository visitRepository;
     private final PetRepository petRepository;
-    private final OwnerRepository ownerRepository;
+    private final OwnersServiceHttpClient ownersServiceHttpClient;
 
     @Autowired
-    public VisitController(VisitRepository visitRepository, PetRepository petRepository, OwnerRepository ownerRepository) {
+    public VisitController(VisitRepository visitRepository, PetRepository petRepository, OwnersServiceHttpClient ownersServiceHttpClient) {
         this.visitRepository = visitRepository;
         this.petRepository = petRepository;
-        this.ownerRepository = ownerRepository;
+        this.ownersServiceHttpClient = ownersServiceHttpClient;
     }
 
     @InitBinder
@@ -76,7 +77,7 @@ class VisitController {
         }
 
         // Recupera os dados de exibição do Owner para o formulário legado.
-        pet.setOwner(this.ownerRepository.findById(ownerId));
+        pet.setOwner(this.ownersServiceHttpClient.findById(ownerId));
 
         model.put("pet", pet);
         Visit visit = new Visit();

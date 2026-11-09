@@ -1,9 +1,11 @@
 param(
     [Parameter(Mandatory=$true)][string]$CkJar,
     [string]$Java17Home = $env:JAVA17_HOME,
-    [switch]$V3
+    [switch]$V3,
+    [switch]$WorkingTree
 )
 $ErrorActionPreference = 'Stop'
+if ($WorkingTree -and -not $V3) { throw 'Use -WorkingTree com -V3.' }
 if (-not $Java17Home) { throw 'Defina JAVA17_HOME ou -Java17Home.' }
 
 $root = Split-Path $PSScriptRoot -Parent
@@ -45,12 +47,20 @@ foreach ($entry in $scenarios.GetEnumerator()) {
     $scenario = $entry.Value
     $dest = (New-Item -ItemType Directory (Join-Path $out $entry.Key)).FullName
     $snapshot = (New-Item -ItemType Directory (Join-Path $dest 'fontes')).FullName
-    $archive = Join-Path $dest 'fontes.tar'
-    git -C $root archive --format=tar "--output=$archive" $scenario.revision $scenario.sourceRoot
-    if ($LASTEXITCODE -ne 0) { throw "Falha ao exportar os fontes de $($entry.Key)." }
-    tar -xf $archive -C $snapshot
-    if ($LASTEXITCODE -ne 0) { throw "Falha ao extrair os fontes de $($entry.Key)." }
     $source = Join-Path $snapshot $scenario.sourceRoot
+    if ($WorkingTree -and $entry.Key -in @('D-monolito-v3', 'E-owners-service-v3', 'F-gateway-v3')) {
+        $scenario.baseRevision = $scenario.revision
+        $scenario.Remove('revision')
+        $scenario.source = 'worktree'
+        New-Item -ItemType Directory -Force (Split-Path $source -Parent) | Out-Null
+        Copy-Item -LiteralPath (Join-Path $root $scenario.sourceRoot) -Destination $source -Recurse
+    } else {
+        $archive = Join-Path $dest 'fontes.tar'
+        git -C $root archive --format=tar "--output=$archive" $scenario.revision $scenario.sourceRoot
+        if ($LASTEXITCODE -ne 0) { throw "Falha ao exportar os fontes de $($entry.Key)." }
+        tar -xf $archive -C $snapshot
+        if ($LASTEXITCODE -ne 0) { throw "Falha ao extrair os fontes de $($entry.Key)." }
+    }
     & $java -jar $CkJar $source @parameters $dest 2>&1 |
         ForEach-Object { "$_" } | Tee-Object -FilePath "$dest/coleta.txt"
     if ($LASTEXITCODE -ne 0) { throw "CK falhou em $($entry.Key)." }
