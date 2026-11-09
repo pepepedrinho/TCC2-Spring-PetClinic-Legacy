@@ -1,0 +1,8 @@
+estado,cenario,componente,tipos,metodos,cbo,wmc,rfc,lcom,lcom*
+original,A-monolito-original,Monolito,24,91,6.6667,4.9167,3.4583,5.8750,0.2566
+v3-anterior,D-monolito-v3,Monolito,28,95,6.1429,4.6429,4.5000,5.9286,0.2181
+v3-unificada,D-monolito-v3,Monolito,28,95,6.1429,4.6429,4.5000,5.9286,0.2181
+v3-anterior,E-owners-service-v3,Owners Service,11,35,5.9091,3.9091,4.5455,4.7273,0.1472
+v3-unificada,E-owners-service-v3,Owners Service,8,32,6.2500,5.0000,5.1250,10.2500,0.1889
+v3-anterior,F-gateway-v3,Gateway,2,2,3.5000,1.0000,1.5000,0.0000,0.0000
+v3-unificada,F-gateway-v3,Gateway,2,2,3.5000,1.0000,1.5000,0.0000,0.0000

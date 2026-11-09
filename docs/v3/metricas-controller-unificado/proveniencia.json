@@ -1,0 +1,290 @@
+{
+  "collectedUtc": "2026-11-09T16:36:44.4361709Z",
+  "ckVersion": "0.7.1-SNAPSHOT",
+  "ckSourceCommit": "8a1ef916d597d33ad619d748b616bb7dbc3f0c36",
+  "ckSha256": "98893efdffd22fb2356560e9ed78b0528e01bbbad032dcd63be3863c73bfc517",
+  "javaVersion": "Picked up JAVA_TOOL_OPTIONS: -Xms16m -Xmx160m -XX:+UseSerialGC -XX:ReservedCodeCacheSize=24m -XX:CompressedClassSpaceSize=32m\r\njava version \"17.0.12\" 2024-07-16 LTS\r\nJava(TM) SE Runtime Environment (build 17.0.12+8-LTS-286)\r\nJava HotSpot(TM) 64-Bit Server VM (build 17.0.12+8-LTS-286, mixed mode, sharing)",
+  "parameters": [
+    "false",
+    "0",
+    "false"
+  ],
+  "scenarios": {
+    "A-monolito-original": {
+      "revision": "c36452a2c34443ae26b4ecbba4f149906af14717",
+      "methods": 91,
+      "types": 24,
+      "outputSha256": {
+        "class.csv": "fa81ec55561c38f400c4e55d9c51c363bd280a9b1059b18fbb64f6053b1deb96",
+        "method.csv": "39fddd38a1fa77876fb36763a2f3f7f0dc47ae286e4a01286d204d576a88a316"
+      },
+      "sourceRoot": "src/main/java",
+      "publishedCsvSha256": {
+        "class.csv": "a4e1d4f53104d37a78edfdd0f5ca704956e2bec327cc418f86487ee7df2bdfe1",
+        "method.csv": "c1f510d6894f2c0fbff9d0518968778b526606337acc8eeacd128dbde1d1b777"
+      },
+      "matchesHistoricalExcludingFileAndOrder": {
+        "class.csv": true,
+        "method.csv": true
+      },
+      "historicalCsvSha256": {
+        "class.csv": "a5614c211c73367095f8547ceb1ab6cb33b31c950fc9bf146dbc1e2238b0bd4b",
+        "method.csv": "8b195aeefd42fa0896bcafd13a01bf523215013ff1d3cacfcdee46ed4b8e8a49"
+      }
+    },
+    "B-monolito-adaptado": {
+      "revision": "9fc9afb839a0ecc85b7b0054e635dc618f0b150a",
+      "methods": 104,
+      "types": 27,
+      "outputSha256": {
+        "class.csv": "456ce42d873d09cb44610dbf049b71337ca99a6d7700226984cc361d7056119f",
+        "method.csv": "fc324dbcaef5980e8106b77749d1079684ce3f74db2dbdc1884f6f2eb79e7e84"
+      },
+      "sourceRoot": "projects/monolith/src/main/java",
+      "matchesHistoricalExcludingFileAndOrder": {
+        "class.csv": false,
+        "method.csv": false
+      },
+      "historicalCsvSha256": {
+        "class.csv": "498edb242666754e33e8e032d9cfa5234023b873e7549a6bfa53ca124d12e870",
+        "method.csv": "5f82da5c6fb47199a1c2bf03d15f7ba6dd4ad1a40883c670847eb936636ab8a5"
+      }
+    },
+    "C-owners-service": {
+      "revision": "9fc9afb839a0ecc85b7b0054e635dc618f0b150a",
+      "methods": 20,
+      "types": 4,
+      "outputSha256": {
+        "class.csv": "b0ee3a066c86dd62b4c528b6ef4589ff694ebcb10d7ed596179c66c57e8ae343",
+        "method.csv": "cfd13f316a9759994217acfe00c31bba53993adfe9ce9aecbbdb23bb5449b745"
+      },
+      "sourceRoot": "projects/owners-service/src/main/java",
+      "matchesHistoricalExcludingFileAndOrder": {
+        "class.csv": true,
+        "method.csv": true
+      },
+      "historicalCsvSha256": {
+        "class.csv": "465ee6343f19d2ed66de437962ed8d7275411e678cfededd8d0eff10ed93d7a9",
+        "method.csv": "c01b0ed875f31f416b120c3e2b4fa7900c751832c1e0dba1333e067e99d24b99"
+      }
+    },
+    "D-monolito-v3": {
+      "baseRevision": "12b438e45a8f8bfd6383bfecf2ee648834bdaebe",
+      "source": "worktree",
+      "methods": 95,
+      "outputSha256": {
+        "class.csv": "c41c8822ab6365db468beaefda098a37999153dde59383f7cd63f2f6b1531f70",
+        "method.csv": "7dbdec4ca67d2fa8631500da5d3dcf71f09c1d93189b4f9a3e1a2e4d4d99e581"
+      },
+      "sourceRoot": "projects/monolith/src/main/java",
+      "types": 28,
+      "sourceSha256": {
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java": "953ac31818823d4f4e6d03bf63cd071c1150962ddc222b2bde1d0dd5a222b0ee",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/OwnersServiceHttpClient.java": "4039fad4c73b58c1e60bf197873ce98be197125d7e1aea62e00e929be646c8aa",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java": "78ee040b56bebb0f292cd41eefd1c9fb0bb13f597c1849b5822c24d43e1fd054",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java": "35642a01c4d5e7a25d5d689f8bf9d3609764627b65967d439f01a945bee5c7dc",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/package-info.java": "057448772508143b847c612d57027b081cd47bbe840f643c7dcaa757b9bee088",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/Person.java": "bd3b9da6ed77bbf67b576f985514f1a7d89f37f467faf21cf37adb997f16a5e1",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Owner.java": "ab6fd8b1e1781155d4d0efd3e095c8d11ef7b0e325bce90144d418db9ca19c79",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/OwnerPetsController.java": "98d4705ad4ce4ea1d7d9c29faeedfd75410b88fe8c481d1ed1b7b5b67261cfec",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Pet.java": "7c2ccf10e201ff3ccdfc2163c469a4111de158af63b3a8cca0f25398953f32f4",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetController.java": "4b50e107e4590bd1f503565dff48b946418b9cff5a239ff0083ac8f58cae722c",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetRepository.java": "01d25ccf51b5bfc14fb82753a2edbf9fcea4919f37ba84a171431f39f589342f",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetType.java": "007486615ec691a1f9d9d496bebf73621993e6334e410eb100c206d809bd16da",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java": "a02a4844b3aa9de9e10b090663ac80fd0cf25fd7cbe45456af1d3ac18bb6b305",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetValidator.java": "86300c3e49671cad3d93e27835d306feaac6349925789e92c2e1c50980188254",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/VisitController.java": "396344e436d6fac079e0c74c9c423793c584e17da05ef80a2d221401f647911e",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java": "f2fe1671adf3be3f6ea0972b3e40c56cdb2a05fb379e7737a96ba2209237c470",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/CacheConfig.java": "be396eeec507032bcc21fe740e2aef3b3aeb80a50bb1a7105315e3b24901c701",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/CrashController.java": "4290d84b52b4f143a4550b86316525ebaaaa212e93be971eaf85a8d8c427246a",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/WelcomeController.java": "606e7a6017d5a5714a2f35a75b3f26592f65c497ae7b315e88db7f6a15fbb1c0",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/Specialty.java": "4d61cc83f9376802f892c62755dd882c9f219edb21b3a712509250d641847349",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/Vet.java": "b17b16328dd6ca784ce69ecbd4e1d85ff7fd29a390bbebc53823f413167b191b",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/VetController.java": "b38699a8f236f798a9227b8a0c44593d953c19edf36b695b15a4f61446d1d0b4",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java": "6896b980c29f6bc1b8e39a950ca654c4979fbee3a2d134197100b187c8fec584",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/Vets.java": "04fa06c2d600e902d005c2c794d1a363f165c60977de9f3e3172d05ac5088ba1",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/visit/Visit.java": "8f7d62e09c76c375c78c7c783930022c3cbc2d380496202b73976850abf3b08b",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/visit/VisitRepository.java": "897f265fb79566cdb2b8e4d91d3fb11aa6efa9f7319a158e42271cd0490c10d5"
+      },
+      "publishedCsvSha256": {
+        "class.csv": "58beecd4694fe9b00d07fc9037d1b28e5744b1eaa43d0151e5b0f3dfea476775",
+        "method.csv": "1d93f23ea81e84b4ffe83e37bf0845c3f93c08727f73a71c03b1791ee1a580ef"
+      }
+    },
+    "E-owners-service-v3": {
+      "baseRevision": "12b438e45a8f8bfd6383bfecf2ee648834bdaebe",
+      "source": "worktree",
+      "methods": 32,
+      "outputSha256": {
+        "class.csv": "d5a49fb364236a003cd3fa25978f648df35f69d9a7f5df0f21fc730a8c6898c0",
+        "method.csv": "e6cbb674b6576291957829e2103dbd839357a3ef6a2d95ccbd969151c9c3c17b"
+      },
+      "sourceRoot": "projects/owners-service/src/main/java",
+      "types": 8,
+      "sourceSha256": {
+        "projects/owners-service/src/main/java/br/edu/tcc/integration/LegacyPetsHttpClient.java": "5be621c6d049046922c2ffa933cbaaa6557de1f57f4f3fd133e6cc71cf7f72e5",
+        "projects/owners-service/src/main/java/br/edu/tcc/owners/Owner.java": "771bfb62f70dbe7bd0a64427353c66cdd825a1afa138592061932f5e84ca94ad",
+        "projects/owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java": "7eb2712b8a2907c218ba1d0ed2c91ee61dbab436a8b49155a5f4f41176b43631",
+        "projects/owners-service/src/main/java/br/edu/tcc/owners/OwnerRepository.java": "49b0e045bafebba8a6e18ead265de4f3bdb572549b21ef81f33fd2954ed10000",
+        "projects/owners-service/src/main/java/br/edu/tcc/OwnersApplication.java": "c8f018a1fdb0088ffecd174a9563d800bbd738f5b4806690e087ed0bfcfb12c7"
+      },
+      "publishedCsvSha256": {
+        "class.csv": "65ef46a2530b6aaa27c0367a71ef6f27d58fc26de126082ceed0d6f180aa34ed",
+        "method.csv": "329debf81b759b17a5f58fa631fd9aa9f5b0fb3c053d9dd83d636d65d0c989b0"
+      }
+    },
+    "F-gateway-v3": {
+      "baseRevision": "12b438e45a8f8bfd6383bfecf2ee648834bdaebe",
+      "source": "worktree",
+      "methods": 2,
+      "outputSha256": {
+        "class.csv": "aec8485a709326003c2fe497eb9b63bc3d17196ee7d22a31aff4c6908e8af82b",
+        "method.csv": "5ebdc5bea2a05c77cf82c8351b2a658d9bd0e750858b673cfd528e37b0ff9aa2"
+      },
+      "sourceRoot": "projects/gateway/src/main/java",
+      "types": 2,
+      "sourceSha256": {
+        "projects/gateway/src/main/java/br/edu/tcc/gateway/GatewayApplication.java": "f861a5ef2337e7674a45ebca40d9b83d0b4cdec288932c7fe92c6ba723aaa179",
+        "projects/gateway/src/main/java/br/edu/tcc/gateway/OwnersAvailabilityGatewayFilterFactory.java": "1063430e123b55b752a2f26a87a10b17efc2959956927944e5cc60629f677f81"
+      },
+      "publishedCsvSha256": {
+        "class.csv": "30390de1c09f3fd9ee9ecfd691e4e9adc06fe5d162d07a74df310b2f5cea12ff",
+        "method.csv": "4d4e4a4bae20fcd3758b031147d68a0f0af23d1b9450bdd43ea148bee5c0fc11"
+      }
+    }
+  },
+  "preRefactorWorktree": {
+    "head": "12b438e45a8f8bfd6383bfecf2ee648834bdaebe",
+    "branch": "tcc2-strangler-fig-v3",
+    "capturedLocal": "2026-11-09T13:34:36.413967-03:00",
+    "localChanges": {
+      "projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/OwnerIntegrationAdapter.java": {
+        "gitStatus": " D"
+      },
+      "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java": {
+        "gitStatus": " D"
+      },
+      "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetController.java": {
+        "gitStatus": " M",
+        "sha256": "4b50e107e4590bd1f503565dff48b946418b9cff5a239ff0083ac8f58cae722c"
+      },
+      "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/VisitController.java": {
+        "gitStatus": " M",
+        "sha256": "396344e436d6fac079e0c74c9c423793c584e17da05ef80a2d221401f647911e"
+      },
+      "projects/monolith/src/test/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandlerTests.java": {
+        "gitStatus": " M",
+        "sha256": "52efa5aeed1805871d3ee316fdf26c120584d41da145a0138c5bc41fc899fd2c"
+      },
+      "projects/monolith/src/test/java/org/springframework/samples/petclinic/integration/OwnerIntegrationAdapterTests.java": {
+        "gitStatus": " D"
+      },
+      "projects/monolith/src/test/java/org/springframework/samples/petclinic/owner/PetControllerTests.java": {
+        "gitStatus": " M",
+        "sha256": "3c15d5a7bea80a48bb36b83d6d22aa74d28a1bac046e686408ff5bda9383bb35"
+      },
+      "projects/monolith/src/test/java/org/springframework/samples/petclinic/owner/VisitControllerTests.java": {
+        "gitStatus": " M",
+        "sha256": "60b6ef786215b51c2f517511b83dc0607342261c6d0b2b5ee45f7bcd12c69ec4"
+      },
+      "projects/monolith/src/test/java/org/springframework/samples/petclinic/service/ClinicServiceTests.java": {
+        "gitStatus": " M",
+        "sha256": "e350c851519b95dca9bce6cb9f8dcab9443a3860ee6f5ae2575aed7d2537dd04"
+      },
+      "projects/owners-service/src/main/java/br/edu/tcc/owners/LegacyPetsClient.java": {
+        "gitStatus": " D"
+      },
+      "projects/owners-service/src/main/java/br/edu/tcc/owners/OwnerWebController.java": {
+        "gitStatus": " M",
+        "sha256": "6210d3c2e43489a3a6a0a8f4cb7bd04152acc5429b39d72efc5403ea794f82d6"
+      },
+      "projects/owners-service/src/main/java/br/edu/tcc/owners/OwnersApplication.java": {
+        "gitStatus": " D"
+      },
+      "projects/owners-service/src/test/java/br/edu/tcc/owners/OwnerWebTests.java": {
+        "gitStatus": " M",
+        "sha256": "e5621623c6a75183e2f35865ab267e12a3efd6e3e95215521eebcb194cc0d01c"
+      },
+      "docs/v3/evidencias/http-compose-refatoracao.json": {
+        "gitStatus": "??",
+        "sha256": "0714ad014df1c23a2e4b911b87b045cb6c5c13ac285423a0959e7fe67a8f090f"
+      },
+      "docs/v3/metricas-refatoracao/D-monolito-v3/class.csv": {
+        "gitStatus": "??",
+        "sha256": "58beecd4694fe9b00d07fc9037d1b28e5744b1eaa43d0151e5b0f3dfea476775"
+      },
+      "docs/v3/metricas-refatoracao/D-monolito-v3/method.csv": {
+        "gitStatus": "??",
+        "sha256": "1d93f23ea81e84b4ffe83e37bf0845c3f93c08727f73a71c03b1791ee1a580ef"
+      },
+      "docs/v3/metricas-refatoracao/E-owners-service-v3/class.csv": {
+        "gitStatus": "??",
+        "sha256": "57b0eec2f46914d46d561bc4b5f35a0a5e92d518b9b21b240d83e67efa21be31"
+      },
+      "docs/v3/metricas-refatoracao/E-owners-service-v3/method.csv": {
+        "gitStatus": "??",
+        "sha256": "956dc6e61bf1c013ef738af3f119c4cb86f17a324aa4eb2a3abe9b2dee1779cd"
+      },
+      "docs/v3/metricas-refatoracao/F-gateway-v3/class.csv": {
+        "gitStatus": "??",
+        "sha256": "30390de1c09f3fd9ee9ecfd691e4e9adc06fe5d162d07a74df310b2f5cea12ff"
+      },
+      "docs/v3/metricas-refatoracao/F-gateway-v3/method.csv": {
+        "gitStatus": "??",
+        "sha256": "4d4e4a4bae20fcd3758b031147d68a0f0af23d1b9450bdd43ea148bee5c0fc11"
+      },
+      "docs/v3/metricas-refatoracao/proveniencia.json": {
+        "gitStatus": "??",
+        "sha256": "c63e16ddd9b1a9a4a0e1a75757ba727c0495746812120a61ee6d63e03389d56d"
+      },
+      "docs/v3/refatoracao-integracoes-http.md": {
+        "gitStatus": "??",
+        "sha256": "d9cc1d05ed372e0a5d56201c720cb8bdfc687c7a92e99caf2c7a3c628759c121"
+      },
+      "projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/OwnersServiceHttpClient.java": {
+        "gitStatus": "??",
+        "sha256": "4039fad4c73b58c1e60bf197873ce98be197125d7e1aea62e00e929be646c8aa"
+      },
+      "projects/monolith/src/test/java/org/springframework/samples/petclinic/integration/OwnersServiceHttpClientTests.java": {
+        "gitStatus": "??",
+        "sha256": "e5f77f80727fcd28df3ed0714500b8802eb2b0d7a2935773d3a9ada09df4012e"
+      },
+      "projects/owners-service/src/main/java/br/edu/tcc/OwnersApplication.java": {
+        "gitStatus": "??",
+        "sha256": "c8f018a1fdb0088ffecd174a9563d800bbd738f5b4806690e087ed0bfcfb12c7"
+      },
+      "projects/owners-service/src/main/java/br/edu/tcc/integration/IntegrationErrorHandler.java": {
+        "gitStatus": "??",
+        "sha256": "a9557cebc267f3722fbbb11ce2980bd073b0f49018e1cbeb2df5ef45cfa3f14c"
+      },
+      "projects/owners-service/src/main/java/br/edu/tcc/integration/LegacyPetsHttpClient.java": {
+        "gitStatus": "??",
+        "sha256": "37bf45e336fa6fe80973c4077ff41a1811d1b3b2c8e4145d1597d53ed976b7f9"
+      }
+    },
+    "snapshotDirectory": ".work/controller-unificado-20261109-133435",
+    "trackedDiffSha256": "3f05d11d80a7080c417694498fa2982c879a1c5e6d8ea5cdb267f985a883d1f4",
+    "localFilesZipSha256": "c928117aa184df1655c5c058367b70e7e45785c7f56248134d2b59a4f434cda5",
+    "previousCkManifestSha256": "c63e16ddd9b1a9a4a0e1a75757ba727c0495746812120a61ee6d63e03389d56d"
+  },
+  "publishedCsvNormalization": "Repository-relative file paths, UTF-8, stable row ordering.",
+  "comparisonStates": {
+    "original": [
+      "A-monolito-original"
+    ],
+    "v3-anterior": [
+      "D-monolito-v3",
+      "E-owners-service-v3",
+      "F-gateway-v3"
+    ],
+    "v3-unificada": [
+      "D-monolito-v3",
+      "E-owners-service-v3",
+      "F-gateway-v3"
+    ]
+  },
+  "derivedCsvSha256": {
+    "resumo-componentes.csv": "50c86dff2b6fe5d48533f6e692d74cf65fde0f7e0b73d54d88d43840b6c7d27a",
+    "comparacao-tipos-v3.csv": "bb79bf48c2db98c6127aa3993f24bc7f886e86a32abc11db0881d1b076708533"
+  }
+}

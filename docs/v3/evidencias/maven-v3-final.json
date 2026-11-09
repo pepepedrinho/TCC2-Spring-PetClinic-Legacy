@@ -1,0 +1,39 @@
+{
+  "result": "PASS",
+  "recordedUtc": "2026-11-09T16:58:21.639421+00:00",
+  "command": "./scripts/build.ps1 -Offline -SkipGitMetadata",
+  "java": {
+    "monolith": "8u504",
+    "owners-service": "17.0.12",
+    "gateway": "17.0.12"
+  },
+  "maven": {
+    "monolith": "3.3.3 (Wrapper)",
+    "owners-service": "3.9.11",
+    "gateway": "3.9.11"
+  },
+  "modules": {
+    "monolith": {
+      "tests": 49,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 48
+    },
+    "owners-service": {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 12
+    },
+    "gateway": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 1
+    }
+  },
+  "buildLogSha256": "e775d880ed1aac739d7d11b72856080b78a46d8bdcb7f473dd419bafff93f144"
+}

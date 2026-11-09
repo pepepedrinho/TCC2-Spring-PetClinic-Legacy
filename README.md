@@ -1,46 +1,72 @@
-# TCC II — Spring PetClinic Strangler Fig V3
+# TCC II · Spring PetClinic Legacy
 
-Este projeto aplica o padrão Strangler Fig ao Spring PetClinic legado para migrar o cadastro de proprietários em etapas. O microsserviço Owners mantém o cadastro e renderiza as páginas de Owner. O monólito mantém Pets, visitas, veterinários e as demais páginas legadas. O Gateway dá acesso aos dois componentes por uma entrada comum.
+A **V3** é a implementação atual deste estudo de migração incremental por Strangler Fig. O projeto parte do Spring PetClinic histórico de 2017. O Owners Service assumiu o cadastro de proprietários, a API REST e as páginas HTML de Owner. O monólito continua responsável por Pets, Visits, Vets e pelos recursos estáticos da interface.
 
-| Projeto | Papel | JDK | Porta |
-| --- | --- | --- | ---: |
-| [Monólito](projects/monolith/) | Spring Boot 1.5, Thymeleaf e HSQLDB. Consulta Owner para formulários legados e fornece a leitura interna de Pets e Visits. | 8 | 8080 |
-| [Owners Service](projects/owners-service/) | Páginas Thymeleaf e API REST de proprietários em Spring Boot 3, com banco H2 próprio. | 17 | 8082 |
-| [Gateway](projects/gateway/) | Spring Cloud Gateway. Encaminha as páginas e a API de Owner ao Owners Service. Rotas de Pets e Visits seguem para o monólito. | 17 | 8081 |
+## Arquitetura
 
-## Executar com Docker Compose
+```mermaid
+flowchart LR
+    browser["Navegador / cliente REST"] --> gateway["Spring Cloud Gateway · Java 17"]
+    gateway -->|"Rotas de Owner MVC e REST"| owners["Owners Service · Spring Boot 3.5 · Java 17"]
+    gateway -->|"Pets, Visits, Vets e recursos estáticos"| legacy["Monólito · Spring Boot 1.5 · Java 8"]
+    owners -.->|"LegacyPetsHttpClient · POST /internal/owner-pets"| legacy
+    legacy -.->|"OwnersServiceHttpClient · GET /api/owners/{id}"| owners
+    owners -->|"JPA"| h2[("H2 · Owners")]
+    legacy -->|"JPA"| hsql[("HSQLDB · Pets, Visits e Vets")]
+```
 
-Na execução Docker da V3, os contêineres de banco provisionam os volumes antes de iniciar as aplicações. O [guia Docker](DOCKER.md) descreve a execução, a importação de dados e a opção de duas réplicas de Owners.
+As setas tracejadas mostram chamadas HTTP iniciadas pelas aplicações. As setas contínuas que saem do Gateway mostram o roteamento público.
 
-## Compilar e testar
+| Componente | Papel | Porta interna |
+| --- | --- | ---: |
+| [Monólito](projects/monolith/) | Formulários e persistência de Pets e Visits, Vets, recursos estáticos e projeção interna de Pets e Visits. | 8080 |
+| [Owners Service](projects/owners-service/) | API REST, páginas Thymeleaf, validação e persistência de Owner. | 8082 |
+| [Gateway](projects/gateway/) | Entrada pública. Encaminha as rotas de Owner ao microsserviço e as demais rotas da aplicação ao monólito. Bloqueia `/internal/**`. | 8081 |
 
-Na raiz do repositório, em PowerShell 7, defina `JAVA8_HOME` e `JAVA17_HOME`. Configure `MAVEN_HOME` ou adicione o Maven 3.9.11 ao `PATH`. O monólito usa o Wrapper 3.3.3. Python 3 é necessário para a aceitação e a migração de teste.
+O `OwnerController` atende tanto `/owners` e suas páginas quanto `/api/owners`. Para renderizar o detalhe ou uma lista com vários proprietários, ele pede ao `LegacyPetsHttpClient` a projeção de Pets e Visits. Os formulários legados de Pet e Visit usam `OwnersServiceHttpClient` para obter o proprietário. A API REST e as gravações de Owner acessam o H2 pelo repositório JPA local.
+
+## Executar
+
+Use Docker com contêineres Linux e o plugin Compose. Na raiz do repositório, execute:
+
+```sh
+docker compose -p tcc2-v3 up --build --wait
+```
+
+Abra o [PetClinic](http://localhost:8081) ou consulte a [API de Owners](http://localhost:8081/api/owners). O Gateway é o único serviço com porta publicada no host. Defina `GATEWAY_PORT` para usar outra porta. Os bancos são provisionados em volumes próprios na primeira inicialização.
+
+```sh
+docker compose -p tcc2-v3 ps
+docker compose -p tcc2-v3 down
+```
+
+O comando `down` preserva os volumes. O guia cobre importação de dados, operação e o cenário opcional com duas réplicas de Owners. [Guia Docker](DOCKER.md).
+
+## Testar
+
+O build Docker executa as suítes Maven ao compilar as imagens. Para rodá-las localmente, use PowerShell 7, configure `JAVA8_HOME` e `JAVA17_HOME` e aponte `MAVEN_HOME` ou o `PATH` para o Maven 3.9.11. O monólito usa seu Wrapper 3.3.3.
 
 ```powershell
 ./scripts/build.ps1
-python scripts/acceptance.py
-python scripts/test-migration.py
 ```
 
-O build compila, executa os testes Maven e empacota os três JARs. Use `-Offline` com o cache Maven completo. Se o plugin legado falhar ao resolver metadados Git em caminhos com espaços ou em uma worktree, use `./scripts/build.ps1 -SkipGitMetadata`. A aceitação usa as portas 8080, 8081 e 8082 livres. A aceitação e a migração criam bancos e evidências descartáveis em `.work/`.
+Use `-Offline` com o cache Maven completo e `-SkipGitMetadata` se a geração de metadados Git do monólito falhar em um worktree. A aceitação requer Python 3 e usa um projeto Compose descartável, pois grava registros e reinicia serviços. [Procedimento de aceitação HTTP](DOCKER.md#verificação-funcional).
 
-## Executar a aplicação
+## Estrutura do repositório
 
-Fora do Compose, configure `LEGACY_DB_URL` para um banco HSQLDB já provisionado e com atraso de gravação zero. Para um banco em arquivo comprovadamente novo, use uma URL com `hsqldb.write_delay=false` e passe `--spring.datasource.initialize=true` somente à primeira execução do monólito. Nas próximas partidas, omita essa opção. Depois do build, inicie cada componente em um terminal separado, sempre na raiz:
+| Caminho | Conteúdo |
+| --- | --- |
+| `projects/monolith/` | Aplicação legada. O pacote `org.springframework.samples.petclinic.integration` contém `OwnersServiceHttpClient` e `IntegrationErrorHandler`. |
+| `projects/owners-service/` | Entrada `br.edu.tcc.OwnersApplication`. O pacote `br.edu.tcc.owners` contém o controller unificado, a entidade e o repositório JPA. O pacote `br.edu.tcc.integration` contém `LegacyPetsHttpClient`. |
+| `projects/gateway/` | Rotas públicas e filtro de disponibilidade do Owners Service. |
+| `docker/` e `compose.yaml` | Imagens, redes, provisionamento e persistência. |
+| `scripts/` | Build, aceitação, migração offline e coleta CK. |
+| `docs/v3/` e `historico/` | Documentação da V3, evidências de validação e campanhas anteriores. |
 
-```powershell
-& "$env:JAVA17_HOME/bin/java.exe" -jar projects/owners-service/target/owners-service-1.0.0-SNAPSHOT.jar
-& "$env:JAVA8_HOME/bin/java.exe" -jar projects/monolith/target/spring-petclinic-1.5.1.jar
-& "$env:JAVA17_HOME/bin/java.exe" -jar projects/gateway/target/petclinic-gateway-1.0.0-SNAPSHOT.jar
-```
+## Resultados e escopo
 
-Abra [PetClinic no Gateway](http://localhost:8081). Os bancos persistem sob `data/`. As variáveis `LEGACY_DB_URL` e `OWNERS_DB_URL` permitem usar bancos isolados.
+A análise CK mede a estrutura dos fontes Java de produção. Os CSVs distinguem o monólito original, o monólito remanescente, o Owners Service e o Gateway. A unificação concentra métodos e dependências no controller, enquanto a remoção de tipos altera a composição das médias. [Arquitetura final, validação e métricas](docs/v3/README.md).
 
-## Código, medições e origem
+O ambiente tem finalidade acadêmica. A migração pressupõe a coexistência das aplicações e as páginas compostas e formulários legados dependem de chamadas HTTP entre elas. Os cenários de indisponibilidade registram quais fluxos ficam acessíveis durante a interrupção de cada serviço.
 
-- [Scripts de build, aceitação, migração e coleta](scripts/).
-- [Implementação e decisões da V2](historico/documentacao/) e [evidências de validação de Owner.addPet()](historico/evidencias/evidencias-addpet/).
-- [Relatório técnico V3, aceitação e comparação CK](docs/v3/relatorio.md).
-- [Coleta CK definitiva A/B/C e metodologia](docs/metricas/README.md). As campanhas anteriores estão no [arquivo histórico](historico/README.md).
-
-A baseline é a branch `1.5.x`, no commit `c36452a2c34443ae26b4ecbba4f149906af14717`, também identificado pela tag `tcc2-baseline-2017`. O código de origem é do projeto Spring PetClinic, distribuído sob a Apache License 2.0. [Projeto Spring PetClinic](https://github.com/spring-projects/spring-petclinic) · [README de 2017 e créditos](historico/documentacao/README-original-2017.md) · [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+A baseline é o commit `c36452a2c34443ae26b4ecbba4f149906af14717` da linha `1.5.x`, identificado pela tag `tcc2-baseline-2017`. O Spring PetClinic original usa a licença Apache 2.0. [Projeto original](https://github.com/spring-projects/spring-petclinic) · [README histórico e créditos](historico/documentacao/README-original-2017.md) · [Licença](https://www.apache.org/licenses/LICENSE-2.0).

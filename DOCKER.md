@@ -1,6 +1,6 @@
 # Execução com Docker Compose · Strangler Fig V3
 
-A execução básica usa cinco contêineres. Use um nome de projeto e uma porta próprios para executar em paralelo com a V2. O Gateway é o único serviço publicado no host, por padrão em `http://localhost:8081`.
+A execução básica usa cinco contêineres. Use um nome de projeto e uma porta próprios para executar em paralelo com outro ambiente. O Gateway é o único serviço publicado no host, por padrão em `http://localhost:8081`.
 
 | Serviço | Runtime e acesso interno | Dados |
 | --- | --- | --- |
@@ -86,7 +86,11 @@ A aceitação padrão pode usar um projeto Compose básico **descartável**, rec
 $env:GATEWAY_PORT = '18081'
 $env:TCC2_COMPOSE_PROJECT = 'tcc2-teste-compose'
 docker compose -p $env:TCC2_COMPOSE_PROJECT up --build --wait
-python scripts/acceptance.py
+try {
+    python scripts/acceptance.py
+} finally {
+    docker compose -p $env:TCC2_COMPOSE_PROJECT down
+}
 ```
 
 O roteiro acessa as rotas pelo Gateway e reinicia os serviços de aplicação, incluindo os bancos, com os mesmos volumes persistentes. O arquivo `.work/acceptance-*/http-acceptance.json` registra as verificações. A fixture offline pode ser criada e validada por `python scripts/test-migration.py` com Java 17 e dependências JDBC no cache Maven. Os builds Docker executam as suítes Java dos três projetos.

@@ -1,5 +1,7 @@
 # TCC II · Migração da interface web de Owner na V3
 
+> Registro histórico da V3 inicial. Consulte a [documentação da V3 final](README.md) para a arquitetura e as métricas atuais.
+
 A branch `tcc2-strangler-fig-v3` deriva da V2 em `307649d`. Na V2, o Owners Service já era dono do cadastro e da API REST. O monólito atendia o MVC de Owner, consultava o serviço e agregava Pets e Visits antes de renderizar o HTML. Na V3, o Owners Service atende o MVC e persiste Owner no H2. O monólito continua responsável pelo HSQLDB, pelos fluxos de Pets e Visits, pelos veterinários e pelos recursos estáticos usados na navegação.
 
 ## Arquitetura V2
