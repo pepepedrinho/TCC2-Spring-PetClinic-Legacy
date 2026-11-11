@@ -1,0 +1,134 @@
+{
+  "collectedUtc": "2026-11-11T00:35:08.9861612Z",
+  "ckVersion": "0.7.1-SNAPSHOT",
+  "ckSourceCommit": "8a1ef916d597d33ad619d748b616bb7dbc3f0c36",
+  "ckSha256": "98893efdffd22fb2356560e9ed78b0528e01bbbad032dcd63be3863c73bfc517",
+  "javaVersion": "Picked up JAVA_TOOL_OPTIONS: -Xms16m -Xmx160m -XX:+UseSerialGC -XX:ReservedCodeCacheSize=24m -XX:CompressedClassSpaceSize=32m\r\njava version \"17.0.12\" 2024-07-16 LTS\r\nJava(TM) SE Runtime Environment (build 17.0.12+8-LTS-286)\r\nJava HotSpot(TM) 64-Bit Server VM (build 17.0.12+8-LTS-286, mixed mode, sharing)",
+  "parameters": [
+    "false",
+    "0",
+    "false"
+  ],
+  "scenarios": {
+    "A-monolito-original": {
+      "methods": 91,
+      "sourceRoot": "src/main/java",
+      "outputSha256": {
+        "class.csv": "26b87bdaeb38839d33200098c3d93ee2b5db587907a45fa93181ce312ddb8a18",
+        "method.csv": "85bb1ed16aad456a1fe9c9326955cc44f5d050e71af80ef0f863d81f24ecc6ba"
+      },
+      "types": 24,
+      "revision": "c36452a2c34443ae26b4ecbba4f149906af14717",
+      "publishedCsvSha256": {
+        "class.csv": "a5614c211c73367095f8547ceb1ab6cb33b31c950fc9bf146dbc1e2238b0bd4b",
+        "method.csv": "8b195aeefd42fa0896bcafd13a01bf523215013ff1d3cacfcdee46ed4b8e8a49"
+      },
+      "matchesPreExcludingFileAndOrder": {
+        "class.csv": true,
+        "method.csv": true
+      },
+      "sourceSha256": {
+        "src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java": "78ee040b56bebb0f292cd41eefd1c9fb0bb13f597c1849b5822c24d43e1fd054",
+        "src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java": "35642a01c4d5e7a25d5d689f8bf9d3609764627b65967d439f01a945bee5c7dc",
+        "src/main/java/org/springframework/samples/petclinic/model/package-info.java": "057448772508143b847c612d57027b081cd47bbe840f643c7dcaa757b9bee088",
+        "src/main/java/org/springframework/samples/petclinic/model/Person.java": "bd3b9da6ed77bbf67b576f985514f1a7d89f37f467faf21cf37adb997f16a5e1",
+        "src/main/java/org/springframework/samples/petclinic/owner/Owner.java": "efd031a44a4a831226fb14a0803d5ae095201acfbd886c5a1167c57b469ca629",
+        "src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java": "9949c5e02d412468c339dd9405e4a65053518267df27086b9b8579583b93466a",
+        "src/main/java/org/springframework/samples/petclinic/owner/OwnerRepository.java": "fa317211d9bad5a25ff989754619b767aca500f23cf639b37d6e45e1050fe227",
+        "src/main/java/org/springframework/samples/petclinic/owner/Pet.java": "35ce7f8a25a0ba855d65258b202e76c6c324c8de89d121aa5f07c285f4737e13",
+        "src/main/java/org/springframework/samples/petclinic/owner/PetController.java": "15e9ed420c65c873df37331e0e894e9667fd984775d6f62d148e08e6c54468ad",
+        "src/main/java/org/springframework/samples/petclinic/owner/PetRepository.java": "9682f86b2b2e49afcbc3e20cbbc9858aa138f315949f72cb581a3d6ab6d50d55",
+        "src/main/java/org/springframework/samples/petclinic/owner/PetType.java": "007486615ec691a1f9d9d496bebf73621993e6334e410eb100c206d809bd16da",
+        "src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java": "e73c7f88512a26c1a8da64669b73879ac7474691a1d1f193a9d37fde5a5b3562",
+        "src/main/java/org/springframework/samples/petclinic/owner/PetValidator.java": "5ad1e65e2369f8a6e8f7f3eaf429e93c70b616c8bd025b4bc9c8f728f998c719",
+        "src/main/java/org/springframework/samples/petclinic/owner/VisitController.java": "6b5c470478c70d6167a1e0477062cf1799083b44801f16e3ce2b194f97cd1e12",
+        "src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java": "f2fe1671adf3be3f6ea0972b3e40c56cdb2a05fb379e7737a96ba2209237c470",
+        "src/main/java/org/springframework/samples/petclinic/system/CacheConfig.java": "be396eeec507032bcc21fe740e2aef3b3aeb80a50bb1a7105315e3b24901c701",
+        "src/main/java/org/springframework/samples/petclinic/system/CrashController.java": "4290d84b52b4f143a4550b86316525ebaaaa212e93be971eaf85a8d8c427246a",
+        "src/main/java/org/springframework/samples/petclinic/system/WelcomeController.java": "606e7a6017d5a5714a2f35a75b3f26592f65c497ae7b315e88db7f6a15fbb1c0",
+        "src/main/java/org/springframework/samples/petclinic/vet/Specialty.java": "4d61cc83f9376802f892c62755dd882c9f219edb21b3a712509250d641847349",
+        "src/main/java/org/springframework/samples/petclinic/vet/Vet.java": "b17b16328dd6ca784ce69ecbd4e1d85ff7fd29a390bbebc53823f413167b191b",
+        "src/main/java/org/springframework/samples/petclinic/vet/VetController.java": "791acf89cc0d28a79bcbdc497592abb4c8b21c7b2682357b289ab3abc1876665",
+        "src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java": "6896b980c29f6bc1b8e39a950ca654c4979fbee3a2d134197100b187c8fec584",
+        "src/main/java/org/springframework/samples/petclinic/vet/Vets.java": "04fa06c2d600e902d005c2c794d1a363f165c60977de9f3e3172d05ac5088ba1",
+        "src/main/java/org/springframework/samples/petclinic/visit/Visit.java": "8f7d62e09c76c375c78c7c783930022c3cbc2d380496202b73976850abf3b08b",
+        "src/main/java/org/springframework/samples/petclinic/visit/VisitRepository.java": "897f265fb79566cdb2b8e4d91d3fb11aa6efa9f7319a158e42271cd0490c10d5"
+      }
+    },
+    "B-monolito-adaptado": {
+      "sourceRoot": "projects/monolith/src/main/java",
+      "types": 27,
+      "outputSha256": {
+        "class.csv": "204169cee692c21ba076e0f2f2fd38cb6232578478acee36138433dacf60dd87",
+        "method.csv": "7a211762b81b1f29c718c8bfc3eed3838d91b5ae03f349bce946b2a92cd8f9a4"
+      },
+      "source": "worktree",
+      "methods": 93,
+      "baseRevision": "8bdac479288d730944f0089c505da4be3523f803",
+      "publishedCsvSha256": {
+        "class.csv": "9c0250e68684c8f3df0adef07a80cf666ccfd9566854f7d1bb459cbff5bc6696",
+        "method.csv": "26c826aae19472420f9e9520a6187caa6289d0ea77b2f7374cb01364a9e547c9"
+      },
+      "matchesPreExcludingFileAndOrder": {
+        "class.csv": false,
+        "method.csv": false
+      },
+      "sourceSha256": {
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/IntegrationErrorHandler.java": "953ac31818823d4f4e6d03bf63cd071c1150962ddc222b2bde1d0dd5a222b0ee",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/integration/OwnersServiceHttpClient.java": "4039fad4c73b58c1e60bf197873ce98be197125d7e1aea62e00e929be646c8aa",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/BaseEntity.java": "78ee040b56bebb0f292cd41eefd1c9fb0bb13f597c1849b5822c24d43e1fd054",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/NamedEntity.java": "35642a01c4d5e7a25d5d689f8bf9d3609764627b65967d439f01a945bee5c7dc",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/package-info.java": "057448772508143b847c612d57027b081cd47bbe840f643c7dcaa757b9bee088",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/model/Person.java": "bd3b9da6ed77bbf67b576f985514f1a7d89f37f467faf21cf37adb997f16a5e1",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Owner.java": "ab6fd8b1e1781155d4d0efd3e095c8d11ef7b0e325bce90144d418db9ca19c79",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/Pet.java": "7c2ccf10e201ff3ccdfc2163c469a4111de158af63b3a8cca0f25398953f32f4",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetController.java": "d4fc345981bf7506f3f0c7932025ca35ab8819d5c1bd52836b33ba41b9207239",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetRepository.java": "01d25ccf51b5bfc14fb82753a2edbf9fcea4919f37ba84a171431f39f589342f",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetType.java": "007486615ec691a1f9d9d496bebf73621993e6334e410eb100c206d809bd16da",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetTypeFormatter.java": "a02a4844b3aa9de9e10b090663ac80fd0cf25fd7cbe45456af1d3ac18bb6b305",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/PetValidator.java": "86300c3e49671cad3d93e27835d306feaac6349925789e92c2e1c50980188254",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/owner/VisitController.java": "396344e436d6fac079e0c74c9c423793c584e17da05ef80a2d221401f647911e",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/PetClinicApplication.java": "f2fe1671adf3be3f6ea0972b3e40c56cdb2a05fb379e7737a96ba2209237c470",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/CacheConfig.java": "be396eeec507032bcc21fe740e2aef3b3aeb80a50bb1a7105315e3b24901c701",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/CrashController.java": "4290d84b52b4f143a4550b86316525ebaaaa212e93be971eaf85a8d8c427246a",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/system/WelcomeController.java": "606e7a6017d5a5714a2f35a75b3f26592f65c497ae7b315e88db7f6a15fbb1c0",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/Specialty.java": "4d61cc83f9376802f892c62755dd882c9f219edb21b3a712509250d641847349",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/Vet.java": "b17b16328dd6ca784ce69ecbd4e1d85ff7fd29a390bbebc53823f413167b191b",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/VetController.java": "b38699a8f236f798a9227b8a0c44593d953c19edf36b695b15a4f61446d1d0b4",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/VetRepository.java": "6896b980c29f6bc1b8e39a950ca654c4979fbee3a2d134197100b187c8fec584",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/vet/Vets.java": "04fa06c2d600e902d005c2c794d1a363f165c60977de9f3e3172d05ac5088ba1",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/visit/Visit.java": "8f7d62e09c76c375c78c7c783930022c3cbc2d380496202b73976850abf3b08b",
+        "projects/monolith/src/main/java/org/springframework/samples/petclinic/visit/VisitRepository.java": "897f265fb79566cdb2b8e4d91d3fb11aa6efa9f7319a158e42271cd0490c10d5"
+      }
+    },
+    "C-owners-service": {
+      "sourceRoot": "projects/owners-service/src/main/java",
+      "types": 8,
+      "outputSha256": {
+        "class.csv": "d12f7a02377ed282f9f400e63d8fcc63220b0a3cbc75e36e3d983555ec21e612",
+        "method.csv": "32bbff73a83175ee7ed3721f74220400211508927688a664de8e6a6fe8f289b1"
+      },
+      "source": "worktree",
+      "methods": 32,
+      "baseRevision": "8bdac479288d730944f0089c505da4be3523f803",
+      "publishedCsvSha256": {
+        "class.csv": "65ef46a2530b6aaa27c0367a71ef6f27d58fc26de126082ceed0d6f180aa34ed",
+        "method.csv": "329debf81b759b17a5f58fa631fd9aa9f5b0fb3c053d9dd83d636d65d0c989b0"
+      },
+      "matchesPreExcludingFileAndOrder": {
+        "class.csv": true,
+        "method.csv": true
+      },
+      "sourceSha256": {
+        "projects/owners-service/src/main/java/br/edu/tcc/integration/LegacyPetsHttpClient.java": "5be621c6d049046922c2ffa933cbaaa6557de1f57f4f3fd133e6cc71cf7f72e5",
+        "projects/owners-service/src/main/java/br/edu/tcc/owners/Owner.java": "771bfb62f70dbe7bd0a64427353c66cdd825a1afa138592061932f5e84ca94ad",
+        "projects/owners-service/src/main/java/br/edu/tcc/owners/OwnerController.java": "7eb2712b8a2907c218ba1d0ed2c91ee61dbab436a8b49155a5f4f41176b43631",
+        "projects/owners-service/src/main/java/br/edu/tcc/owners/OwnerRepository.java": "49b0e045bafebba8a6e18ead265de4f3bdb572549b21ef81f33fd2954ed10000",
+        "projects/owners-service/src/main/java/br/edu/tcc/OwnersApplication.java": "c8f018a1fdb0088ffecd174a9563d800bbd738f5b4806690e087ed0bfcfb12c7"
+      }
+    }
+  },
+  "command": "./scripts/collect-ck.ps1 -V3 -WorkingTree -Java17Home $env:JAVA17_HOME -CkJar $ckJar",
+  "publication": "A preservado byte a byte. B e C publicados da coleta, com a coluna file relativa ao repositório, UTF-8 e ordenação estável. Demais campos preservados.",
+  "comparisonScope": "Tipos e métodos Java de produção; todas as linhas, exceto a coluna file, como multiconjunto."
+}

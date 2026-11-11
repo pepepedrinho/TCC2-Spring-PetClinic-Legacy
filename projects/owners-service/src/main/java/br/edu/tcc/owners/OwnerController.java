@@ -1,28 +1,19 @@
 package br.edu.tcc.owners;
 
-import java.net.URI;
 import java.util.List;
 
 import jakarta.validation.Valid;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.tcc.integration.LegacyPetsHttpClient;
 
@@ -33,48 +24,14 @@ public class OwnerController {
     private static final String SEARCH = "owners/findOwners";
 
     private final OwnerRepository ownerRepository;
+    private final OwnerLookup ownerLookup;
     private final LegacyPetsHttpClient legacyPetsHttpClient;
 
-    public OwnerController(OwnerRepository ownerRepository, LegacyPetsHttpClient legacyPetsHttpClient) {
+    public OwnerController(OwnerRepository ownerRepository, OwnerLookup ownerLookup,
+            LegacyPetsHttpClient legacyPetsHttpClient) {
         this.ownerRepository = ownerRepository;
+        this.ownerLookup = ownerLookup;
         this.legacyPetsHttpClient = legacyPetsHttpClient;
-    }
-
-    @GetMapping("/api/owners")
-    @ResponseBody
-    public List<Owner> search(@RequestParam(defaultValue = "") String lastName) {
-        return ownerRepository.findByLastName(lastName);
-    }
-
-    @GetMapping("/api/owners/{id}")
-    @ResponseBody
-    public Owner get(@PathVariable Integer id) {
-        return findOwner(id);
-    }
-
-    @PostMapping("/api/owners")
-    public ResponseEntity<Owner> create(@Valid @RequestBody Owner owner) {
-        Owner newOwner = new Owner();
-        newOwner.updateFrom(owner);
-        Owner savedOwner = ownerRepository.save(newOwner);
-        return ResponseEntity.created(URI.create("/api/owners/" + savedOwner.getId())).body(savedOwner);
-    }
-
-    @PutMapping("/api/owners/{id}")
-    @ResponseBody
-    @Transactional
-    public Owner update(@PathVariable Integer id, @Valid @RequestBody Owner input) {
-        Owner owner = findOwner(id);
-        owner.updateFrom(input);
-        return ownerRepository.save(owner);
-    }
-
-    /** No deletion, even for currently childless owners: no distributed race or callback. */
-    @DeleteMapping("/api/owners/{id}")
-    public void delete(@PathVariable Integer id) {
-        findOwner(id);
-        throw new ResponseStatusException(HttpStatus.CONFLICT,
-                "Owner deletion is disabled to preserve legacy references");
     }
 
     @InitBinder("owner")
@@ -120,14 +77,14 @@ public class OwnerController {
 
     @GetMapping("/owners/{ownerId}")
     String details(@PathVariable Integer ownerId, Model model) {
-        model.addAttribute("owner", findOwner(ownerId));
+        model.addAttribute("owner", ownerLookup.findOwner(ownerId));
         model.addAttribute("pets", legacyPetsHttpClient.findPets(List.of(ownerId)).get(ownerId));
         return "owners/ownerDetails";
     }
 
     @GetMapping("/owners/{ownerId}/edit")
     String editForm(@PathVariable Integer ownerId, Model model) {
-        model.addAttribute("owner", findOwner(ownerId));
+        model.addAttribute("owner", ownerLookup.findOwner(ownerId));
         model.addAttribute("editing", true);
         return FORM;
     }
@@ -136,17 +93,12 @@ public class OwnerController {
     @Transactional
     String update(@PathVariable Integer ownerId, @Valid @ModelAttribute("owner") Owner input,
             BindingResult errors, Model model) {
-        Owner owner = findOwner(ownerId);
+        Owner owner = ownerLookup.findOwner(ownerId);
         if (errors.hasErrors()) {
             model.addAttribute("editing", true);
             return FORM;
         }
         owner.updateFrom(input);
         return "redirect:/owners/{ownerId}";
-    }
-
-    private Owner findOwner(Integer ownerId) {
-        return ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
