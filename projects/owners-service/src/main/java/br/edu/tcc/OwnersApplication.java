@@ -1,4 +1,4 @@
-package br.edu.tcc.owners;
+package br.edu.tcc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,7 @@ import org.springframework.web.filter.UrlHandlerFilter;
 
 // Componente novo da extração: inicia a aplicação independente
 // que mantém exclusivamente os dados de Owner.
-@SpringBootApplication(scanBasePackages = {"br.edu.tcc.owners", "br.edu.tcc.integration"})
+@SpringBootApplication
 public class OwnersApplication {
 
     public static void main(String[] args) {
