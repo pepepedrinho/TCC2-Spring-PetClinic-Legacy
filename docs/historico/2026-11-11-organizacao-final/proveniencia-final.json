@@ -122,5 +122,5 @@
   "analyzedCommit": "f89508d8266c1e1f6c1d9f6cfecea25a9511c6c7",
   "command": "./scripts/collect-ck.ps1 -V3 -WorkingTree -Java17Home $env:JAVA17_HOME -CkJar $ckJar",
   "publication": "CSV em UTF-8 com caminhos relativos e ordem estável para B e C. A mantém os bytes da referência histórica.",
-  "publishedRoot": "../../metricas"
+  "publishedRoot": "../2026-11-11-pre-ownersapplication-root-9152c1c"
 }

@@ -9,3 +9,5 @@ Os dez registros de CK do arquivo legado mantêm seus identificadores de campanh
 
 - [Coleta anterior à organização final](2026-11-11-pre-organizacao-final-4732eba/README.md)
 - [Organização final e remoção de OwnerLookup](2026-11-11-organizacao-final/relatorio.md)
+- [Coleta anterior à mudança de OwnersApplication](2026-11-11-pre-ownersapplication-root-9152c1c/README.md).
+- [Proveniência da versão final](2026-11-11-ownersapplication-root/proveniencia.json) e [validação](2026-11-11-ownersapplication-root/validacao.json).

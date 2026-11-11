@@ -17,7 +17,7 @@ Cada controlador do serviço consulta `OwnerRepository.findById` e converte aus�
 ## Resultados CK
 
 CK `0.7.1-SNAPSHOT`, Java 17.0.12 e parâmetros `false 0 false`. As médias incluem todos os tipos emitidos pela CK. A usa a coleta histórica e foi conferido nas duas execuções. Os percentuais usam o estado inicial de cada contraste. A nomenclatura completa foi mapeada antes da comparação individual.
-[Antes](../2026-11-11-pre-organizacao-final-4732eba/README.md) · [Somente pacotes](somente-pacotes/README.md) · [Coleta vigente](../../metricas/README.md) · [Proveniência final](proveniencia-final.json)
+[Antes](../2026-11-11-pre-organizacao-final-4732eba/README.md) · [Somente pacotes](somente-pacotes/README.md) · [Coleta final daquela intervenção](../2026-11-11-pre-ownersapplication-root-9152c1c/README.md) · [Proveniência final](proveniencia-final.json)
 
 ### Tipos e médias
 

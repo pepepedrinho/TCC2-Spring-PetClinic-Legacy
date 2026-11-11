@@ -57,7 +57,7 @@ Use `-Offline` com o cache Maven completo e `-SkipGitMetadata` se a geração de
 | Caminho | Conteúdo |
 | --- | --- |
 | `projects/monolith/` | Aplicação legada. Os pacotes `model`, `pets` e `visit` reúnem o modelo de Owner e os domínios legados. O pacote `integration` contém `PetRestController`, `OwnersServiceHttpClient` e `IntegrationErrorHandler`. |
-| `projects/owners-service/` | Entrada `br.edu.tcc.owners.OwnersApplication`. O pacote `owners` contém `OwnerController` MVC, a entidade e o repositório JPA. O pacote `br.edu.tcc.integration` contém `OwnerRestController` e `LegacyPetsHttpClient`. Ambos os controladores consultam diretamente `OwnerRepository`. |
+| `projects/owners-service/` | Entrada `br.edu.tcc.OwnersApplication`. O pacote `owners` contém `OwnerController` MVC, a entidade e o repositório JPA. O pacote `br.edu.tcc.integration` contém `OwnerRestController` e `LegacyPetsHttpClient`. Ambos os controladores consultam diretamente `OwnerRepository`. |
 | `projects/gateway/` | Rotas públicas e filtro de disponibilidade do Owners Service. |
 | `docker/` e `compose.yaml` | Imagens, redes, provisionamento e persistência. |
 | `scripts/` | Build, aceitação, migração offline e coleta CK. |
