@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.tcc.integration.LegacyPetsHttpClient;
 
@@ -24,13 +26,10 @@ public class OwnerController {
     private static final String SEARCH = "owners/findOwners";
 
     private final OwnerRepository ownerRepository;
-    private final OwnerLookup ownerLookup;
     private final LegacyPetsHttpClient legacyPetsHttpClient;
 
-    public OwnerController(OwnerRepository ownerRepository, OwnerLookup ownerLookup,
-            LegacyPetsHttpClient legacyPetsHttpClient) {
+    public OwnerController(OwnerRepository ownerRepository, LegacyPetsHttpClient legacyPetsHttpClient) {
         this.ownerRepository = ownerRepository;
-        this.ownerLookup = ownerLookup;
         this.legacyPetsHttpClient = legacyPetsHttpClient;
     }
 
@@ -77,14 +76,18 @@ public class OwnerController {
 
     @GetMapping("/owners/{ownerId}")
     String details(@PathVariable Integer ownerId, Model model) {
-        model.addAttribute("owner", ownerLookup.findOwner(ownerId));
+        Owner owner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        model.addAttribute("owner", owner);
         model.addAttribute("pets", legacyPetsHttpClient.findPets(List.of(ownerId)).get(ownerId));
         return "owners/ownerDetails";
     }
 
     @GetMapping("/owners/{ownerId}/edit")
     String editForm(@PathVariable Integer ownerId, Model model) {
-        model.addAttribute("owner", ownerLookup.findOwner(ownerId));
+        Owner owner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        model.addAttribute("owner", owner);
         model.addAttribute("editing", true);
         return FORM;
     }
@@ -93,7 +96,8 @@ public class OwnerController {
     @Transactional
     String update(@PathVariable Integer ownerId, @Valid @ModelAttribute("owner") Owner input,
             BindingResult errors, Model model) {
-        Owner owner = ownerLookup.findOwner(ownerId);
+        Owner owner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (errors.hasErrors()) {
             model.addAttribute("editing", true);
             return FORM;

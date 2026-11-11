@@ -19,18 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.edu.tcc.owners.Owner;
-import br.edu.tcc.owners.OwnerLookup;
 import br.edu.tcc.owners.OwnerRepository;
 
 @RestController
 public class OwnerRestController {
 
     private final OwnerRepository ownerRepository;
-    private final OwnerLookup ownerLookup;
 
-    public OwnerRestController(OwnerRepository ownerRepository, OwnerLookup ownerLookup) {
+    public OwnerRestController(OwnerRepository ownerRepository) {
         this.ownerRepository = ownerRepository;
-        this.ownerLookup = ownerLookup;
     }
 
     @GetMapping("/api/owners")
@@ -40,7 +37,8 @@ public class OwnerRestController {
 
     @GetMapping("/api/owners/{id}")
     public Owner get(@PathVariable Integer id) {
-        return ownerLookup.findOwner(id);
+        return ownerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/api/owners")
@@ -54,7 +52,8 @@ public class OwnerRestController {
     @PutMapping("/api/owners/{id}")
     @Transactional
     public Owner update(@PathVariable Integer id, @Valid @RequestBody Owner input) {
-        Owner owner = ownerLookup.findOwner(id);
+        Owner owner = ownerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         owner.updateFrom(input);
         return ownerRepository.save(owner);
     }
@@ -62,7 +61,8 @@ public class OwnerRestController {
     /** No deletion, even for currently childless owners: no distributed race or callback. */
     @DeleteMapping("/api/owners/{id}")
     public void delete(@PathVariable Integer id) {
-        ownerLookup.findOwner(id);
+        ownerRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         throw new ResponseStatusException(HttpStatus.CONFLICT,
                 "Owner deletion is disabled to preserve legacy references");
     }
