@@ -1,0 +1,12 @@
+{
+  "additional_categories": {
+    "org.springframework.samples.petclinic.integration.OwnerIntegrationAdapter": "Integração",
+    "org.springframework.samples.petclinic.integration.IntegrationErrorHandler": "Integração",
+    "org.springframework.samples.petclinic.integration.IntegrationErrorHandler$IntegrationFailure": "Integração"
+  },
+  "responsibility_notes": {
+    "org.springframework.samples.petclinic.owner.Owner": "Na V2, representa dados remotos combinados com Pets locais. O pareamento preserva o nome qualificado.",
+    "org.springframework.samples.petclinic.owner.OwnerRepository": "Na V2, é o contrato dos controllers implementado pelo adaptador HTTP.",
+    "org.springframework.samples.petclinic.owner.Pet": "Na V2, a ligação com Owner usa o identificador do proprietário remoto."
+  }
+}
