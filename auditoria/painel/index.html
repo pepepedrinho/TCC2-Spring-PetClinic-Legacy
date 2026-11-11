@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Auditoria PetClinic</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Auditoria PetClinic</h1>
+      <p>Coexistência Strangler Fig</p>
+      <p id="updated" role="status">Aguardando a primeira coleta…</p>
+    </header>
+    <section>
+      <h2>Disponibilidade</h2>
+      <ul id="services"></ul>
+    </section>
+    <section>
+      <h2>Tráfego observado pelo Gateway</h2>
+      <p id="metric-state"></p>
+      <dl id="totals"></dl>
+      <div class="scroll"><table>
+        <caption>Requisições por destino</caption>
+        <thead><tr><th scope="col">Destino</th><th scope="col">Requisições</th></tr></thead>
+        <tbody id="destinations"></tbody>
+      </table></div>
+      <div class="scroll"><table>
+        <caption>Respostas por código HTTP</caption>
+        <thead><tr><th scope="col">Código</th><th scope="col">Respostas</th></tr></thead>
+        <tbody id="codes"></tbody>
+      </table></div>
+    </section>
+    <section>
+      <h2>Rotas do Gateway</h2>
+      <p id="route-state"></p>
+      <div class="scroll"><table aria-label="Rotas do Gateway">
+        <thead><tr><th scope="col">Rota</th><th scope="col">Caminho</th><th scope="col">Destino</th><th scope="col">Requisições</th><th scope="col">Códigos HTTP</th><th scope="col">Média (ms)</th></tr></thead>
+        <tbody id="routes"></tbody>
+      </table></div>
+    </section>
+    <footer>As contagens acumulam desde a inicialização do Gateway. As chamadas diretas entre serviços ficam fora desta coleta.</footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,6 @@
+*
+!Dockerfile
+!coletor/
+!coletor/server.mjs
+!painel/
+!painel/*

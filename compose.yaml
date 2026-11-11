@@ -49,6 +49,8 @@ services:
       dockerfile: projects/monolith/Dockerfile
     environment:
       JAVA_TOOL_OPTIONS: "-Xms32m -Xmx384m -XX:ActiveProcessorCount=2"
+      SPRING_PROFILES_ACTIVE: "production,auditoria"
+      AUDIT_MANAGEMENT_ADDRESS: "0.0.0.0"
       LEGACY_DB_URL: "jdbc:hsqldb:hsql://legacy-db:9001/petclinic"
       OWNERS_URL: "http://owners-service:8082"
     networks: [app, legacy-data]
@@ -66,6 +68,8 @@ services:
       dockerfile: projects/owners-service/Dockerfile
     environment:
       JAVA_TOOL_OPTIONS: "-Xms32m -Xmx256m -XX:ActiveProcessorCount=2"
+      SPRING_PROFILES_ACTIVE: "auditoria"
+      AUDIT_MANAGEMENT_ADDRESS: "0.0.0.0"
       MONOLITH_URL: "http://monolith:8080"
       OWNERS_DB_URL: "jdbc:h2:tcp://owners-db:9092/./owners;IFEXISTS=TRUE"
       SPRING_DATASOURCE_PASSWORD: ${OWNERS_DB_PASSWORD:-}
@@ -86,6 +90,8 @@ services:
       dockerfile: projects/gateway/Dockerfile
     environment:
       JAVA_TOOL_OPTIONS: "-Xms32m -Xmx256m -XX:ActiveProcessorCount=2"
+      SPRING_PROFILES_ACTIVE: "auditoria"
+      AUDIT_MANAGEMENT_ADDRESS: "0.0.0.0"
       OWNERS_ROUTE_URI: "http://owners-service:8082"
       MONOLITH_ROUTE_URI: "http://monolith:8080"
     ports:
@@ -99,6 +105,20 @@ services:
     healthcheck:
       <<: *app-health
       test: ["CMD", "bash", "/usr/local/bin/http-healthcheck", "8081", "/"]
+
+  auditoria:
+    build:
+      context: auditoria
+    environment:
+      AUDIT_HOST: "0.0.0.0"
+      AUDIT_GATEWAY_URL: "http://gateway:9081"
+      AUDIT_LEGACY_URL: "http://monolith:9080"
+      AUDIT_OWNERS_URL: "http://owners-service:9082"
+      AUDIT_INTERVAL_MS: ${AUDIT_INTERVAL_MS:-15000}
+    ports:
+      - "127.0.0.1:${AUDIT_PORT:-3000}:3000"
+    networks: [app]
+    restart: unless-stopped
 
 networks:
   app:
