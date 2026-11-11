@@ -1,6 +1,6 @@
 # TCC II · Spring PetClinic Legacy
 
-A **V3 definitiva**, identificada pela tag `tcc2-v3-final-mvc-rest-modulos`, consolida este estudo de migração incremental por Strangler Fig. O projeto parte do Spring PetClinic histórico de 2017. O Owners Service assumiu o cadastro de proprietários, a API REST e as páginas HTML de Owner. O monólito continua responsável por Pets, Visits, Vets e pelos recursos estáticos da interface.
+A **V3** consolida este estudo de migração incremental por Strangler Fig. O projeto parte do Spring PetClinic histórico de 2017. O Owners Service assumiu o cadastro de proprietários, a API REST e as páginas HTML de Owner. O monólito continua responsável por Pets, Visits, Vets e pelos recursos estáticos da interface.
 
 ## Arquitetura
 
@@ -56,8 +56,8 @@ Use `-Offline` com o cache Maven completo e `-SkipGitMetadata` se a geração de
 
 | Caminho | Conteúdo |
 | --- | --- |
-| `projects/monolith/` | Aplicação legada. Os pacotes `owner`, `pets` e `visit` reúnem os domínios legados. O pacote `integration` contém `PetRestController`, `OwnersServiceHttpClient` e `IntegrationErrorHandler`. |
-| `projects/owners-service/` | Entrada `br.edu.tcc.OwnersApplication`. O pacote `br.edu.tcc.owners` contém `OwnerController` MVC, `OwnerLookup`, a entidade e o repositório JPA. `br.edu.tcc.owners.integration` contém `OwnerRestController`. O pacote `br.edu.tcc.integration` contém `LegacyPetsHttpClient`. |
+| `projects/monolith/` | Aplicação legada. Os pacotes `model`, `pets` e `visit` reúnem o modelo de Owner e os domínios legados. O pacote `integration` contém `PetRestController`, `OwnersServiceHttpClient` e `IntegrationErrorHandler`. |
+| `projects/owners-service/` | Entrada `br.edu.tcc.owners.OwnersApplication`. O pacote `owners` contém `OwnerController` MVC, a entidade e o repositório JPA. O pacote `br.edu.tcc.integration` contém `OwnerRestController` e `LegacyPetsHttpClient`. Ambos os controladores consultam diretamente `OwnerRepository`. |
 | `projects/gateway/` | Rotas públicas e filtro de disponibilidade do Owners Service. |
 | `docker/` e `compose.yaml` | Imagens, redes, provisionamento e persistência. |
 | `scripts/` | Build, aceitação, migração offline e coleta CK. |

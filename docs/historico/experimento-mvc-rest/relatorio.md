@@ -191,7 +191,7 @@ As duas etapas executaram Maven offline com Java 8 no monólito e Java 17 no Own
 
 ## Opções avaliadas antes da consolidação
 
-A V3 definitiva adotou ambas as etapas. [Publicação vigente](../../metricas/README.md).
+A V3 definitiva adotou ambas as etapas. [Coleta da publicação consolidada](../2026-11-11-pre-organizacao-final-4732eba/README.md).
 
 No worktree da V3, confirme branch, estado limpo e HEAD em `tcc2-v3-pre-separacao-mvc-rest`. Se o HEAD continuar nesse ancestral, um avanço rápido conserva os commits testados. Se a V3 tiver avançado, reavalie a integração antes de aplicá-la.
 
