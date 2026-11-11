@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.pets.Pet;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

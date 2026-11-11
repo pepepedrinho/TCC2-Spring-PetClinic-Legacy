@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.samples.petclinic.owner.PetRepository;
+import org.springframework.samples.petclinic.pets.Pet;
+import org.springframework.samples.petclinic.pets.PetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -2,7 +2,7 @@
 
 A V3 anterior corresponde ao commit `26fafc5ed169598f09e322bfd992ebb735afd325`, identificado pela tag `tcc2-v3-pre-petcontroller`. A intervenção moveu a leitura em lote de Pets e Visits para o `PetController`. As rotas MVC receberam os caminhos completos e o modelo dos formulários só é preenchido nas rotas com `ownerId`. A chamada interna consulta apenas o repositório de Pets.
 
-A CK `0.7.1-SNAPSHOT`, fonte `8a1ef916d597d33ad619d748b616bb7dbc3f0c36`, foi executada com Java 17.0.12 e `false 0 false`. O coletor existente usou `-V3` para o HEAD confirmado pela tag e `-V3 -WorkingTree` para a intervenção. As raízes Java de produção, o hash do JAR e os hashes dos CSVs estão nas proveniências. A comparação ignora caminho e ordem das linhas. [Coleta anterior](../historico/v3-pre-petcontroller/proveniencia.json) · [Coleta experimental](proveniencia.json).
+A CK `0.7.1-SNAPSHOT`, fonte `8a1ef916d597d33ad619d748b616bb7dbc3f0c36`, foi executada com Java 17.0.12 e `false 0 false`. O coletor existente usou `-V3` para o HEAD confirmado pela tag e `-V3 -WorkingTree` para a intervenção. As raízes Java de produção, o hash do JAR e os hashes dos CSVs estão nas proveniências. A comparação ignora caminho e ordem das linhas. [Coleta anterior](../../v3-pre-petcontroller/proveniencia.json) · [Coleta experimental](proveniencia.json).
 
 ## População analisada
 
