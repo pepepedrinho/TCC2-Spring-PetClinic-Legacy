@@ -1,4 +1,4 @@
-package br.edu.tcc.owners.integration;
+package br.edu.tcc.integration;
 
 import java.net.URI;
 import java.util.List;

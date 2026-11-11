@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.model;
 
 import org.springframework.samples.petclinic.pets.Pet;
 import org.junit.Test;

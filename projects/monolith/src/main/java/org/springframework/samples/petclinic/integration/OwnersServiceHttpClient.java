@@ -3,7 +3,7 @@ package org.springframework.samples.petclinic.integration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConversionException;
-import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;

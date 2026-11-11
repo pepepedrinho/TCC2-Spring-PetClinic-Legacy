@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.integration.OwnersServiceHttpClient;
-import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.pets.Pet;
 import org.springframework.samples.petclinic.pets.PetRepository;
 import org.springframework.samples.petclinic.pets.PetType;

@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.integration.IntegrationErrorHandler;
 import org.springframework.samples.petclinic.integration.OwnersServiceHttpClient;
-import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;

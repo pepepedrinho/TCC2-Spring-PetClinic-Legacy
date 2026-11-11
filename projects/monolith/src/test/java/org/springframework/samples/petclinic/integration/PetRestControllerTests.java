@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.pets.Pet;
 import org.springframework.samples.petclinic.pets.PetRepository;
 import org.springframework.samples.petclinic.pets.PetType;
