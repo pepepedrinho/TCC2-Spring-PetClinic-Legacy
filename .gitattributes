@@ -12,3 +12,5 @@
 /docker/** text eol=lf
 /docs/historico/arquivo-legado/metricas/2026-11-06-v2-pre-docker-0ad652a/** -text -whitespace
 /docs/historico/**/*.csv -text -whitespace
+# Preserve the imported dashboard files byte for byte.
+/auditoria/dashboards/** -text whitespace=cr-at-eol,-blank-at-eof
