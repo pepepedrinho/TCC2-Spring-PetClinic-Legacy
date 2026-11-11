@@ -1,4 +1,4 @@
-"""Regenera os cinco gráficos da coleta oficial CK com Pandas e Matplotlib."""
+"""Regenera os cinco gráficos da coleta CK da V2 Docker com Pandas e Matplotlib."""
 
 from pathlib import Path
 
@@ -13,7 +13,7 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-METRICS_DIR = ROOT / "docs/metricas"
+METRICS_DIR = ROOT / "docs/historico/v2-docker"
 ARCHIVE = ROOT / "historico/metricas/2026-11-06-v2-pre-docker-0ad652a"
 OUTPUT = METRICS_DIR / "graficos"
 

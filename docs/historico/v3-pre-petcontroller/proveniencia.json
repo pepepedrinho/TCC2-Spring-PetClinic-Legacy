@@ -1,0 +1,61 @@
+{
+  "collectedUtc": "2026-11-11T00:31:50.0560474Z",
+  "ckVersion": "0.7.1-SNAPSHOT",
+  "ckSourceCommit": "8a1ef916d597d33ad619d748b616bb7dbc3f0c36",
+  "ckSha256": "98893efdffd22fb2356560e9ed78b0528e01bbbad032dcd63be3863c73bfc517",
+  "javaVersion": "Picked up JAVA_TOOL_OPTIONS: -Xms16m -Xmx160m -XX:+UseSerialGC -XX:ReservedCodeCacheSize=24m -XX:CompressedClassSpaceSize=32m\r\njava version \"17.0.12\" 2024-07-16 LTS\r\nJava(TM) SE Runtime Environment (build 17.0.12+8-LTS-286)\r\nJava HotSpot(TM) 64-Bit Server VM (build 17.0.12+8-LTS-286, mixed mode, sharing)",
+  "parameters": [
+    "false",
+    "0",
+    "false"
+  ],
+  "scenarios": {
+    "A-monolito-original": {
+      "types": 24,
+      "methods": 91,
+      "sourceRoot": "src/main/java",
+      "revision": "c36452a2c34443ae26b4ecbba4f149906af14717",
+      "outputSha256": {
+        "class.csv": "b32e59c6db8a0be44d14628da5449f2569d0e047eb57c77a874440dc423a4659",
+        "method.csv": "07450e0aaa634c723ee40ce5ac04e879c52b57324959c88cdb5a39a8a3e9edf7"
+      },
+      "publishedCsvSha256": {
+        "class.csv": "a4e1d4f53104d37a78edfdd0f5ca704956e2bec327cc418f86487ee7df2bdfe1",
+        "method.csv": "c1f510d6894f2c0fbff9d0518968778b526606337acc8eeacd128dbde1d1b777"
+      },
+      "matchesPublishedExcludingFileAndOrder": true
+    },
+    "B-monolito-adaptado": {
+      "types": 28,
+      "methods": 95,
+      "sourceRoot": "projects/monolith/src/main/java",
+      "revision": "26fafc5ed169598f09e322bfd992ebb735afd325",
+      "outputSha256": {
+        "class.csv": "d89a221cca3578e0d56f4f4bac4239463670550e1e1d50566205c8801a727b17",
+        "method.csv": "898360de51654dfde81ebcd0b5f41bc77e562a6a74d2e3dc339b59d107efd18a"
+      },
+      "publishedCsvSha256": {
+        "class.csv": "58beecd4694fe9b00d07fc9037d1b28e5744b1eaa43d0151e5b0f3dfea476775",
+        "method.csv": "1d93f23ea81e84b4ffe83e37bf0845c3f93c08727f73a71c03b1791ee1a580ef"
+      },
+      "matchesPublishedExcludingFileAndOrder": true
+    },
+    "C-owners-service": {
+      "types": 8,
+      "methods": 32,
+      "sourceRoot": "projects/owners-service/src/main/java",
+      "revision": "26fafc5ed169598f09e322bfd992ebb735afd325",
+      "outputSha256": {
+        "class.csv": "bc31bad0fd11197e86c377362d75516dea8d025fd28437075031176254e14ea3",
+        "method.csv": "c41f1d949d39815f6ff85688107a1fd01c916188f61a217dddc50e17638e6646"
+      },
+      "publishedCsvSha256": {
+        "class.csv": "65ef46a2530b6aaa27c0367a71ef6f27d58fc26de126082ceed0d6f180aa34ed",
+        "method.csv": "329debf81b759b17a5f58fa631fd9aa9f5b0fb3c053d9dd83d636d65d0c989b0"
+      },
+      "matchesPublishedExcludingFileAndOrder": true
+    }
+  },
+  "command": "./scripts/collect-ck.ps1 -V3 -Java17Home $env:JAVA17_HOME -CkJar $ckJar",
+  "snapshot": "tcc2-v3-pre-petcontroller"
+}

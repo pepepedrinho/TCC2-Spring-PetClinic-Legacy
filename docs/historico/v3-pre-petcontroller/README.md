@@ -1,6 +1,6 @@
 # V3 final · Arquitetura, validação e métricas
 
-A V3 migra a responsabilidade Owner para um serviço separado. O Gateway encaminha a API REST `/api/owners` e as páginas de pesquisa, detalhe, criação e edição de Owner ao Owners Service. Rotas aninhadas de Pets e Visits, Vets e recursos estáticos seguem para o monólito. O [README principal](../../README.md) mostra o diagrama. O [guia Docker](../../DOCKER.md) descreve a execução e o provisionamento.
+A V3 migra a responsabilidade Owner para um serviço separado. O Gateway encaminha a API REST `/api/owners` e as páginas de pesquisa, detalhe, criação e edição de Owner ao Owners Service. Rotas aninhadas de Pets e Visits, Vets e recursos estáticos seguem para o monólito. O [README principal](../../../README.md) mostra o diagrama. O [guia Docker](../../../DOCKER.md) descreve a execução e o provisionamento.
 
 ## Componentes e integrações
 
@@ -52,4 +52,4 @@ O coletor salva a saída em um novo diretório sob `.work/`. O modo `-WorkingTre
 - [V3 inicial e migração da interface Owner](relatorio.md). Inclui os primeiros resultados da V3, a migração offline e a validação com duas réplicas.
 - [Padronização dos clientes HTTP](refatoracao-integracoes-http.md). Registra a etapa intermediária com handlers dedicados nas duas aplicações.
 - [Unificação dos controllers](refatoracao-controller-unificado.md). Registra a auditoria que produziu a coleta da V3 unificada e compara as métricas individuais.
-- [Metodologia e coleta da V2](../metricas/README.md) · [Arquivo histórico](../../historico/README.md).
+- [Metodologia e coleta da V2](../v2-docker/README.md) · [Arquivo histórico](../../../historico/README.md).

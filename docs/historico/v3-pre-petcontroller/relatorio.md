@@ -59,7 +59,7 @@ O Gateway encaminha apenas os caminhos de Owner enumerados na configuração, co
 | Gateway | As rotas REST e MVC de Owner precedem a rota genérica. `OwnersAvailabilityGatewayFilterFactory` converte falhas de transporte de Owners em HTTP 503. O roteamento e o bloqueio interno ficam em `application.properties`. |
 | Compose | `MONOLITH_URL` aponta para o endereço interno do monólito. Cada aplicação depende inicialmente do próprio banco. As imagens V3 têm tags próprias, com os mesmos serviços, redes de dados e esquemas persistentes. |
 
-Execute com um nome de projeto e uma porta próprios para comparar com a V2. O procedimento de importação dos bancos, o complemento de réplicas e as opções de execução estão no [guia Docker](../../DOCKER.md).
+Execute com um nome de projeto e uma porta próprios para comparar com a V2. O procedimento de importação dos bancos, o complemento de réplicas e as opções de execução estão no [guia Docker](../../../DOCKER.md).
 
 ## Validação funcional
 
@@ -115,10 +115,10 @@ No monólito, a saída de `OwnerController` e a inclusão de `OwnerPetsControlle
 Os dois controllers MVC correspondem pela função na navegação. O controller V3 trabalha diretamente com JPA e agrega a projeção remota. O RFC médio de Owners Service sobe de 2,7500 para 5,3333 após a inclusão do MVC e do cliente, enquanto a população cresce de quatro para nove tipos. Os resultados descrevem a redistribuição do trabalho e incluem custos de integração nas duas aplicações.
 
 - [Comparação por nome qualificado nos três monólitos](metricas/comparacao-monolitos.csv).
-- Monólito V3 · [Tipos](metricas/D-monolito-v3/class.csv) · [Métodos](metricas/D-monolito-v3/method.csv).
-- Owners Service V3 · [Tipos](metricas/E-owners-service-v3/class.csv) · [Métodos](metricas/E-owners-service-v3/method.csv).
+- Monólito V3 · [Tipos](metricas/B-monolito-adaptado/class.csv) · [Métodos](metricas/B-monolito-adaptado/method.csv).
+- Owners Service V3 · [Tipos](metricas/C-owners-service/class.csv) · [Métodos](metricas/C-owners-service/method.csv).
 - Gateway V3 · [Tipos](metricas/F-gateway-v3/class.csv) · [Métodos](metricas/F-gateway-v3/method.csv).
-- [Coleta e metodologia históricas da V2](../metricas/README.md).
+- [Coleta e metodologia históricas da V2](../v2-docker/README.md).
 
 Com o JDK 17 configurado em `JAVA17_HOME` e o JAR histórico em `$ckJar`, execute o comando abaixo.
 

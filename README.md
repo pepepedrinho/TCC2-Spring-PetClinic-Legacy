@@ -61,11 +61,11 @@ Use `-Offline` com o cache Maven completo e `-SkipGitMetadata` se a geração de
 | `projects/gateway/` | Rotas públicas e filtro de disponibilidade do Owners Service. |
 | `docker/` e `compose.yaml` | Imagens, redes, provisionamento e persistência. |
 | `scripts/` | Build, aceitação, migração offline e coleta CK. |
-| `docs/v3/` e `historico/` | Documentação da V3, evidências de validação e campanhas anteriores. |
+| `docs/historico/` e `historico/` | Documentação da V3, evidências de validação e campanhas anteriores. |
 
 ## Resultados e escopo
 
-A análise CK mede a estrutura dos fontes Java de produção. Os CSVs distinguem o monólito original, o monólito remanescente, o Owners Service e o Gateway. A unificação concentra métodos e dependências no controller, enquanto a remoção de tipos altera a composição das médias. [Arquitetura final, validação e métricas](docs/v3/README.md).
+A análise CK mede a estrutura dos fontes Java de produção. Os CSVs distinguem o monólito original, o monólito remanescente, o Owners Service e o Gateway. A unificação concentra métodos e dependências no controller, enquanto a remoção de tipos altera a composição das médias. [Arquitetura final, validação e métricas](docs/metricas/README.md).
 
 O ambiente tem finalidade acadêmica. A migração pressupõe a coexistência das aplicações e as páginas compostas e formulários legados dependem de chamadas HTTP entre elas. Os cenários de indisponibilidade registram quais fluxos ficam acessíveis durante a interrupção de cada serviço.
 

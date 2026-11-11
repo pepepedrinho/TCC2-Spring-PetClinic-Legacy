@@ -11,4 +11,4 @@
 /historico/evidencias/evidencias-addpet/** -text -whitespace
 /docker/** text eol=lf
 /historico/metricas/2026-11-06-v2-pre-docker-0ad652a/** -text -whitespace
-/docs/v3/metricas/**/*.csv text eol=lf
+/docs/historico/**/*.csv -text -whitespace

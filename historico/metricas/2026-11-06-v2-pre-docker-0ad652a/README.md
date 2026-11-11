@@ -8,4 +8,4 @@ Esta é a coleta publicada em `0ad652a` para a V2 com `LegacyDatabaseInitializer
 | B · Monólito V2 com inicializador | 28 | 106 |
 | C · Owners Service | 4 | 20 |
 
-Os seis CSVs e a proveniência foram copiados byte a byte. O cenário B desta pasta é a referência para o gráfico de efeito da retirada do inicializador. [Coleta oficial da V2 Docker](../../../docs/metricas/README.md)
+Os seis CSVs e a proveniência foram copiados byte a byte. O cenário B desta pasta é a referência para o gráfico de efeito da retirada do inicializador. [Coleta oficial da V2 Docker](../../../docs/historico/v2-docker/README.md)

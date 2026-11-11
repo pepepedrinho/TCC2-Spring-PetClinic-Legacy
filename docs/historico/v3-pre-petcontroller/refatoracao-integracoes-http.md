@@ -116,8 +116,8 @@ A nova coleta usou a CK `0.7.1-SNAPSHOT`, o mesmo SHA-256 do JAR histórico, Jav
 - **Owners Service.** Os cinco indicadores dos tipos correspondentes são iguais após associar os nomes qualificados antigos e novos, inclusive os tipos aninhados e anônimo do cliente. As médias caem com a inclusão do advice e da exceção. A visibilidade dos records e do cliente mudou e aparece nos campos de modificadores da CK.
 - **Gateway.** Os CSVs normalizados de tipos e métodos reproduzem os resultados anteriores.
 
-- [Monólito · tipos](metricas-refatoracao/D-monolito-v3/class.csv) · [métodos](metricas-refatoracao/D-monolito-v3/method.csv)
-- [Owners Service · tipos](metricas-refatoracao/E-owners-service-v3/class.csv) · [métodos](metricas-refatoracao/E-owners-service-v3/method.csv)
+- [Monólito · tipos](metricas-refatoracao/B-monolito-adaptado/class.csv) · [métodos](metricas-refatoracao/B-monolito-adaptado/method.csv)
+- [Owners Service · tipos](metricas-refatoracao/C-owners-service/class.csv) · [métodos](metricas-refatoracao/C-owners-service/method.csv)
 - [Gateway · tipos](metricas-refatoracao/F-gateway-v3/class.csv) · [métodos](metricas-refatoracao/F-gateway-v3/method.csv)
 
 ## Conclusão arquitetural
