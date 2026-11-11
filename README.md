@@ -1,6 +1,6 @@
 # TCC II · Spring PetClinic Legacy
 
-A **V3** é a implementação atual deste estudo de migração incremental por Strangler Fig. O projeto parte do Spring PetClinic histórico de 2017. O Owners Service assumiu o cadastro de proprietários, a API REST e as páginas HTML de Owner. O monólito continua responsável por Pets, Visits, Vets e pelos recursos estáticos da interface.
+A **V3 definitiva**, identificada pela tag `tcc2-v3-final-mvc-rest-modulos`, consolida este estudo de migração incremental por Strangler Fig. O projeto parte do Spring PetClinic histórico de 2017. O Owners Service assumiu o cadastro de proprietários, a API REST e as páginas HTML de Owner. O monólito continua responsável por Pets, Visits, Vets e pelos recursos estáticos da interface.
 
 ## Arquitetura
 
@@ -23,7 +23,7 @@ As setas tracejadas mostram chamadas HTTP iniciadas pelas aplicações. As setas
 | [Owners Service](projects/owners-service/) | API REST, páginas Thymeleaf, validação e persistência de Owner. | 8082 |
 | [Gateway](projects/gateway/) | Entrada pública. Encaminha as rotas de Owner ao microsserviço e as demais rotas da aplicação ao monólito. Bloqueia `/internal/**`. | 8081 |
 
-O `OwnerController` atende tanto `/owners` e suas páginas quanto `/api/owners`. Para renderizar o detalhe ou uma lista com vários proprietários, ele pede ao `LegacyPetsHttpClient` a projeção de Pets e Visits. Os formulários legados de Pet e Visit usam `OwnersServiceHttpClient` para obter o proprietário. A API REST e as gravações de Owner acessam o H2 pelo repositório JPA local.
+O `OwnerController` atende as páginas em `/owners` e o `OwnerRestController` atende a API em `/api/owners`. Para renderizar o detalhe ou uma lista com vários proprietários, ele pede ao `LegacyPetsHttpClient` a projeção de Pets e Visits fornecida pelo `PetRestController` no monólito. Os formulários legados de Pet e Visit usam `OwnersServiceHttpClient` para obter o proprietário. A API REST e as gravações de Owner acessam o H2 pelo repositório JPA local.
 
 ## Executar
 
@@ -56,17 +56,17 @@ Use `-Offline` com o cache Maven completo e `-SkipGitMetadata` se a geração de
 
 | Caminho | Conteúdo |
 | --- | --- |
-| `projects/monolith/` | Aplicação legada. O pacote `org.springframework.samples.petclinic.integration` contém `OwnersServiceHttpClient` e `IntegrationErrorHandler`. |
-| `projects/owners-service/` | Entrada `br.edu.tcc.OwnersApplication`. O pacote `br.edu.tcc.owners` contém o controller unificado, a entidade e o repositório JPA. O pacote `br.edu.tcc.integration` contém `LegacyPetsHttpClient`. |
+| `projects/monolith/` | Aplicação legada. Os pacotes `owner`, `pets` e `visit` reúnem os domínios legados. O pacote `integration` contém `PetRestController`, `OwnersServiceHttpClient` e `IntegrationErrorHandler`. |
+| `projects/owners-service/` | Entrada `br.edu.tcc.OwnersApplication`. O pacote `br.edu.tcc.owners` contém `OwnerController` MVC, `OwnerLookup`, a entidade e o repositório JPA. `br.edu.tcc.owners.integration` contém `OwnerRestController`. O pacote `br.edu.tcc.integration` contém `LegacyPetsHttpClient`. |
 | `projects/gateway/` | Rotas públicas e filtro de disponibilidade do Owners Service. |
 | `docker/` e `compose.yaml` | Imagens, redes, provisionamento e persistência. |
 | `scripts/` | Build, aceitação, migração offline e coleta CK. |
-| `docs/historico/` e `historico/` | Documentação da V3, evidências de validação e campanhas anteriores. |
+| `docs/historico/` | Coletas anteriores, relatórios e evidências de validação. |
 
 ## Resultados e escopo
 
-A análise CK mede a estrutura dos fontes Java de produção. Os CSVs distinguem o monólito original, o monólito remanescente, o Owners Service e o Gateway. A unificação concentra métodos e dependências no controller, enquanto a remoção de tipos altera a composição das médias. [Arquitetura final, validação e métricas](docs/metricas/README.md).
+A análise CK mede a estrutura dos fontes Java de produção. A coleta vigente reúne o monólito histórico, o monólito adaptado e o Owners Service. [Métricas CK vigentes](docs/metricas/README.md) · [Histórico dos experimentos](docs/historico/README.md).
 
 O ambiente tem finalidade acadêmica. A migração pressupõe a coexistência das aplicações e as páginas compostas e formulários legados dependem de chamadas HTTP entre elas. Os cenários de indisponibilidade registram quais fluxos ficam acessíveis durante a interrupção de cada serviço.
 
-A baseline é o commit `c36452a2c34443ae26b4ecbba4f149906af14717` da linha `1.5.x`, identificado pela tag `tcc2-baseline-2017`. O Spring PetClinic original usa a licença Apache 2.0. [Projeto original](https://github.com/spring-projects/spring-petclinic) · [README histórico e créditos](historico/documentacao/README-original-2017.md) · [Licença](https://www.apache.org/licenses/LICENSE-2.0).
+A baseline é o commit `c36452a2c34443ae26b4ecbba4f149906af14717` da linha `1.5.x`, identificado pela tag `tcc2-baseline-2017`. O Spring PetClinic original usa a licença Apache 2.0. [Projeto original](https://github.com/spring-projects/spring-petclinic) · [README histórico e créditos](docs/historico/arquivo-legado/documentacao/README-original-2017.md) · [Licença](https://www.apache.org/licenses/LICENSE-2.0).

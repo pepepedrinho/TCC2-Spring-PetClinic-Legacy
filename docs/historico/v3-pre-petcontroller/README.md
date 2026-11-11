@@ -52,4 +52,4 @@ O coletor salva a saída em um novo diretório sob `.work/`. O modo `-WorkingTre
 - [V3 inicial e migração da interface Owner](relatorio.md). Inclui os primeiros resultados da V3, a migração offline e a validação com duas réplicas.
 - [Padronização dos clientes HTTP](refatoracao-integracoes-http.md). Registra a etapa intermediária com handlers dedicados nas duas aplicações.
 - [Unificação dos controllers](refatoracao-controller-unificado.md). Registra a auditoria que produziu a coleta da V3 unificada e compara as métricas individuais.
-- [Metodologia e coleta da V2](../v2-docker/README.md) · [Arquivo histórico](../../../historico/README.md).
+- [Metodologia e coleta da V2](../v2-docker/README.md) · [Arquivo histórico](../arquivo-legado/README.md).

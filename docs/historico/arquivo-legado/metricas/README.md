@@ -1,6 +1,6 @@
 # Histórico das coletas CK
 
-Cada pasta preserva uma campanha ou um diagnóstico. Os nomes de cenário e de arquivo dentro das campanhas mantêm a nomenclatura de origem. Consulte [a coleta definitiva](../../docs/metricas/README.md) para a comparação final.
+Cada pasta preserva uma campanha ou um diagnóstico. Os nomes de cenário e de arquivo dentro das campanhas mantêm a nomenclatura de origem. Consulte [a coleta definitiva](../../../metricas/README.md) para a comparação final.
 
 | Campanha | Estado e diferença em relação às campanhas vizinhas | Revisão ou snapshot | Cobertura e arquivos |
 | --- | --- | --- | --- |

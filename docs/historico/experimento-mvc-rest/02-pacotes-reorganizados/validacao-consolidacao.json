@@ -1,0 +1,525 @@
+{
+  "revisionTested": "0409b10060f1b324fa97d26b6e0ea6929b5c1493",
+  "maven": {
+    "command": "./scripts/build.ps1 -Offline -SkipGitMetadata",
+    "logSha256": "50beb31f8214cae119fddbe85d966e0be32a787785ab52d1789350de2627b700",
+    "modules": {
+      "monolith": {
+        "tests": 52,
+        "passed": 51,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "owners-service": {
+        "tests": 12,
+        "passed": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "gateway": {
+        "tests": 1,
+        "passed": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "http": {
+    "command": "python scripts/acceptance.py",
+    "mode": "JVMs locais isoladas com HSQLDB e H2 descartáveis",
+    "javaToolOptions": "-Duser.language=en -Duser.country=US",
+    "result": "PASS",
+    "utc": "2026-11-11T11:30:51.143163+00:00",
+    "checks": [
+      {
+        "path": "/api/owners/1",
+        "method": "GET",
+        "port": 8082,
+        "status": 200
+      },
+      {
+        "path": "/vets.html",
+        "method": "GET",
+        "port": 8080,
+        "status": 200
+      },
+      {
+        "path": "/",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/find",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/new",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/1",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/1/edit",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/1/pets/new",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/1/pets/1/edit",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/1/pets/1/visits/new",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/vets.html",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/vets.json",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/resources/css/petclinic.css",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/find",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/find/",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/1",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/6",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/6",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/6",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners?lastName=frank",
+        "method": "GET",
+        "port": 8081,
+        "status": 302
+      },
+      {
+        "path": "/owners?lastName=Davis",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners?lastName=Missing",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/new",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/1/edit",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/internal/owner-pets",
+        "method": "POST",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/%69nternal/owner-pets",
+        "method": "POST",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/owners/../internal/owner-pets",
+        "method": "POST",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "//internal/owner-pets",
+        "method": "POST",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/api/pets/1",
+        "method": "GET",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/api/pet-types",
+        "method": "GET",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/api/owners/1",
+        "method": "DELETE",
+        "port": 8081,
+        "status": 409
+      },
+      {
+        "path": "/api/owners/99999",
+        "method": "GET",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/owners/99999",
+        "method": "GET",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/api/owners",
+        "method": "POST",
+        "port": 8081,
+        "status": 400
+      },
+      {
+        "path": "/owners/new",
+        "method": "POST",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/new",
+        "method": "POST",
+        "port": 8081,
+        "status": 302
+      },
+      {
+        "path": "/owners/11/edit",
+        "method": "POST",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/api/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/11/edit",
+        "method": "POST",
+        "port": 8081,
+        "status": 302
+      },
+      {
+        "path": "/api/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/11/pets/new",
+        "method": "POST",
+        "port": 8081,
+        "status": 302
+      },
+      {
+        "path": "/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/11/pets/14/edit",
+        "method": "POST",
+        "port": 8081,
+        "status": 302
+      },
+      {
+        "path": "/owners/1/pets/14/edit",
+        "method": "GET",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/owners/1/pets/14/edit",
+        "method": "POST",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/owners/1/pets/14/visits/new",
+        "method": "POST",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/owners/99999/pets/new",
+        "method": "POST",
+        "port": 8081,
+        "status": 404
+      },
+      {
+        "path": "/owners/11/pets/new",
+        "method": "POST",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/11/pets/14/visits/new",
+        "method": "POST",
+        "port": 8081,
+        "status": 302
+      },
+      {
+        "path": "/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/1",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/11/pets/14/visits/new",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/api/owners/1",
+        "method": "GET",
+        "port": 8082,
+        "status": 200
+      },
+      {
+        "path": "/vets.html",
+        "method": "GET",
+        "port": 8080,
+        "status": 200
+      },
+      {
+        "path": "/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/11/pets/14/edit",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/api/owners",
+        "method": "POST",
+        "port": 8081,
+        "status": 201
+      },
+      {
+        "path": "/owners/11/pets/new",
+        "method": "POST",
+        "port": 8081,
+        "status": 302
+      },
+      {
+        "path": "/api/owners/11",
+        "method": "DELETE",
+        "port": 8081,
+        "status": 409
+      },
+      {
+        "path": "/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 503
+      },
+      {
+        "path": "/owners",
+        "method": "GET",
+        "port": 8081,
+        "status": 503
+      },
+      {
+        "path": "/api/owners/1",
+        "method": "GET",
+        "port": 8081,
+        "status": 503
+      },
+      {
+        "path": "/owners/11/pets/new",
+        "method": "POST",
+        "port": 8081,
+        "status": 503
+      },
+      {
+        "path": "/vets.html",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/vets.json",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/api/owners/1",
+        "method": "GET",
+        "port": 8082,
+        "status": 200
+      },
+      {
+        "path": "/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 503
+      },
+      {
+        "path": "/owners",
+        "method": "GET",
+        "port": 8081,
+        "status": 503
+      },
+      {
+        "path": "/owners/find",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/new",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/owners/11/edit",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/api/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      },
+      {
+        "path": "/vets.html",
+        "method": "GET",
+        "port": 8080,
+        "status": 200
+      },
+      {
+        "path": "/owners/11",
+        "method": "GET",
+        "port": 8081,
+        "status": 200
+      }
+    ],
+    "ownerId": 11,
+    "petId": 14,
+    "restart": "abrupt process termination; same file databases",
+    "statusCounts": {
+      "200": 50,
+      "201": 1,
+      "302": 7,
+      "400": 1,
+      "404": 12,
+      "409": 2,
+      "503": 6
+    }
+  }
+}

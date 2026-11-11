@@ -2,7 +2,7 @@
 
 A campanha de 6 de novembro de 2026 usa a baseline `c36452a` e os fontes Java de produção da V2 Docker no commit `9fc9afb`. Esse estado mantém a simplificação de `Owner.addPet()` e transfere o provisionamento do banco para a infraestrutura. A [proveniência](proveniencia.json) registra revisões completas, SHA-256 dos fontes exportados e dos seis CSVs, ambiente e referências para a conferência dos resultados.
 
-A análise mede a estrutura estática dos fontes Java e permite comparar tipos equivalentes do monólito antes e depois da extração de Owners. As campanhas anteriores e os diagnósticos estão no [histórico de métricas](../../../historico/metricas/README.md).
+A análise mede a estrutura estática dos fontes Java e permite comparar tipos equivalentes do monólito antes e depois da extração de Owners. As campanhas anteriores e os diagnósticos estão no [histórico de métricas](../arquivo-legado/metricas/README.md).
 
 | Cenário | Escopo | Tipos CK | Métodos CK | CSVs |
 | --- | --- | ---: | ---: | --- |
@@ -16,7 +16,7 @@ O Gateway permanece na arquitetura e na aceitação HTTP. Seu roteamento depende
 
 CBO e RFC descrevem aspectos do acoplamento estático e da resposta de um tipo. WMC descreve complexidade, enquanto LCOM e LCOM* medem aspectos de coesão. São medidas de código que precisam ser interpretadas junto das responsabilidades de cada tipo. Chamadas HTTP, latência, disponibilidade e comportamento após reinício são questões do sistema distribuído e exigem evidências próprias. A variação das métricas CK, por si só, é insuficiente para estabelecer melhoria arquitetural.
 
-A recoleta reproduziu todos os campos de A e C e de todos os tipos e métodos restantes em B, desconsiderando apenas a coluna `file` e a ordem das linhas. Em B, as únicas linhas removidas são a do tipo `LegacyDatabaseInitializer` e as de seus dois métodos. Os seis CSVs anteriores e seus hashes estão [arquivados](../../../historico/metricas/2026-11-06-v2-pre-docker-0ad652a/README.md).
+A recoleta reproduziu todos os campos de A e C e de todos os tipos e métodos restantes em B, desconsiderando apenas a coluna `file` e a ordem das linhas. Em B, as únicas linhas removidas são a do tipo `LegacyDatabaseInitializer` e as de seus dois métodos. Os seis CSVs anteriores e seus hashes estão [arquivados](../arquivo-legado/metricas/2026-11-06-v2-pre-docker-0ad652a/README.md).
 
 ## Médias por tipo
 
@@ -63,7 +63,7 @@ O método usa diretamente `Set.add()` e mantém a associação no lado de `Pet`.
 | LCOM | 58 | 58 | 58 | 36 |
 | LCOM* | 0,78846157 | 0,78846157 | 0,78846157 | 0,77777773 |
 
-[Evidências funcionais](../../../historico/evidencias/evidencias-addpet/) · [Coleta anterior à simplificação](../../../historico/metricas/2026-11-06-v2-pre-refatoracao-addpet-1e8fa99/relatorio.md)
+[Evidências funcionais](../arquivo-legado/evidencias/evidencias-addpet/) · [Coleta anterior à simplificação](../arquivo-legado/metricas/2026-11-06-v2-pre-refatoracao-addpet-1e8fa99/relatorio.md)
 
 ## Reproduzir
 

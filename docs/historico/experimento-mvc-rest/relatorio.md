@@ -46,7 +46,7 @@ Os testes MVC acompanharam os pacotes de seus controladores. `Owner` continua em
 
 ## Procedimento CK
 
-A coleta usa CK `0.7.1-SNAPSHOT`, Java 17.0.12, o SHA-256 histórico do JAR e os parâmetros `false 0 false`. O estado 00 reutiliza os CSVs da V3 marcada pela tag. Para 01 e 02 foi executado `./scripts/collect-ck.ps1 -V3 -WorkingTree -Java17Home $env:JAVA17_HOME -CkJar $ckJar`. Os escopos são os fontes Java de produção. Os CSVs mantêm todas as colunas emitidas pela CK, com caminhos relativos e ordem estável. A inclui a referência histórica e teve todos os valores reproduzidos nas duas execuções. [Estado 00](00-v3-original/README.md) · [Estado 01](01-controllers-separados/proveniencia.json) · [Estado 02](../../metricas/proveniencia.json).
+A coleta usa CK `0.7.1-SNAPSHOT`, Java 17.0.12, o SHA-256 histórico do JAR e os parâmetros `false 0 false`. O estado 00 reutiliza os CSVs da V3 marcada pela tag. Para 01 e 02 foi executado `./scripts/collect-ck.ps1 -V3 -WorkingTree -Java17Home $env:JAVA17_HOME -CkJar $ckJar`. Os escopos são os fontes Java de produção. Os CSVs mantêm todas as colunas emitidas pela CK, com caminhos relativos e ordem estável. A inclui a referência histórica e teve todos os valores reproduzidos nas duas execuções. [Estado 00](00-v3-original/README.md) · [Estado 01](01-controllers-separados/proveniencia.json) · [Estado 02](02-pacotes-reorganizados/proveniencia.json).
 
 Cada média dá o mesmo peso a cada tipo emitido pela CK, incluindo interfaces, tipos internos, records e classes anônimas. Os totais somam CBO, WMC, RFC e LCOM por tipo. LCOM* é reportado como média. Percentuais usam o estado inicial de cada contraste como denominador.
 
@@ -189,7 +189,9 @@ Os indicadores descrevem estrutura estática. Os testes medem a preservação do
 
 As duas etapas executaram Maven offline com Java 8 no monólito e Java 17 no Owners Service e Gateway, com zero falhas e erros. `CrashControllerTests` permaneceu ignorado. A aceitação executou três JVMs locais com bancos descartáveis e mensagens de validação em inglês. Cobre os formulários, operações REST, comunicação entre serviços, reinício, indisponibilidade e bloqueio de rotas internas. O modo Docker Compose ficou fora dessas execuções. [Validação 01](01-controllers-separados/validacao.json) · [Validação 02](02-pacotes-reorganizados/validacao.json).
 
-## Integração futura
+## Opções avaliadas antes da consolidação
+
+A V3 definitiva adotou ambas as etapas. [Publicação vigente](../../metricas/README.md).
 
 No worktree da V3, confirme branch, estado limpo e HEAD em `tcc2-v3-pre-separacao-mvc-rest`. Se o HEAD continuar nesse ancestral, um avanço rápido conserva os commits testados. Se a V3 tiver avançado, reavalie a integração antes de aplicá-la.
 

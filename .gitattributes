@@ -1,14 +1,14 @@
 # Raw academic artifacts retain CRLF and whitespace exactly; active sources keep normal checks.
-/historico/metricas/2026-11-03-v2-centralizacao-erros-d3fea1a/** -text -whitespace
-/historico/metricas/revalidacao-2026-11-05-dd6c9e5/** -text -whitespace
-/historico/metricas/2026-11-06-v2-owner-adapter-dd6c9e5/** -text -whitespace
-/historico/metricas/2026-11-06-v2-pre-refatoracao-addpet-1e8fa99/** -text -whitespace
-/historico/evidencias/evidencias-manutencao-nomes/** -text -whitespace
+/docs/historico/arquivo-legado/metricas/2026-11-03-v2-centralizacao-erros-d3fea1a/** -text -whitespace
+/docs/historico/arquivo-legado/metricas/revalidacao-2026-11-05-dd6c9e5/** -text -whitespace
+/docs/historico/arquivo-legado/metricas/2026-11-06-v2-owner-adapter-dd6c9e5/** -text -whitespace
+/docs/historico/arquivo-legado/metricas/2026-11-06-v2-pre-refatoracao-addpet-1e8fa99/** -text -whitespace
+/docs/historico/arquivo-legado/evidencias/evidencias-manutencao-nomes/** -text -whitespace
 /docs/metricas/*/*.csv -text -whitespace
-/historico/metricas/2026-11-06-v2-diagnostico-0f122b9/** -text -whitespace
-/historico/metricas/2026-11-06-v2-reorganizacao-dd6c9e5/** -text -whitespace
-/historico/metricas/2026-11-06-v2-validacao-addpet-3ccb9e0/** -text -whitespace
-/historico/evidencias/evidencias-addpet/** -text -whitespace
+/docs/historico/arquivo-legado/metricas/2026-11-06-v2-diagnostico-0f122b9/** -text -whitespace
+/docs/historico/arquivo-legado/metricas/2026-11-06-v2-reorganizacao-dd6c9e5/** -text -whitespace
+/docs/historico/arquivo-legado/metricas/2026-11-06-v2-validacao-addpet-3ccb9e0/** -text -whitespace
+/docs/historico/arquivo-legado/evidencias/evidencias-addpet/** -text -whitespace
 /docker/** text eol=lf
-/historico/metricas/2026-11-06-v2-pre-docker-0ad652a/** -text -whitespace
+/docs/historico/arquivo-legado/metricas/2026-11-06-v2-pre-docker-0ad652a/** -text -whitespace
 /docs/historico/**/*.csv -text -whitespace

@@ -14,7 +14,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 METRICS_DIR = ROOT / "docs/historico/v2-docker"
-ARCHIVE = ROOT / "historico/metricas/2026-11-06-v2-pre-docker-0ad652a"
+ARCHIVE = ROOT / "docs/historico/arquivo-legado/metricas/2026-11-06-v2-pre-docker-0ad652a"
 OUTPUT = METRICS_DIR / "graficos"
 
 METRICS = ["cbo", "wmc", "rfc", "lcom", "lcom*"]
